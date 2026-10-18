@@ -43,6 +43,7 @@ tercantum.
 | 11 | `docs/CURSOR-LOG.md` | `4cb8fca` | 2026-10-18 | Template log pemakaian Cursor |
 | 12 | `docs/RULES.md` | `[lihat git log]` | 2026-10-18 | Transkripsi terverifikasi aturan lomba §01–§10 |
 | 13 | `docs/PRD.md` | `[lihat git log]` | 2026-10-18 | Definisi produk: problem, user, 16 user story, non-goals |
+| 14 | `scripts/check-docs.mjs`, `scripts/check-docs.selftest.mjs` | `[lihat git log]` | 2026-10-18 | Tooling pemeriksa konsistensi dokumen — **bukan kode produk**, tidak masuk `apps/` atau `packages/` |
 
 ---
 
@@ -65,6 +66,8 @@ pihak ketiga.
 Semua hal berikut dibangun **di dalam** build window dan tidak diklaim sebagai pre-existing:
 
 - `apps/` dan `packages/` — seluruh kode produk.
+- `scripts/` **kecuali** `check-docs.mjs` dan `check-docs.selftest.mjs`, yang sudah tercatat sebagai
+  tooling pre-existing di tabel atas. Skrip lain yang dibuat di dalam window tidak perlu dideklarasikan.
 - Integrasi Zetaris dan Meterless pada kode.
 - Gateway kuota gratis.
 - Landing page beserta kontennya.

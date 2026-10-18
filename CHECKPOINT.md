@@ -47,6 +47,16 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
   16 user story dengan acceptance criteria, non-goals, **5 KPI terukur**, **evaluation strategy**),
   `phases/P0-preflight.md`, `phases/P1-walking-skeleton.md`.
 - `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (9 dokumen).
+- `AGENTS.md` §21: **aturan sinkronisasi lintas dokumen** — larangan duplikasi fakta turunan, pemicu
+  kewajiban sync, peta dampak (file mana memengaruhi file mana), dan kewajiban menjalankan pemeriksa
+  sebelum commit.
+- `scripts/check-docs.mjs`: pemeriksa konsistensi dokumen tanpa dependensi (8 kelas pemeriksaan).
+  `scripts/check-docs.selftest.mjs`: selftest 15 kasus yang menyuntik kerusakan untuk membuktikan
+  pemeriksa masih bekerja. Keduanya berjalan di CI pada setiap push dan PR.
+- **Pemeriksa menangkap satu bug nyata pada eksekusi pertamanya:** baris tabel `docs/CONTEXT.md` §5
+  (NVIDIA + Groq tergabung dalam satu baris). Sudah diperbaiki. Bug serupa di `PREEXISTING.md`
+  (baris 7 + 8 tergabung) ditemukan **manual** di sesi yang sama, sebelum pemeriksa ada — itulah yang
+  memicu aturan §21 dibuat.
 - `AGENTS.md` §1: `docs/PRD.md` ditetapkan sebagai sumber kebenaran "apa dan untuk siapa", dengan
   batas peran tegas — tidak mengatur urutan kerja (file fase) dan tidak mengatur pilihan teknis (ADR).
 - `AGENTS.md` §8.1: penundaan berbasis dependensi, dilarang memakai gate tanggal — dengan satu

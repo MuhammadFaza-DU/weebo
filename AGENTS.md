@@ -297,7 +297,8 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 - `main` diproteksi. Semua perubahan lewat Pull Request.
 - **Hanya user (`@MuhammadFaza-DU`) yang berhak merge ke `main`.** Kontributor lain membuka PR.
 - Minimal satu review disetujui sebelum merge, dan **wajib dari code owner** (hanya user).
-- **CI wajib hijau** sebelum PR bisa di-merge (`Lint, typecheck, test`).
+- **CI wajib hijau** sebelum PR bisa di-merge (`Lint, typecheck, test` — termasuk pemeriksa
+  konsistensi dokumen §21.4).
 - `CODEOWNERS` menunjuk user untuk semua path.
 - Review yang sudah diberikan otomatis gugur jika ada commit baru di PR (dismiss stale reviews).
 - Semua diskusi di PR wajib resolved sebelum merge.
@@ -338,6 +339,7 @@ kebebasan berkarya, melainkan isi `main`.
 - Jika belum dijalankan atau belum bisa diverifikasi, tulis eksplisit **belum terverifikasi**.
 - Setelah mengubah kode, jalankan pemeriksaan yang relevan (`npm run lint`, `npm run typecheck`,
   `npm test`) dan laporkan hasilnya.
+- Setelah mengubah **dokumen**, jalankan `node scripts/check-docs.mjs` dan laporkan hasilnya (§21.4).
 - Security scan ditawarkan terpisah sebelum deploy publik, tidak dijalankan otomatis.
 
 ## 17. Skill dan laporan
@@ -345,6 +347,7 @@ kebebasan berkarya, melainkan isi `main`.
 - Gunakan skill yang relevan sesuai konteks.
 - Di akhir pekerjaan, laporkan: skill yang dipakai, keputusan penting, hasil verifikasi, dan hal yang
   belum terverifikasi.
+- Sebelum commit yang menyentuh dokumen, jalankan `node scripts/check-docs.mjs` (§21.4).
 - Untuk pekerjaan UI, ikuti protokol canvas-first, approval gate, dan pemeriksaan kualitas visual.
 - Untuk pekerjaan data atau backend, ikuti prinsip test-first, contract-first, validasi input, dan
   verifikasi yang dapat diulang.
@@ -361,7 +364,10 @@ Perubahan yang memengaruhi setidaknya satu dari:
 - hasil verifikasi;
 - risiko atau blocker;
 - commit, tag, atau next action;
-- isi `PREEXISTING.md`.
+- isi `PREEXISTING.md`;
+- **fakta turunan** (angka, daftar, hitungan, nomor section, nama berkas) — lihat §21.
+
+Perubahan bermakna memicu kewajiban sinkronisasi lintas dokumen (§21.2).
 
 ## 19. Saat instruksi tidak jelas
 
@@ -397,3 +403,94 @@ Aturan lomba mewajibkan tim memakai Cursor dan menjelaskan pemakaiannya di submi
 - Memakai Cursor untuk review nyata, lalu mencatat apa yang di-review.
 - Menulis bagian *"what needs work"* pada Product Feedback berdasarkan pengalaman nyata dengan plan
   yang dipakai.
+
+## 21. Sinkronisasi dan konsistensi lintas dokumen
+
+Aturan ini ada karena inkonsistensi paling sering lahir dari **satu fakta yang ditulis di banyak
+tempat**, bukan dari kelalaian. Satu fakta berubah, tiga dokumen jadi salah, dan tidak ada yang tahu
+ketiganya terkait.
+
+### 21.1 Penyebab utama: duplikasi fakta turunan
+
+**Fakta turunan** adalah fakta yang punya satu sumber kebenaran tetapi ditulis ulang di tempat lain.
+Contoh yang benar-benar pernah rusak di repo ini:
+
+- jumlah dokumen pada urutan baca `AGENTS.md` §1.1 (pernah tertulis 7, lalu 8, lalu 9 di tiga file);
+- daftar berkas di `docs/` yang disalin ke `CHECKPOINT.md`;
+- jumlah ADR, jumlah user story, jumlah task per fase.
+
+**Aturan:**
+
+1. **Jangan menduplikasi fakta turunan.** Jika sebuah dokumen butuh fakta itu, **tunjuk sumbernya**
+   (contoh: *"lihat `AGENTS.md` §1.1"*), jangan tulis ulang angkanya.
+2. Duplikasi **hanya boleh** terjadi bila salah satu benar:
+   - fakta itu **diperiksa otomatis** oleh `scripts/check-docs.mjs`; atau
+   - fakta itu tidak mungkin ditautkan (mis. angka di tengah kalimat prosa yang dibaca manusia).
+3. Duplikasi yang diizinkan **wajib** diperbarui pada commit yang sama saat sumbernya berubah.
+
+### 21.2 Pemicu kewajiban sinkronisasi
+
+Sinkronisasi wajib ketika terjadi salah satu dari:
+
+- **fakta turunan berubah** (angka, daftar, hitungan, nomor section, nama berkas); atau
+- **perubahan bermakna** menurut §18.
+
+Perbaikan typo, penyempurnaan kalimat, dan penyesuaian format **tidak** memicu kewajiban ini.
+
+### 21.3 Peta dampak
+
+Tabel ini menjawab *"kalau saya ubah X, apa lagi yang harus diperiksa?"*. Bukan daftar lengkap —
+peta ini mencatat **kaitan yang sudah terbukti**, bukan menebak semua kemungkinan.
+
+| Kalau kamu mengubah… | Wajib periksa dan sinkronkan |
+|---|---|
+| `AGENTS.md` §1.1 (menambah/menghapus butir urutan baca) | Penutup §1.1 (ordinalnya), `README.md` (jumlah dokumen), `CHECKPOINT.md` (jumlah dokumen), `CONTRIBUTING.md` |
+| `docs/DECISIONS.md` (ADR baru atau berubah) | `CHECKPOINT.md` ringkasan keputusan, `docs/PRD.md` §4.1 dan §6, dokumen yang menulis rentang "ADR-001 … ADR-0NN", `PREEXISTING.md` bila menyangkut komponen pre-existing |
+| `docs/PRD.md` §1.3 (KPI, target, aturan kalibrasi) | `docs/PHASES.md` (syarat lulus fase), `docs/SUBMISSION.md` (audit + aturan angka), `CHECKPOINT.md` |
+| `docs/PRD.md` §2.4 (user story) | `docs/PHASES.md` kolom "Story PRD", berkas fase terkait |
+| `docs/PRD.md` §3.2 (evaluation strategy) | `docs/phases/P0-preflight.md` T0.8, `docs/phases/P1-walking-skeleton.md` T1.8, `docs/PHASES.md`, `docs/SUBMISSION.md` |
+| `docs/RULES.md` (aturan lomba) | `AGENTS.md` §2, `docs/CONTEXT.md`, `docs/SUBMISSION.md`, `docs/PRD.md`, `PREEXISTING.md` |
+| Menambah atau menghapus berkas di `docs/` | Daftar `docs/` di `CHECKPOINT.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md` §1.1 bila masuk urutan baca, `PREEXISTING.md` |
+| Nomor atau judul section mana pun | Semua yang merujuk `berkas.md` §N — dijalankan otomatis oleh `scripts/check-docs.mjs` |
+| Status verifikasi (sesuatu jadi terverifikasi atau gagal) | `CHECKPOINT.md` bagian "Belum terverifikasi", `docs/CONTEXT.md` §10, `docs/SETUP-SPONSORS.md` §7 |
+| Task di berkas fase | `docs/PHASES.md` bila syarat lulus berubah, `CHECKPOINT.md` next action |
+| Deliverable submission | `docs/SUBMISSION.md`, `CHECKPOINT.md`, `PREEXISTING.md` bila perlu |
+| Komponen pre-existing | `PREEXISTING.md` **pada commit yang sama** (§15) |
+
+### 21.4 Verifikasi — wajib dijalankan, bukan opsional
+
+Sebelum commit yang menyentuh dokumen, **wajib** menjalankan:
+
+```
+node scripts/check-docs.mjs
+```
+
+Pemeriksa ini menangkap: tautan internal rusak, rujukan `berkas.md` §N yang tidak ada, rujukan ADR /
+user story / task yang tidak ada, **tabel Markdown yang kolomnya tidak konsisten**, jumlah urutan baca
+yang tidak cocok, dan karakter rusak (U+FFFD / mojibake).
+
+CI menjalankan pemeriksa yang sama pada setiap push dan pull request. **Jangan mengakali pemeriksa**
+dengan melemahkan pola atau menambahkan pengecualian tanpa alasan tertulis — itu menghapus satu-satunya
+penjaga yang kita punya.
+
+Selftest `node scripts/check-docs.selftest.mjs` membuktikan pemeriksa masih menangkap setiap kelas
+kesalahan. Jalankan bila `check-docs.mjs` diubah.
+
+### 21.5 Batas yang harus dinyatakan
+
+**Pemeriksa hanya memeriksa bentuk yang bisa dibaca mesin.** Ia tidak tahu apakah sebuah kalimat masih
+benar secara makna, apakah sebuah klaim masih sesuai kenyataan, atau apakah dua dokumen menceritakan hal
+yang sama dengan kata berbeda.
+
+Keselarasan makna **tetap tanggung jawab penulis.** Pemeriksa yang lulus bukan bukti dokumen benar —
+hanya bukti tidak ada kerusakan struktural.
+
+### 21.6 Kalau sinkronisasi tidak bisa dilakukan sekarang
+
+Kadang dokumen tujuan belum ada (mis. berkas fase P2–P8 belum dibuat). Dalam kasus itu:
+
+1. Jangan menulis fakta itu ke dokumen yang belum ada.
+2. **Catat utangnya** di `CHECKPOINT.md` bagian "Belum dikerjakan", dengan menyebut dokumen tujuan.
+3. Jangan menghapus kewajiban itu diam-diam.
+
+Utang yang tercatat boleh menunggu. Utang yang tidak tercatat akan hilang.

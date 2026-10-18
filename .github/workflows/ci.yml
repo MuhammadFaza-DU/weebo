@@ -20,6 +20,16 @@ jobs:
         with:
           node-version: "24"
 
+      # Pemeriksa konsistensi dokumen (AGENTS.md §21). Tidak bergantung pada
+      # package.json, jadi selalu berjalan — bahkan sebelum kode produk ada.
+      - name: Docs consistency
+        run: node scripts/check-docs.mjs
+
+      # Selftest membuktikan pemeriksa masih menangkap setiap kelas kesalahan.
+      # Kalau ini hijau tapi check-docs.mjs rusak, penjaganya palsu.
+      - name: Docs checker selftest
+        run: node scripts/check-docs.selftest.mjs
+
       # The project has no package.json yet. Once the workspace lands, this step
       # installs dependencies; until then it is skipped so CI stays honest
       # instead of reporting a green build for code that does not exist.

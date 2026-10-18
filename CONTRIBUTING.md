@@ -44,7 +44,7 @@ A pull request can only merge when **all** of these are true:
 
 - At least one approving review, and that approval **must come from the code owner**
   (`@MuhammadFaza-DU`) — see `AGENTS.md` §12.
-- CI is green (`Lint, typecheck, test`).
+- CI is green (`Lint, typecheck, test`, plus the document consistency check).
 - All review conversations are resolved.
 - No force-push to `main`, and `main` cannot be deleted.
 
@@ -69,10 +69,14 @@ Conventional commits:
 Run the checks that exist at that point in the project:
 
 ```bash
+node scripts/check-docs.mjs   # document consistency — see AGENTS.md §21
 npm run lint
 npm run typecheck
 npm test
 ```
+
+The docs check works without any dependencies, so it runs even before the workspace exists. If you
+change `scripts/check-docs.mjs` itself, also run `node scripts/check-docs.selftest.mjs`.
 
 If a script does not exist yet, say so in the PR instead of pretending it passed. Report what you
 ran and what you could not run.
