@@ -51,9 +51,14 @@ Jika salah satu belum, **jangan mulai task kode** — selesaikan prasyaratnya du
 
 ### T1.4 — Vendor Meterless + adapter tipis
 
-- [ ] Jalankan langkah vendor engine H-MEM
-- [ ] Buat `packages/meterless/src` sebagai pembungkus (jangan edit `vendor/`)
+- [ ] Vendor `engines/hmem/reference` ke `vendor/hmem`, pertahankan `LICENSE` (Apache-2.0)
+- [ ] Jalankan `npm install && npm test` di dalam `vendor/hmem` — pastikan hijau
+- [ ] Buat `packages/meterless/src` sebagai adapter yang mengimplementasikan `MemoryPort`
+- [ ] **Jangan** edit `vendor/`
 - [ ] Verifikasi: simpan satu memori, ambil kembali, tampilkan id-nya
+
+> Catatan: untuk P1, embedding masih boleh memakai mock bawaan engine. Penggantian ke
+> Nemotron-3-Embed-1B adalah tugas P3, bukan P1. Tujuannya agar P1 tetap ringan.
 
 ### T1.5 — Client Zetaris minimal
 

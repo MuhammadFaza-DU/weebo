@@ -268,3 +268,54 @@ client ke runtime yang sama.
 - Demo lomba harus menjalankan runtime lebih dulu. Ini dicatat di README dan naskah video.
 - CLI berisiko menggeser positioning "ramah pemula" bila dijadikan wajah utama; karena itu CLI
   diposisikan untuk developer, sementara PWA tetap wajah produk.
+
+---
+
+## ADR-012 — Meterless: vendor engine resmi + adapter embedding sendiri
+
+**Tanggal:** 2026-10-18
+**Status:** Diterima
+
+**Konteks.** Meterless H-MEM adalah syarat wajib lomba dan menjadi tulang punggung memori Weebo.
+Dua pendekatan dipertimbangkan: (a) memakai engine resmi sebagai dependensi, (b) menulis ulang
+implementasinya dari spesifikasi. Pengukuran langsung terhadap repo Meterless memberi data:
+
+- Engine referensi `engines/hmem/reference/src/` berukuran **≈42,6 KB** (~1.200–1.500 baris TypeScript)
+  dalam 10 file.
+- `package.json` menyatakan **zero runtime dependencies** (hanya `tsx` dan `vitest` sebagai devDeps).
+- README mereka menyatakan sendiri: *"What it is NOT: a production library. The embedder is a
+  deterministic hash mock, storage is a JSON file, and there is no network code. Your implementation
+  replaces every piece of this with your stack; the contracts stay the same."*
+- `embeddings.ts` memakai FNV-1a hash ke vektor 64 dimensi — **tidak punya makna semantik**.
+- Conformance suite (`conformance/runner.ts` + `vectors/`) memeriksa kontrak secara ketat dan
+  **sudah lulus terhadap engine referensi**.
+
+**Keputusan.**
+
+1. **Vendor engine resmi** Meterless (Apache-2.0) ke `vendor/`, dengan `LICENSE` dan atribusi
+   dipertahankan. Ini dependensi, bukan penyalinan yang diklaim sebagai karya sendiri.
+2. **Tulis adapter embedding sendiri** di `packages/meterless/src`, menggantikan mock FNV-1a dengan
+   embedding nyata. Ini memang penggunaan yang dimaksudkan oleh penulis spesifikasi.
+3. **Tulis `MemoryPort`** sebagai interface di `packages/core`, sehingga implementasi engine dapat
+   ditukar tanpa menyentuh core.
+4. Demo memakai **4 service inti**: Store, Mining, Retrieval, TrustLedger. Dreaming, SleepCycle, dan
+   ConflictDetection tetap tersedia di kode tetapi tidak didemokan.
+5. Menulis ulang engine dari spesifikasi (opsi "implementasi sendiri") **ditunda sampai setelah
+   lomba**, dengan `MemoryPort` sebagai titik tukar.
+
+**Konsekuensi.**
+
+- Waktu P3 turun dari ±1,5–2 hari menjadi ±3–5 jam, sehingga P4–P6 mendapat waktu.
+- Conformance suite dapat dijalankan sebagai bukti objektif untuk penilaian sponsor tech.
+- Kualitas retrieval menjadi nyata, bukan palsu — penting karena `semantic` adalah komponen terbesar
+  (0,35) dalam formula ranking H-MEM.
+- Klaim "original work" tetap sah: engine adalah dependensi Apache-2.0, seluruh kode harness,
+  connector, runtime, adapter, dan UI ditulis sendiri.
+- Tim **tidak** memiliki memory system sendiri pada saat submission. Ini dicatat jujur di README dan
+  submission, dan menjadi item pertama roadmap pasca-lomba.
+- `MemoryPort` wajib ditegakkan sejak awal; kalau core memanggil engine langsung, penukaran nanti
+  menjadi penulisan ulang.
+
+**Catatan keputusan terkait:** embedding memakai NVIDIA Nemotron-3-Embed-1B (`nemotron-3-embed-1b`),
+vektor 2048 dimensi, konteks 32.768 token, mendukung bahasa Indonesia. Dapat dipotong ke 1024/512
+dimensi untuk menghemat penyimpanan, dengan normalisasi L2 ulang.

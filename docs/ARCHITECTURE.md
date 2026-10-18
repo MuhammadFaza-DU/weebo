@@ -156,14 +156,53 @@ Aturan:
 
 ## 6. Memory
 
-Meterless H-MEM menjadi lapisan memori:
+Meterless H-MEM menjadi lapisan memori. Engine resmi di-*vendor* ke `vendor/` (Apache-2.0, atribusi
+dipertahankan) dan **tidak diedit**. Semua penyesuaian berada di `packages/meterless/src` (ADR-012).
 
-- **Mining** — fakta dari percakapan diekstrak dan disimpan.
-- **Retrieval** — relevansi hibrida saat dibutuhkan.
-- **Audit** — setiap memori punya riwayat append-only.
-- **Sleep/consolidation** — preview dulu, baru diterapkan.
+### 6.1 Interface `MemoryPort`
 
-Weebo membungkus ini di `packages/meterless/src`, tidak memanggil engine langsung dari UI.
+`packages/core` hanya mengenal interface, bukan implementasi:
+
+```ts
+interface MemoryPort {
+  remember(input: RememberInput): Promise<MemoryId>;
+  recall(query: RecallQuery): Promise<RecalledMemory[]>;
+  feedback(id: MemoryId, signal: "helpful" | "not_helpful" | "wrong"): Promise<void>;
+  audit(id: MemoryId): Promise<AuditEntry[]>;
+}
+```
+
+Alasan: implementasi dapat ditukar (engine vendored → implementasi sendiri) tanpa menyentuh core.
+
+### 6.2 Service yang dipakai
+
+| Service | Status | Peran |
+|---|---|---|
+| MemoryStore | Dipakai | Tiered storage, enrichment, relasi |
+| MemoryMining | Dipakai | Ekstraksi fakta dari percakapan |
+| MemoryRetrieval | Dipakai | Ranking hibrida + reinjection |
+| TrustLedger | Dipakai | Audit append-only |
+| ConflictDetection | Tersedia | Tidak didemokan |
+| Dreaming | Tersedia | Tidak didemokan |
+| SleepCycle | Tersedia | Tidak didemokan |
+
+### 6.3 Embedding
+
+Engine referensi memakai mock FNV-1a 64 dimensi yang **tidak punya makna semantik**. Ini diganti:
+
+- Provider: NVIDIA Nemotron-3-Embed-1B (`nemotron-3-embed-1b`), endpoint [OI]-compatible NIM.
+- Dimensi: 2048 (dapat dipotong ke 1024/512 dengan normalisasi L2 ulang).
+- Konteks: 32.768 token. Mendukung bahasa Indonesia.
+- Adapter wajib punya: batching, cache per teks, fallback saat provider gagal.
+
+Signifikansi: dalam formula ranking H-MEM, `semantic` berbobot **0,35** — komponen terbesar. Dengan
+mock, sepertiga penilaian relevansi menjadi derau.
+
+### 6.4 Batas
+
+- `packages/core` tidak boleh mengimpor `vendor/` secara langsung.
+- `vendor/` tidak boleh dimodifikasi; patch dilakukan lewat adapter.
+- Memori yang dipakai dalam jawaban harus dapat dirujuk lewat id agar bisa diaudit.
 
 ## 7. Data (Zetaris)
 

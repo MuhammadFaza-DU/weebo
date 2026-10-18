@@ -43,25 +43,35 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 |---|---|
 | Peran di Weebo | Memori persisten, world model, kompresi reasoning, deteksi intent |
 | Lokasi kode | `packages/meterless/` (adapter), `vendor/` (engine, tidak diedit) |
-| Engine yang dipakai | H-MEM (memori), Markovian (reasoning), Scout Intent (intent) |
-| Cara pakai | `npx degit meterless/meterless/engines/<nama>` lalu di-*vendor* |
+| Engine yang dipakai | H-MEM (memori) — Store, Mining, Retrieval, TrustLedger untuk demo |
+| Cara pakai | Vendor engine resmi (Apache-2.0) + adapter embedding sendiri |
 | Status | **Belum diimplementasikan** |
 
 **Rencana panggilan:**
 
-1. Engine di-*vendor* lewat langkah setup yang tercatat di README.
-2. `packages/meterless` membungkus service engine: mining, retrieval, audit, consolidation.
-3. `packages/core` memanggil adapter pada tahap recall dan write-memory.
-4. Setiap memori yang dipakai dalam jawaban dirujuk lewat id agar bisa diaudit.
-
-**Catatan penting:** engine di `vendor/` tidak boleh dimodifikasi. Semua penyesuaian berada di adapter.
+1. Engine di-*vendor* dari `engines/hmem/reference` lewat langkah setup yang tercatat di README.
+   `LICENSE` dan atribusi Apache-2.0 dipertahankan; `vendor/` tidak diedit.
+2. `packages/meterless/src` menyediakan adapter yang mengimplementasikan `MemoryPort` dari
+   `packages/core`.
+3. **Embedding diganti.** Engine referensi memakai mock FNV-1a 64 dimensi tanpa makna semantik;
+   adapter memakai NVIDIA Nemotron-3-Embed-1B (2048 dimensi, konteks 32.768 token, mendukung bahasa
+   Indonesia). Ini penggunaan yang dimaksudkan oleh penulis spesifikasi.
+4. `packages/core` memanggil adapter pada tahap recall dan write-memory. Core tidak pernah mengimpor
+   `vendor/` secara langsung.
+5. Setiap memori yang dipakai dalam jawaban dirujuk lewat id agar bisa diaudit.
 
 **Bukti yang akan dikumpulkan:**
 
 - Perintah setup vendor yang benar-benar dijalankan.
+- **Scorecard conformance suite Meterless** (`HMEM_IMPL=... npx tsx conformance/runner.ts`) — bukti
+  objektif kepatuhan kontrak.
 - Test yang menunjukkan memori bertahan lintas sesi.
 - Transkrip `audit` sebuah memori.
-- Catatan engine mana yang dipakai di tahap apa.
+- Bukti embedding nyata: perbandingan relevansi antara mock dan Nemotron pada query yang sama.
+
+**Catatan jujur untuk submission:** memory engine adalah dependensi Apache-2.0, bukan karya tim.
+Yang ditulis tim adalah adapter embedding, integrasi ke agent loop, dan seluruh harness di sekitarnya.
+Implementasi sendiri direncanakan pasca-lomba (ADR-012).
 
 ---
 
@@ -69,9 +79,11 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 
 | Item | Isi |
 |---|---|
-| Peran di Weebo | Jalur model gratis tanpa setup untuk user baru |
+| Peran di Weebo | Jalur model gratis tanpa setup untuk user baru + embedding memori |
 | Cara akses | NVIDIA NIM, endpoint [OI]-compatible, `https://integrate.api.nvidia.com/v1` |
-| Lokasi kode | `packages/core/src/models/`, `packages/gateway/` |
+| Model chat | Nemotron (katalog di `packages/core/src/models/`) |
+| Model embedding | `nemotron-3-embed-1b` — 2048 dimensi, konteks 32.768 token |
+| Lokasi kode | `packages/core/src/models/`, `packages/gateway/`, `packages/meterless/src/embedding` |
 | Status | **Belum diimplementasikan** |
 
 **Rencana panggilan:**
@@ -81,12 +93,15 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 3. Jalur BYOK memakai key user ke endpoint yang sama.
 4. Model dipilih per langkah bila menguntungkan (mis. model kecil untuk klasifikasi intent, model
    besar untuk penalaran).
+5. **Embedding** memakai `nemotron-3-embed-1b` untuk seluruh memori H-MEM, menggantikan mock
+   FNV-1a 64 dimensi dari engine referensi.
 
 **Bukti yang akan dikumpulkan:**
 
-- Respons nyata dari endpoint NIM.
+- Respons nyata dari endpoint NIM, untuk chat maupun embedding.
 - Bukti bahwa gateway menegakkan kuota per IP.
-- Perbandingan model pada satu tugas yang sama (jika relevan).
+- Perbandingan relevansi retrieval: mock vs Nemotron pada query yang sama.
+- Catatan dimensi vektor dan dampaknya ke ukuran penyimpanan.
 
 ---
 

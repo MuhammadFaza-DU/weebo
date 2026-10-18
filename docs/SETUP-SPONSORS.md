@@ -54,9 +54,10 @@ Rencana: endpoint gratis, [OI]-compatible, tanpa credits.
 - [ ] Simpan key di `.env` lokal (gitignored) atau secret manager
 - [ ] Uji satu request ke `https://integrate.api.nvidia.com/v1`
 - [ ] Catat model yang tersedia dan konteksnya
+- [ ] Uji endpoint embedding `nemotron-3-embed-1b`, catat dimensi vektor yang dikembalikan
 - [ ] Catat rate limit yang teramati: ______________
 
-**Yang harus dibuktikan:** satu respons sukses dari endpoint.
+**Yang harus dibuktikan:** satu respons sukses dari endpoint chat **dan** endpoint embedding.
 
 ---
 
@@ -67,11 +68,13 @@ Rencana: engine open source, di-*vendor* lewat `npx degit`.
 - [ ] Clone atau baca `github.com/Meterless/Meterless`
 - [ ] Jalankan demo cold-vs-warm (`npx tsx examples/memory-compounding-research/index.ts`)
 - [ ] Catat: demo berjalan / gagal (jika gagal, catat error)
-- [ ] Tentukan engine yang dipakai: H-MEM, Markovian, Scout Intent
-- [ ] Uji `npx degit meterless/meterless/engines/hmem` ke folder sementara
-- [ ] Catat ukuran dan dependensi engine
+- [ ] Vendor `engines/hmem/reference` ke `vendor/`, pertahankan `LICENSE`
+- [ ] Jalankan `npm install && npm test` di folder vendor
+- [ ] Jalankan conformance suite: `HMEM_IMPL=... npx tsx conformance/runner.ts`
+- [ ] Catat scorecard: lulus / gagal (lampirkan output)
+- [ ] Catat ukuran engine: ____ file, ____ KB
 
-**Yang harus dibuktikan:** demo memory jalan lokal tanpa API key.
+**Yang harus dibuktikan:** demo memory jalan lokal tanpa API key, dan conformance suite hijau.
 
 ---
 

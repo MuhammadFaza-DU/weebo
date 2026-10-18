@@ -45,6 +45,8 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
   server lokal; client bicara lewat `packages/protocol`. PWA untuk lomba, **Electron** (bukan Tauri)
   untuk desktop jangka panjang, Capacitor untuk mobile.
 - Connector: **MCP + OAuth 2.1** sebagai fondasi; Composio hanya acuan pola, bukan dependensi.
+- Meterless: **vendor engine resmi + adapter embedding sendiri** (`MemoryPort`). Tulis ulang dari
+  spec ditunda pasca-lomba. Embedding memakai NVIDIA `nemotron-3-embed-1b`.
 - Free tier: katalog model + gateway Cloudflare Worker yang memegang key NVIDIA NIM, kuota per IP.
 - Merge: hanya `@MuhammadFaza-DU`.
 - Catatan belajar pribadi disimpan di luar repo dan tidak pernah di-commit.
@@ -76,6 +78,7 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 | Desktop native — **Electron** (bukan Tauri) | Shell atas UI yang sama; tanpa Rust. Fase pertama setelah submission (ADR-010) | Setelah P8 |
 | APK Android — Capacitor | Butuh Android SDK | Setelah submission |
 | Gateway kuota gratis per IP | Stretch; butuh Cloudflare Worker + pengujian kuota | Setelah P1–P5 lulus |
+| Implementasi engine memori sendiri | Memakai engine Meterless sebagai dependensi untuk lomba. `MemoryPort` disiapkan agar bisa ditukar (ADR-012) | Pasca-lomba |
 
 ## Next action
 

@@ -113,7 +113,7 @@ not in the README.
 | Technology | Role in Weebo |
 |---|---|
 | **Zetaris** | Data harness — live, governed queries across scattered sources via MCP/REST |
-| **Meterless** | Context layer — H-MEM memory, world model, Markovian reasoning, Scout Intent |
+| **Meterless** | Context layer — H-MEM memory engine (vendored, Apache-2.0), with a custom embedding adapter replacing its reference mock |
 | **NVIDIA Nemotron** | Free-tier model path via NVIDIA NIM; the default zero-setup experience |
 | **Cursor** | Development environment used to build Weebo |
 
