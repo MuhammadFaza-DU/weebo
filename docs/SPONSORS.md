@@ -80,7 +80,7 @@ Implementasi sendiri direncanakan pasca-lomba (ADR-012).
 | Item | Isi |
 |---|---|
 | Peran di Weebo | Jalur model gratis tanpa setup untuk user baru + embedding memori |
-| Cara akses | NVIDIA NIM, endpoint [OI]-compatible, `https://integrate.api.nvidia.com/v1` |
+| Cara akses | NVIDIA NIM, endpoint kompatibel Chat Completions, `https://integrate.api.nvidia.com/v1` |
 | Model chat | Nemotron (katalog di `packages/core/src/models/`) |
 | Model embedding | `nemotron-3-embed-1b` — 2048 dimensi, konteks 32.768 token |
 | Lokasi kode | `packages/core/src/models/`, `packages/gateway/`, `packages/meterless/src/embedding` |

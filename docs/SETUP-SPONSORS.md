@@ -46,7 +46,7 @@ gunakan trial.
 
 ## 3. NVIDIA NIM
 
-Rencana: endpoint gratis, [OI]-compatible, tanpa credits.
+Rencana: endpoint gratis, kompatibel Chat Completions, tanpa credits.
 
 - [ ] Buat akun NVIDIA (verifikasi telepon mungkin diperlukan)
 - [ ] Buka `build.nvidia.com`, pilih model Nemotron
@@ -112,7 +112,7 @@ development"*.
 
 - [ ] Pasang Ollama atau LM Studio
 - [ ] Tarik satu model yang layak untuk tool calling
-- [ ] Uji endpoint [OI]-compatible lokal
+- [ ] Uji endpoint kompatibel Chat Completions secara lokal
 - [ ] Catat RAM yang dibutuhkan dan kecepatan
 
 ---

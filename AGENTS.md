@@ -30,8 +30,11 @@ Agent yang baru masuk **wajib** membaca berurutan sebelum mengubah apa pun:
 2. `docs/DECISIONS.md` — keputusan yang mengikat (ADR-001 … terbaru).
 3. `docs/CONTEXT.md` — bobot penilaian, batasan tim, angka terukur, daftar yang sudah ditolak.
 4. `docs/PHASES.md` dan file fase aktif di `docs/phases/`.
+5. `docs/SUBMISSION.md` — deliverable dan tenggat yang mengikat.
+6. `docs/SPONSORS.md` — bukti integrasi yang harus dikumpulkan.
+7. `PREEXISTING.md` — aturan eligibilitas yang mengikat.
 
-Tanpa keempatnya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
+Tanpa ketujuhnya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
 batasan yang sudah dihitung.
 
 ## 2. Konteks lomba (mengikat)
@@ -48,13 +51,20 @@ Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
 **Syarat wajib yang tidak boleh dilanggar:**
 
 - Integrasi **Zetaris** dan **Meterless** harus benar-benar dipanggil saat runtime di kode — bukan
-  hanya disebut di README.
+  hanya disebut di README. *(Kutipan aturan: "Every submission must integrate Zetaris and Meterless.")*
 - Pengembangan memakai **Cursor** (syarat lomba). Cara tim memakainya: **review**, bukan menulis kode
-  — lihat §20.
-- **NVIDIA Nemotron** diintegrasikan di tempat ia memberi nilai nyata.
-- Deliverable: repo GitHub dengan README (setup, usage, dependencies), video demo 1–4 menit, dan
-  slide deck.
+  — lihat §20. *(Kutipan aturan: "teams must use Cursor for development.")*
+- Deliverable: repo GitHub dengan README (setup, usage, dependencies), video demo 1–4 menit, slide
+  deck, penjelasan integrasi sponsor, pemilihan track, dan deklarasi pre-existing. Daftar lengkap:
+  `docs/SUBMISSION.md`.
 - Semua materi submission berbahasa Inggris.
+
+**Sangat dianjurkan, bukan syarat diskualifikasi:**
+
+- **NVIDIA Nemotron** diintegrasikan di tempat ia memberi nilai nyata. Aturan lomba menyebut
+  *"Integrate NVIDIA technology wherever it contributes"* — ini dinilai pada kriteria **Sponsor tech
+  (10 dari 100 poin)**, bukan syarat kelulusan. Tetap dikerjakan karena nilainya besar, tetapi jangan
+  sampai mengorbankan Zetaris/Meterless.
 
 **Aturan eligibilitas:** pekerjaan yang di-commit sebelum build window dibuka tidak dihitung, kecuali
 komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib dicatat di
@@ -116,7 +126,7 @@ apps/web        Client PWA (React + Vite)
 apps/landing    Astro marketing site
 packages/core   Agent loop (intent → memory → plan → tool → verify), isomorphic
 packages/protocol  Kontrak runtime–client, berversi
-packages/meterless  Adapter Meterless (vendored, jangan diedit langsung)
+packages/meterless  Adapter Meterless (kita tulis sendiri; engine pihak ketiga di vendor/hmem)
 packages/zetaris    Client Zetaris (MCP/REST, typed)
 packages/connectors Registry connector MCP
 packages/gateway    Gateway kuota gratis (Cloudflare Worker)
@@ -129,6 +139,8 @@ Aturan arsitektur:
 - Client (`apps/cli`, `apps/web`) **tidak** memanggil `packages/core` langsung. Semua lewat
   `packages/protocol`.
 - `vendor/` milik Meterless tidak boleh diedit. Semua penyesuaian lewat `packages/meterless/src`.
+- Lokasi engine: `vendor/hmem/` di root repo. `packages/meterless/src` adalah adapter yang **kita
+  tulis** dan boleh diedit.
 - Setiap pemanggilan tool melewati policy layer di `packages/core` (allow/deny + audit log).
 - Secret dibaca dari environment atau keychain OS di runtime, tidak pernah dari kode atau client.
 
@@ -149,7 +161,7 @@ syarat lulusnya terpenuhi.
 | P5 Surfaces | **PWA** sebagai client runtime: chat, tasks, connectors, settings BYOK, responsif | Jalan di layar HP dan desktop |
 | P6 Autonomy | Scheduler headless, channel bridge, jalur model | Tugas berjalan tanpa client terhubung |
 | P7 Landing Page | Astro: narasi, fitur + badge status, CTA | Bisa dibuka publik |
-| P8 Submission | Video script, slide deck, README, PREEXISTING, audit klaim | Semua deliverable lomba lengkap |
+| P8 Submission | **Video jadi (1–4 menit)**, slide deck, README, PREEXISTING, audit klaim | Semua deliverable lomba lengkap |
 
 P4 dan P7 boleh berjalan paralel oleh orang berbeda.
 
@@ -196,8 +208,13 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 ## 11. Protokol desain
 
 - Design System dikerjakan di canvas sebelum kode UI ditulis.
-- Cakupan: layar utama, responsive behavior, dan state penting.
+- **Tool:** Pen (pen.dev) lewat MCP `pencil`. Dokumen `.pen` diakses **hanya** melalui MCP Pen, jangan
+  lewat tool file biasa.
 - Sebelum mengedit canvas, panggil `get_app_state()` dan pastikan dokumen aktif benar.
+- Cakupan: layar utama (chat, tasks/cron, connectors, settings BYOK), responsive behavior (ponsel,
+  tablet, desktop), dan state penting (kosong, memuat, error, tanpa koneksi runtime).
+- **Paket review** yang diajukan sebelum HALT berisi: tangkapan layar setiap layar, daftar state yang
+  tercakup, dan daftar token (warna, tipe, spacing) yang dipakai.
 - Setelah canvas selesai, ajukan paket review dan **berhenti total**.
 - Kode UI tidak boleh dimulai sampai user mengetik `APPROVE`, `SETUJU`, atau `LANJUT`.
 - "bagus", "ok", atau "lanjutkan saja" **bukan** approval.

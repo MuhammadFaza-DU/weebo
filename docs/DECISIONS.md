@@ -77,7 +77,8 @@ governed lewat Zetaris. Kanal personal dianggap harga tiket masuk, bukan pembeda
 
 **Konteks.** Ide awal meniru OpenCode: menyediakan kuota gratis harian untuk model tertentu,
 dibatasi per IP. Menyediakan ini berarti project harus memegang API key sendiri dan menanggung
-pemakaian. Riset menemukan NVIDIA NIM menyediakan endpoint gratis ([OI]-compatible, ~40 RPM) untuk
+pemakaian. Riset menemukan NVIDIA NIM menyediakan endpoint gratis (kompatibel Chat Completions,
+~40 RPM) untuk
 prototipe, cocok sebagai sumber tunggal. Model gratis OpenCode Zen diikat ke fingerprint client resmi
 mereka; meniru mekanisme itu berarti mengakali pembatasan pihak lain dan tidak akan dilakukan.
 
@@ -118,7 +119,7 @@ kualitas.
 
 ---
 
-## ADR-006 — Workspace riset terpisah, gitignored
+## ADR-006 — Catatan belajar disimpan di luar repo
 
 **Tanggal:** 2026-10-18
 **Status:** Diterima
@@ -148,7 +149,7 @@ Kode produk Weebo seluruhnya ditulis sendiri. Tidak ada penyalinan kode, aset, a
 satu fase melebar.
 
 **Keputusan.** Fase didefinisikan oleh **deliverable dan syarat lulus**, bukan durasi. Fase dipecah
-menjadi task kecil (≤ 2 jam) yang dicatat di `docs/phases/`. Fase ditutup hanya setelah lima syarat
+menjadi task kecil (≤ 2 jam) yang dicatat di `docs/phases/`. Fase ditutup hanya setelah enam syarat
 protokol keluar fase terpenuhi.
 
 **Konsekuensi.**
@@ -230,6 +231,31 @@ mesin tim, sementara Electron hanya menuntut Node.
   pekerjaan ulang.
 - Klaim "tersedia di desktop dan Android" sampai migrasi selesai harus disampaikan sebagai PWA
   installable, bukan installer native.
+
+---
+
+## ADR-013 — Pengecualian sementara: CLI boleh memanggil core langsung di P1
+
+**Tanggal:** 2026-10-18
+**Status:** Diterima, berlaku hanya untuk P1
+
+**Konteks.** ADR-011 menetapkan semua surface adalah client yang bicara lewat `packages/protocol`.
+Namun P1 bertujuan membuktikan pipeline (intent → memory → model → Zetaris → jawaban) dalam waktu
+sesingkat mungkin. Membangun protokol berversi + server WebSocket lebih dulu menambah satu lapisan
+yang bisa gagal sebelum pipeline terbukti.
+
+**Keputusan.** Pada **P1 saja**, `apps/cli` boleh memanggil `packages/core` langsung di proses yang
+sama. Pemisahan client–server lewat `packages/protocol` menjadi **syarat keluar P2**, dan pengecualian
+ini berakhir di sana.
+
+**Konsekuensi.**
+
+- P1 lebih cepat dan risikonya lebih kecil.
+- Ada satu titik di mana arsitektur menyimpang dari ADR-011. Penyimpangan ini dicatat, bukan
+  disembunyikan.
+- P2 **wajib** menutup penyimpangan itu. Jika tidak, ADR-011 kehilangan makna dan Electron nanti
+  menjadi penulisan ulang.
+- Pengecualian ini tidak boleh diperluas ke `apps/web`.
 
 ---
 

@@ -20,7 +20,7 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
 | P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 |
 | P7 Landing Page | Astro site publik | Bisa dibuka publik, badge status akurat | — (bisa paralel) |
-| P8 Submission | Video script, slide, README, audit | Semua deliverable lomba lengkap | P1–P7 |
+| P8 Submission | Video jadi (1–4 menit), slide, README, audit | Semua deliverable lomba lengkap | P1-P7 |
 
 P4 dan P7 boleh berjalan paralel oleh orang berbeda dan tidak memblokir spine.
 
@@ -116,14 +116,6 @@ Aturan: **fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.**
 Jangan memulai fase berikutnya sebelum keenam hal ini selesai.
 
 ---
-
-## Prinsip memecah task
-
-- Satu task = satu perubahan yang bisa diverifikasi sendiri.
-- Ukuran maksimum ± 2 jam kerja.
-- Setiap task menuliskan **kriteria selesai** yang objektif ("`npm test` hijau dan endpoint
-  mengembalikan 200"), bukan subjektif ("terlihat bagus").
-- Task yang tidak selesai dipindahkan ke backlog dengan alasan, bukan dihapus.
 
 ---
 

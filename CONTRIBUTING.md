@@ -27,17 +27,26 @@ Then read, in this order: [`CHECKPOINT.md`](CHECKPOINT.md) for current status,
 
 ```bash
 git switch -c feat/short-description
-# make changes
-git add -A
+# make changes — stage files explicitly, never `git add -A`
+git add path/to/changed/file
 git commit -m "feat: short description"
 git push -u origin feat/short-description
 gh pr create --fill
 ```
 
-- One pull request per concern. Small PRs get reviewed faster.
-- A PR needs at least one approving review before it can merge.
-- Only the maintainer merges to `main`.
-- Do not force-push to `main`.
+> **Do not use `git add -A` or `git add .`.** This working tree may contain local learning notes that
+> are excluded only on the maintainer's machine. Staging everything can commit third-party material
+> into a public repository. Stage files by name.
+
+A pull request can only merge when **all** of these are true:
+
+- At least one approving review, and that approval **must come from the code owner**
+  (`@MuhammadFaza-DU`) — see `AGENTS.md` §12.
+- CI is green (`Lint, typecheck, test`).
+- All review conversations are resolved.
+- No force-push to `main`, and `main` cannot be deleted.
+
+Only the maintainer merges to `main`.
 
 ## Commit messages
 

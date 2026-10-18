@@ -71,12 +71,13 @@ Honest labels, no marketing:
 | Area | Status |
 |---|---|
 | Repository scaffolding, architecture, and decision records | Done |
-| Sponsor technology accounts and access verification | In progress |
+| Sponsor technology accounts and access verification | Not started — P0 has not begun |
 | Agent core (loop, tool registry, policy, audit) | Not started |
 | Memory and reasoning (Meterless H-MEM, with a custom embedding adapter) | Not started |
 | Data connector (Zetaris MCP/REST) | Not started |
 | Application surface (PWA) | Not started |
-| Scheduler, channels, free-tier gateway | Not started |
+| Scheduler, channels | Not started |
+| Free-tier quota gateway | Not started — planned after the hackathon |
 | Landing page | Not started |
 
 See [`docs/PHASES.md`](docs/PHASES.md) for the phase framework and exit criteria.
@@ -96,7 +97,7 @@ apps/
 packages/
   core/         Isomorphic agent loop: intent → memory → plan → tool → verify
   protocol/     Versioned contract between the runtime and every client
-  meterless/    Adapter over Meterless engines (vendored, never edited in place)
+  meterless/    Adapter Meterless — our code. The third-party engine lives in vendor/hmem
   zetaris/      Typed Zetaris MCP/REST client with error mapping
   connectors/   MCP connector registry
   gateway/      Free-tier quota gateway (Cloudflare Worker)
@@ -115,7 +116,7 @@ not in the README.
 |---|---|
 | **Zetaris** | Data harness — live, governed queries across scattered sources via MCP/REST |
 | **Meterless** | Context layer — H-MEM memory engine (vendored, Apache-2.0), with a custom embedding adapter replacing its reference mock |
-| **NVIDIA Nemotron** | Free-tier model path via NVIDIA NIM; the default zero-setup experience |
+| **NVIDIA Nemotron** | Free-tier model path via NVIDIA NIM. Planned, not built — the quota gateway is post-hackathon |
 | **Cursor** | Review surface — code is written in other agent harnesses, Cursor is used to review it |
 
 Integration evidence, transcripts, and the exact call sites live in
@@ -129,18 +130,25 @@ been executed.
 
 ## Roadmap
 
-Near term (hackathon window):
+The authoritative phase plan lives in [`docs/PHASES.md`](docs/PHASES.md). Summary:
 
-0. Preflight — verify sponsor access and answer architecture assumptions before writing code
-1. Walking skeleton — one thin end-to-end path, driven from the terminal
-2. Agent core — tool registry, policy allow/deny, audit log, runtime protocol
-3. Memory and reasoning — cross-session recall and explainable answers
-4. Application surface — responsive PWA client
-5. Autonomy — headless scheduling, channel bridges, free-tier gateway
+| Phase | Deliverable |
+|---|---|
+| P0 Preflight | All sponsor access verified, architecture assumptions answered |
+| P1 Walking skeleton | One thin end-to-end path, driven from the terminal |
+| P2 Agent core | Tool registry, policy allow/deny, audit log, runtime protocol |
+| P3 Memory and reasoning | H-MEM memory, real embeddings, explainable answers |
+| P4 Design system | Tokens and components on canvas |
+| P5 Application surface | Responsive PWA client |
+| P6 Autonomy | Headless scheduling, channel bridges |
+| P7 Landing page | Public Astro site |
+| P8 Submission | Video, slide deck, README, eligibility audit |
 
 Beyond the hackathon:
 
-- Native desktop shell and Android build on the same monorepo
+- Native desktop shell (Electron) and Android build (Capacitor) on the same monorepo
+- Free-tier quota gateway
+- Own implementation of the memory engine, behind `MemoryPort`
 - Connector catalogue beyond MCP basics
 - Cloud sync for user-chosen storage
 

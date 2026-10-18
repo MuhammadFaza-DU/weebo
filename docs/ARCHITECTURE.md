@@ -34,7 +34,7 @@ packages/
   core/         Agent loop. Isomorphic. Tidak ada import Node-only.
   protocol/     Kontrak antara runtime dan semua client: tipe request/response,
                 skema event, versi protokol.
-  meterless/    Adapter atas engine Meterless. vendor/ tidak boleh diedit.
+  packages/meterless  Adapter Meterless (kita tulis sendiri; engine pihak ketiga di vendor/hmem)
   zetaris/      Client Zetaris: MCP + REST fallback, typed, dengan error mapping.
   connectors/   Registry connector MCP + definisi tool.
   gateway/      Cloudflare Worker: kuota gratis per IP, hanya model gratis.
@@ -47,7 +47,7 @@ apps/desktop/   Electron: membungkus apps/web, menjalankan apps/runtime di main 
 apps/mobile/    Capacitor: membungkus apps/web
 ```
 
-## 2.1 Model client–server (ADR-011)
+## 2.1 Model client-server (ADR-011)
 
 Satu runtime, banyak client. Runtime adalah satu-satunya tempat yang menyentuh kapabilitas platform.
 
@@ -72,6 +72,25 @@ Konsekuensi yang harus dijaga:
 - Client **tidak** menyimpan secret, tidak menjadwalkan tugas, tidak mengakses filesystem.
 - Satu versi protokol, dideklarasikan di `packages/protocol`, agar client lama tidak rusak.
 - Runtime harus bisa dijalankan tanpa client mana pun (headless), karena scheduler tetap bekerja.
+
+### 2.2 Bagaimana perangkat lain mencapai runtime (BELUM DIPUTUSKAN)
+
+Ini pertanyaan terbuka yang **memblokir demo di ponsel**. Runtime mendengarkan di `localhost`, dan
+`localhost` di ponsel menunjuk ke ponsel itu sendiri — bukan ke laptop.
+
+Kandidat solusi, belum dipilih:
+
+| Opsi | Cara kerja | Kelebihan | Kekurangan |
+|---|---|---|---|
+| Bind ke LAN | Runtime mendengarkan di `0.0.0.0`, PWA diakses lewat `http://<ip-laptop>:<port>` | Sederhana, tanpa layanan pihak ketiga | Butuh jaringan sama; HTTP biasa membatasi sebagian API browser |
+| Tunnel | `cloudflared` / `ngrok` mengekspos port | Bisa dari jaringan mana pun | Butuh layanan tambahan; keamanan perlu dipikirkan |
+| Pairing + token | Runtime menerbitkan token sekali pakai, client memasangkannya | Aman | Menambah alur UI |
+| Lewat Electron saja | Ponsel memakai PWA standalone terbatas | Tidak perlu jaringan | Bertentangan dengan ADR-011 (tidak ada mode standalone) |
+
+**Wajib diputuskan sebelum P5.** Kalau tidak, demo "PWA di ponsel" tidak akan berjalan.
+
+Yang harus menyertai keputusan ini apa pun opsinya: **autentikasi**. Runtime yang mendengarkan di
+jaringan tanpa token berarti proses lokal mana pun bisa mengendalikan agent.
 
 ## 3. Alur satu permintaan
 
@@ -114,6 +133,10 @@ memori yang dipakai, dan langkah yang diambil.
 | `apps/runtime` | semua `packages/*`, API Node | logika bisnis duplikat |
 | `apps/cli` | `protocol`, client WebSocket | `core`, API Node langsung |
 | `apps/web` | `protocol`, client WebSocket | `core`, API Node-only |
+
+**Pengecualian sementara untuk P1** (ADR-013): pada P1 saja, CLI boleh memanggil `packages/core`
+langsung di proses yang sama. Pemisahan client–server lewat `packages/protocol` **wajib** selesai di
+P2, dan pengecualian ini berakhir di sana.
 
 Kapabilitas platform masuk lewat interface adapter yang dideklarasikan di `core` dan diimplementasikan
 di `apps/runtime`. Client tidak mengimplementasikan adapter.
@@ -174,6 +197,10 @@ interface MemoryPort {
 
 Alasan: implementasi dapat ditukar (engine vendored → implementasi sendiri) tanpa menyentuh core.
 
+**Lokasi `vendor/`:** di root repo, `vendor/hmem/`. Bukan di dalam `packages/meterless/`.
+`packages/meterless/src` adalah adapter yang **kita tulis** dan boleh diedit; `vendor/hmem` adalah kode
+pihak ketiga yang **tidak boleh diedit**.
+
 ### 6.2 Service yang dipakai
 
 | Service | Status | Peran |
@@ -190,7 +217,8 @@ Alasan: implementasi dapat ditukar (engine vendored → implementasi sendiri) ta
 
 Engine referensi memakai mock FNV-1a 64 dimensi yang **tidak punya makna semantik**. Ini diganti:
 
-- Provider: NVIDIA Nemotron-3-Embed-1B (`nemotron-3-embed-1b`), endpoint [OI]-compatible NIM.
+- Provider: NVIDIA Nemotron-3-Embed-1B (`nemotron-3-embed-1b`), endpoint NIM yang kompatibel dengan
+  Chat Completions API.
 - Dimensi: 2048 (dapat dipotong ke 1024/512 dengan normalisasi L2 ulang).
 - Konteks: 32.768 token. Mendukung bahasa Indonesia.
 - Adapter wajib punya: batching, cache per teks, fallback saat provider gagal.
@@ -224,7 +252,12 @@ Tiga jalur, dipilih user di settings:
 | Lokal | Tidak perlu | Ollama / LM Studio di mesin user |
 
 Katalog model (`packages/core/src/models/catalog.ts`) memuat daftar model beserta tier, konteks, dan
-label. Katalog tidak memerlukan server.
+label. Katalog berupa **modul TypeScript**, bukan file JSON terpisah — lihat ADR-004 yang direvisi oleh
+catatan ini. Katalog tidak memerlukan server.
+
+> **Koreksi:** ADR-004 menyebut "file JSON". Yang benar adalah modul TypeScript di
+> `packages/core/src/models/catalog.ts`, karena tipenya dipakai langsung oleh `core` dan harus ikut
+> `typecheck`. Isi datanya tetap statis.
 
 ## 9. Yang belum diputuskan
 
@@ -234,7 +267,7 @@ Dicatat jujur supaya tidak jadi asumsi diam-diam:
 - Format audit log di dalamnya.
 - Apakah PWA menyimpan cache percakapan lokal untuk tampilan cepat (bukan sumber kebenaran).
 - Strategi sinkronisasi antar perangkat (di luar scope lomba).
-- Shell desktop dan build Android: ditunda sampai setelah lomba.
+- Shell desktop (Electron) dan build Android (Capacitor): ditunda sampai setelah lomba, lihat ADR-010.
 
 Yang sudah diputuskan dan tidak lagi terbuka: PWA tidak menyimpan state kanonik. Semua state ada di
 runtime (ADR-011).

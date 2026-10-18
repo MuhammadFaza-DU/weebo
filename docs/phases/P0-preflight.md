@@ -5,6 +5,9 @@
 **Syarat lulus:** setiap item di bawah punya status yang bisa dibuktikan — `terverifikasi`, `gagal`,
 atau `diterima sebagai risiko`. Tidak boleh ada yang berstatus "sepertinya bisa".
 
+Status yang sah (sama dengan `docs/SETUP-SPONSORS.md` §7): `terverifikasi`, `terdaftar belum diuji`,
+`belum`, `gagal`, `diterima sebagai risiko`. Item yang masih `belum` **wajib** diselesaikan sebelum P1.
+
 **Kenapa fase ini ada:** P1 bergantung pada tiga hal yang saat ini **belum ada satu pun**: akses
 Zetaris, akses NVIDIA NIM, dan bentuk tim di platform lomba. Selain itu ada empat asumsi arsitektur
 yang, kalau salah, membuat P1 harus diulang. Lebih murah menguji sekarang daripada memperbaiki nanti.
@@ -85,10 +88,14 @@ sendiri (bukan kutipan dokumentasi), dicatat di `docs/CONTEXT.md` §4.
 - [ ] Konfirmasi plan yang dipakai (Free / Plus / lain)
 - [ ] Pasang Cursor, buka repo ini
 - [ ] Catat batasan yang teramati (kuota, model yang tersedia)
-- [ ] Tentukan pembagian: bagian mana yang dikerjakan di Cursor
+- [ ] Tentukan **kapan** review di Cursor dilakukan dalam alur kerja (mis. setiap penutupan fase)
+- [ ] Tentukan siapa yang melakukan review
 
 **Kriteria selesai:** keputusan tertulis tentang cara memenuhi syarat "use Cursor for development",
 beserta catatan jujur tentang batasannya.
+
+**Batas tegas (AGENTS.md §20):** Cursor dipakai untuk **review**, bukan menulis kode. Jangan
+merencanakan pekerjaan yang "dikerjakan di Cursor".
 
 **Fakta terverifikasi (2026-10-18):** plan Free ada, $0, tanpa kartu kredit, tidak kedaluwarsa.
 Isinya Agent + Chat + Tab dengan kuota terbatas yang **angkanya tidak dipublikasikan Cursor**. Model
@@ -118,7 +125,7 @@ berubah — dan itu harus diketahui sebelum P1, bukan setelah.
 ### T0.7 — Ringkasan status akses
 
 - [ ] Isi tabel verifikasi di `docs/SETUP-SPONSORS.md` §7
-- [ ] Perbarui `docs/CONTEXT.md` §9 (asumsi yang sudah terjawab)
+- [ ] Perbarui `docs/CONTEXT.md` §10 (asumsi yang sudah terjawab)
 - [ ] Perbarui `CHECKPOINT.md`
 - [ ] Tawarkan commit + tag
 

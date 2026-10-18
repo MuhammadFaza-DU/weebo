@@ -23,6 +23,7 @@ diperindah atau fitur ditambah.
 
 - [ ] T0.1 selesai — tim sudah dibentuk di platform
 - [ ] T0.2 selesai — akses Zetaris terverifikasi dengan satu query nyata
+- [ ] T0.3 selesai — sudah diketahui apakah Zetaris bisa dipanggil dari browser
 - [ ] T0.4 selesai — akses NVIDIA NIM terverifikasi (chat + embedding)
 - [ ] T0.6 selesai — Meterless engine ter-vendor dan conformance suite hijau
 
@@ -48,16 +49,17 @@ Jika salah satu belum, **jangan mulai task kode** — selesaikan P0 dulu.
 
 ### T1.3 — Client model minimal
 
-- [ ] Implementasi pemanggilan [OI]-compatible ke endpoint NIM
+- [ ] Implementasi pemanggilan ke endpoint NIM (kompatibel Chat Completions)
 - [ ] Tangani error: timeout, 429, 401
 - [ ] Verifikasi: satu request nyata berhasil, output dicatat di `docs/SPONSORS.md`
 
-### T1.4 — Vendor Meterless + adapter tipis
+### T1.4 — Adapter Meterless (vendor sudah dilakukan di P0)
 
-- [ ] Vendor `engines/hmem/reference` ke `vendor/hmem`, pertahankan `LICENSE` (Apache-2.0)
-- [ ] Jalankan `npm install && npm test` di dalam `vendor/hmem` — pastikan hijau
+Vendoring **sudah selesai di P0 (T0.6)**. Task ini hanya membungkusnya.
+
+- [ ] Pastikan `vendor/hmem` ada dan test-nya hijau (hasil T0.6)
 - [ ] Buat `packages/meterless/src` sebagai adapter yang mengimplementasikan `MemoryPort`
-- [ ] **Jangan** edit `vendor/`
+- [ ] **Jangan** edit `vendor/hmem` — adapter kita ada di `packages/meterless/src`
 - [ ] Verifikasi: simpan satu memori, ambil kembali, tampilkan id-nya
 
 > Catatan: untuk P1, embedding masih boleh memakai mock bawaan engine. Penggantian ke

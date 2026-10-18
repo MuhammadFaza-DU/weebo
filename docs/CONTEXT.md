@@ -114,7 +114,7 @@ Angka berubah dari waktu ke waktu — **verifikasi ulang sebelum dipakai**.
 
 | Provider | Limit gratis | Kartu kredit | Catatan |
 |---|---|---|---|
-| **NVIDIA NIM** | ~40 RPM (dari dokumentasi, **belum diukur**) | Tidak (verifikasi telepon) | Sponsor lomba; 132 model; endpoint [OI]-compatible |
+| **NVIDIA NIM** | ~40 RPM (dari dokumentasi, **belum diukur**) | Tidak (verifikasi telepon) | Sponsor lomba; 132 model; endpoint kompatibel Chat Completions |
 | Groq | 30 RPM / ~14.400 RPD | Tidak | Tercepat (LPU) |
 | OpenRouter | 50–200 RPD (1.000 dengan top-up $10 sekali) | Tidak | 35+ model `:free` |
 | GitHub Models | 150–1.000/hari | Tidak | Cukup akun GitHub |
