@@ -22,8 +22,11 @@ bermakna.
   halaman repo, branch default `main`.
 - Commit awal `a8ba3dc` berisi 22 file scaffolding. **CI hijau** (run 39107601114).
 - Proteksi `main` aktif dan terverifikasi: wajib PR, wajib 1 approval, wajib review CODEOWNERS,
-  force push ditolak, penghapusan branch ditolak, percakapan wajib resolved.
+  **CI `Lint, typecheck, test` wajib hijau**, stale review otomatis gugur, semua diskusi wajib
+  resolved, force push ditolak, penghapusan branch ditolak.
   `enforce_admins=false` sehingga maintainer bisa bypass saat mendesak.
+- Batasi-dismiss-review **tidak bisa dipasang**: API menolak dengan 422 *"Only organization
+  repositories can have users and team restrictions"*. Perlu repo milik Organization.
 - Undangan kolaborator terkirim dengan izin **write**: `slamsmart`, `Manzera-Azb`
   (**status: menunggu diterima**, belum menjadi collaborator sampai mereka klik accept).
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.

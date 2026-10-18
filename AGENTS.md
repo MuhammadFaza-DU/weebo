@@ -172,10 +172,16 @@ Jangan memulai fase berikutnya sebelum kelima hal ini selesai.
 
 - `main` diproteksi. Semua perubahan lewat Pull Request.
 - **Hanya user (`@MuhammadFaza-DU`) yang berhak merge ke `main`.** Kontributor lain membuka PR.
-- Minimal satu review disetujui sebelum merge.
+- Minimal satu review disetujui sebelum merge, dan **wajib dari code owner** (hanya user).
+- **CI wajib hijau** sebelum PR bisa di-merge (`Lint, typecheck, test`).
 - `CODEOWNERS` menunjuk user untuk semua path.
-- Jangan force push ke `main`.
+- Review yang sudah diberikan otomatis gugur jika ada commit baru di PR (dismiss stale reviews).
+- Semua diskusi di PR wajib resolved sebelum merge.
+- Jangan force push ke `main`. Jangan hapus branch `main`.
 - Jangan merge PR yang gagal CI.
+
+Kontributor tetap bebas bekerja: membuat branch, push, membuka PR, dan berdiskusi. Yang dijaga bukan
+kebebasan berkarya, melainkan isi `main`.
 
 ## 13. Commit, tag, dan aksi destruktif
 
