@@ -145,7 +145,10 @@ Beyond the hackathon:
 ## Contributing
 
 Read [`AGENTS.md`](AGENTS.md) first — it is the binding rulebook for both humans and AI agents
-working in this repository. Then see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+working in this repository. It lists the required reading order for anyone (or any agent) picking up
+this project: `CHECKPOINT.md` → `docs/DECISIONS.md` → `docs/CONTEXT.md` → the active phase file.
+
+Then see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 All changes land through pull requests against `main`. Direct pushes are not permitted.
 

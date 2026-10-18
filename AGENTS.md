@@ -17,8 +17,22 @@ Berlaku untuk semua yang bekerja di repo ini: manusia maupun agent AI.
 5. `PREEXISTING.md` adalah sumber kebenaran deklarasi eligibilitas lomba.
 6. `docs/DECISIONS.md` adalah catatan keputusan yang sudah disepakati. Jika kode bertentangan dengan
    dokumen itu, kode yang salah — kecuali ada keputusan baru yang dicatat.
+7. `docs/CONTEXT.md` memuat pengetahuan kerja yang tidak ada di ADR: bobot penilaian lomba, batasan
+   tim, angka yang sudah diukur, dan hal-hal yang sengaja ditolak.
 
 Jika ada konflik antar dokumen, hentikan pekerjaan yang berisiko dan minta keputusan user.
+
+### 1.1 Urutan baca wajib di awal sesi
+
+Agent yang baru masuk **wajib** membaca berurutan sebelum mengubah apa pun:
+
+1. `CHECKPOINT.md` — status sekarang, risiko, next action.
+2. `docs/DECISIONS.md` — keputusan yang mengikat (ADR-001 … terbaru).
+3. `docs/CONTEXT.md` — bobot penilaian, batasan tim, angka terukur, daftar yang sudah ditolak.
+4. `docs/PHASES.md` dan file fase aktif di `docs/phases/`.
+
+Tanpa keempatnya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
+batasan yang sudah dihitung.
 
 ## 2. Konteks lomba (mengikat)
 

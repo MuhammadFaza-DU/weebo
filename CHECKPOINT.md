@@ -32,8 +32,9 @@ bermakna.
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
-- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-010), `SPONSORS.md`, `SETUP-SPONSORS.md`,
-  `REFERENCES.md`, `PHASES.md`, `SUBMISSION.md`, `phases/P1-walking-skeleton.md`.
+- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-012), `CONTEXT.md`, `SPONSORS.md`,
+  `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md`, `SUBMISSION.md`, `phases/P1-walking-skeleton.md`.
+- `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (CHECKPOINT → DECISIONS → CONTEXT → fase).
 - Catatan belajar lokal (enam folder referensi) dibuat. Diabaikan lewat `.git/info/exclude` (lokal,
   tidak terlihat di repo); terverifikasi tidak ada di GitHub.
 

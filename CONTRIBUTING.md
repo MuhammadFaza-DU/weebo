@@ -6,6 +6,10 @@ project honest and the repository runnable.
 Before anything else, read [`AGENTS.md`](AGENTS.md). It is the binding rulebook for both humans and
 AI agents working in this repository.
 
+Then read, in this order: [`CHECKPOINT.md`](CHECKPOINT.md) for current status,
+[`docs/DECISIONS.md`](docs/DECISIONS.md) for binding decisions, and
+[`docs/CONTEXT.md`](docs/CONTEXT.md) for the constraints and measurements behind them.
+
 ## Ground rules
 
 1. **Original work only.** Everything committed here is written by a contributor. Do not copy code,
