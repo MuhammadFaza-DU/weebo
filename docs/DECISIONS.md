@@ -200,6 +200,7 @@ ada anggaran. Setiap kemampuan diberi badge `live` atau `roadmap`.
 
 ## ADR-010 — Native menyusul, dengan Electron sebagai target
 
+
 **Tanggal:** 2026-10-18
 **Status:** Diterima (merevisi versi awal ADR ini)
 
@@ -229,3 +230,41 @@ mesin tim, sementara Electron hanya menuntut Node.
   pekerjaan ulang.
 - Klaim "tersedia di desktop dan Android" sampai migrasi selesai harus disampaikan sebagai PWA
   installable, bukan installer native.
+
+---
+
+## ADR-011 — Runtime sebagai server lokal; CLI dan PWA adalah client
+
+**Tanggal:** 2026-10-18
+**Status:** Diterima
+
+**Konteks.** PWA punya keterbatasan struktural untuk sebuah agent harness: tidak bisa menjalankan tugas
+di latar saat tab ditutup, tidak punya akses filesystem luas, dan tidak punya keychain OS. Keterbatasan
+ini nyata dan menjadi keberatan utama terhadap PWA sebagai satu-satunya bentuk aplikasi. Sementara itu,
+proyek pembanding memakai pola yang konsisten: Hermes menjalankan `hermes serve` yang mengekspos
+`tui_gateway` (JSON-RPC/WebSocket), lalu desktop Electron, browser dashboard, dan CLI semuanya menjadi
+client ke runtime yang sama.
+
+**Keputusan.**
+
+1. `apps/runtime` adalah **server lokal**: satu-satunya proses yang menyentuh kapabilitas platform
+   (filesystem, proses, scheduler, secret, MCP stdio).
+2. Semua surface adalah **client** yang berkomunikasi lewat `packages/protocol` (JSON-RPC + WebSocket
+   di localhost): `apps/cli`, `apps/web`, dan `apps/desktop` (Electron, nanti).
+3. **CLI adalah surface resmi**, diposisikan untuk developer dan scripting:
+   `npx weebo` untuk chat, `npx weebo serve` untuk menjalankan runtime.
+4. PWA memakai **satu mode**: selalu terhubung ke runtime. Tidak ada mode standalone.
+5. Runtime harus bisa berjalan **headless** tanpa client mana pun, karena scheduler tetap bekerja.
+
+**Konsekuensi.**
+
+- Kelemahan PWA sebagian besar hilang tanpa menunggu Electron: scheduler, filesystem, dan secret
+  ditangani runtime.
+- Electron nanti menjadi client tambahan, bukan penulisan ulang.
+- `packages/core` tidak dipanggil langsung oleh client mana pun; menambah surface baru tidak menyentuh
+  core.
+- Perlu kontrak protokol yang berversi sejak awal (`packages/protocol`).
+- Menambah satu app (`apps/cli`) dan satu package (`packages/protocol`) di monorepo.
+- Demo lomba harus menjalankan runtime lebih dulu. Ini dicatat di README dan naskah video.
+- CLI berisiko menggeser positioning "ramah pemula" bila dijadikan wajah utama; karena itu CLI
+  diposisikan untuk developer, sementara PWA tetap wajah produk.

@@ -2,11 +2,14 @@
 
 **Tujuan:** membuktikan seluruh pipa tersambung, walau jelek.
 
-Satu alur tipis: user mengirim pertanyaan → intent terdeteksi → memori dipanggil → model menjawab →
-data diambil dari Zetaris → jawaban tampil di UI dengan sumbernya.
+Satu alur tipis: user mengirim pertanyaan dari **terminal** → intent terdeteksi → memori dipanggil →
+model menjawab → data diambil dari Zetaris → jawaban tampil beserta sumbernya.
 
 **Syarat lulus:** alur di atas bisa didemokan dalam 30 detik, memakai data nyata dari lingkungan
 Zetaris, bukan mock.
+
+**Kenapa CLI, bukan UI:** tujuannya membuktikan pipa, bukan tampilan. CLI menghapus seluruh risiko UI
+dan membuat kegagalan integrasi terlihat jelas di terminal. PWA masuk di P5 sebagai client runtime.
 
 **Kenapa fase ini ada:** integrasi Zetaris dan Meterless adalah syarat wajib lomba. Jika keduanya
 gagal, submission tidak memenuhi syarat. Karena itu keduanya dibuktikan lebih dulu, sebelum UI
@@ -64,11 +67,16 @@ Jika salah satu belum, **jangan mulai task kode** — selesaikan prasyaratnya du
 - [ ] Tidak perlu policy layer lengkap; cukup jalur lurus
 - [ ] Verifikasi: satu pemanggilan menghasilkan jawaban yang menyebut sumber data
 
-### T1.7 — UI minimum
+### T1.7 — CLI minimum
 
-- [ ] Halaman tunggal: input teks, area jawaban, daftar sumber
-- [ ] Tidak perlu desain; tujuannya membuktikan alur terlihat
-- [ ] Verifikasi: bisa dipakai di browser lokal
+- [ ] `apps/cli` dengan dua perintah: `weebo` (chat) dan `weebo serve` (runtime)
+- [ ] Untuk P1, chat boleh memanggil core langsung di proses yang sama; pemisahan client–server
+      diselesaikan di P2 bersama `packages/protocol`
+- [ ] Tampilkan jawaban + daftar sumber di terminal
+- [ ] Verifikasi: `npx weebo "pertanyaan"` mengembalikan jawaban dengan sumber
+
+> Catatan: P1 sengaja memakai CLI, bukan UI. Tujuannya membuktikan pipa, bukan tampilan. Pemisahan
+> client–server (ADR-011) baru diwajibkan di P2.
 
 ### T1.8 — Catat bukti
 

@@ -41,8 +41,9 @@ bermakna.
 
 Lihat `docs/DECISIONS.md`. Ringkasnya:
 
-- Stack: monorepo TypeScript, core isomorphic, PWA untuk lomba; **Electron** (bukan Tauri) sebagai
-  target desktop jangka panjang, Capacitor untuk mobile.
+- Stack: monorepo TypeScript, satu runtime + banyak client (CLI, PWA, Electron). Runtime adalah
+  server lokal; client bicara lewat `packages/protocol`. PWA untuk lomba, **Electron** (bukan Tauri)
+  untuk desktop jangka panjang, Capacitor untuk mobile.
 - Connector: **MCP + OAuth 2.1** sebagai fondasi; Composio hanya acuan pola, bukan dependensi.
 - Free tier: katalog model + gateway Cloudflare Worker yang memegang key NVIDIA NIM, kuota per IP.
 - Merge: hanya `@MuhammadFaza-DU`.

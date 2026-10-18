@@ -86,16 +86,21 @@ komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib 
   pekerjaan nyata?"
 - Aplikasi tersedia untuk desktop, tablet, dan ponsel dari satu codebase. Untuk lomba: PWA dulu,
   native menyusul.
+- **CLI adalah surface resmi**, diposisikan untuk developer dan scripting, bukan wajah utama produk.
+  Wajah produk tetap PWA.
 
 ## 7. Arsitektur
 
-Monorepo TypeScript. Core agent bersifat **isomorphic** — berjalan di Node dan di browser.
+Monorepo TypeScript. Satu runtime, banyak client. Runtime adalah satu-satunya yang menyentuh
+kapabilitas platform; client hanya berbicara lewat protokol.
 
 ```
-apps/web        React + Vite PWA
-apps/runtime    Node host: scheduler, stdio MCP, channel bridge
+apps/runtime    Server lokal: agent loop, scheduler, MCP, secret (Node)
+apps/cli        Client terminal: `npx weebo`, `npx weebo serve`
+apps/web        Client PWA (React + Vite)
 apps/landing    Astro marketing site
-packages/core   Agent loop (intent → memory → plan → tool → verify)
+packages/core   Agent loop (intent → memory → plan → tool → verify), isomorphic
+packages/protocol  Kontrak runtime–client, berversi
 packages/meterless  Adapter Meterless (vendored, jangan diedit langsung)
 packages/zetaris    Client Zetaris (MCP/REST, typed)
 packages/connectors Registry connector MCP
@@ -105,10 +110,12 @@ packages/gateway    Gateway kuota gratis (Cloudflare Worker)
 Aturan arsitektur:
 
 - `packages/core` tidak boleh bergantung pada API Node-only. Jika butuh kapabilitas platform,
-  gunakan adapter.
+  gunakan adapter di `apps/runtime`.
+- Client (`apps/cli`, `apps/web`) **tidak** memanggil `packages/core` langsung. Semua lewat
+  `packages/protocol`.
 - `vendor/` milik Meterless tidak boleh diedit. Semua penyesuaian lewat `packages/meterless/src`.
 - Setiap pemanggilan tool melewati policy layer di `packages/core` (allow/deny + audit log).
-- Secret dibaca dari environment atau keychain OS, tidak pernah dari kode.
+- Secret dibaca dari environment atau keychain OS di runtime, tidak pernah dari kode atau client.
 
 Detail: `docs/ARCHITECTURE.md`.
 

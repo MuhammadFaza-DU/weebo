@@ -24,12 +24,16 @@ Status: **rencana**. Belum ada kode produk. Bagian yang belum diimplementasikan 
 
 ```
 apps/
-  web/          React + Vite. PWA: installable, responsif, offline-tolerant.
-  runtime/      Node host. Scheduler, stdio MCP server, channel bridge (Telegram dll).
-                Dirancang agar juga bisa berjalan di dalam main process Electron.
+  runtime/      Node host. **Server lokal**: menjalankan core, scheduler, stdio MCP,
+                channel bridge. Mengekspos JSON-RPC + WebSocket di localhost.
+  cli/          Client teks. `npx weebo` (chat) dan `npx weebo serve` (menjalankan runtime).
+                Surface pertama untuk developer dan scripting.
+  web/          Client web. React + Vite, PWA: installable, responsif.
   landing/      Astro. Situs publik: narasi produk, fitur + badge status, CTA.
 packages/
   core/         Agent loop. Isomorphic. Tidak ada import Node-only.
+  protocol/     Kontrak antara runtime dan semua client: tipe request/response,
+                skema event, versi protokol.
   meterless/    Adapter atas engine Meterless. vendor/ tidak boleh diedit.
   zetaris/      Client Zetaris: MCP + REST fallback, typed, dengan error mapping.
   connectors/   Registry connector MCP + definisi tool.
@@ -43,13 +47,39 @@ apps/desktop/   Electron: membungkus apps/web, menjalankan apps/runtime di main 
 apps/mobile/    Capacitor: membungkus apps/web
 ```
 
+## 2.1 Model client–server (ADR-011)
+
+Satu runtime, banyak client. Runtime adalah satu-satunya tempat yang menyentuh kapabilitas platform.
+
+```
+                npx weebo serve
+                      │
+              apps/runtime (Node)
+              ├─ packages/core
+              ├─ scheduler
+              ├─ MCP servers (stdio)
+              └─ WebSocket + JSON-RPC @ localhost
+                      │
+      ┌───────────────┼───────────────┐
+      ▼               ▼               ▼
+   apps/cli       apps/web         apps/desktop
+   (terminal)     (browser)        (Electron, nanti)
+```
+
+Konsekuensi yang harus dijaga:
+
+- Client **tidak** memanggil `packages/core` secara langsung. Semua lewat `packages/protocol`.
+- Client **tidak** menyimpan secret, tidak menjadwalkan tugas, tidak mengakses filesystem.
+- Satu versi protokol, dideklarasikan di `packages/protocol`, agar client lama tidak rusak.
+- Runtime harus bisa dijalankan tanpa client mana pun (headless), karena scheduler tetap bekerja.
+
 ## 3. Alur satu permintaan
 
 ```
-User (web / channel)
-   │
+User (CLI / PWA / channel)
+   │  kirim pesan lewat packages/protocol
    ▼
-apps/web atau apps/runtime
+apps/runtime (Node)
    │  memanggil core.runTurn()
    ▼
 packages/core
@@ -63,9 +93,11 @@ packages/core
    8. Compose        → susun jawaban + jejak sumber
    9. Write memory   → simpan fakta baru, audit trail
    │
-   ▼
+   ▼  stream event: token, tool call, bukti, selesai
 Jawaban + bukti (evidence) + jejak langkah
 ```
+
+Client menampilkan stream event apa adanya. Client tidak menyusun jawaban.
 
 Tahap 8 adalah inti Track 03: jawaban harus bisa **menjelaskan dari mana ia berasal** — sumber data,
 memori yang dipakai, dan langkah yang diambil.
@@ -75,29 +107,31 @@ memori yang dipakai, dan langkah yang diambil.
 | Modul | Boleh bergantung pada | Tidak boleh |
 |---|---|---|
 | `packages/core` | TypeScript stdlib, tipe dari modul lain | `fs`, `child_process`, `net`, DOM |
+| `packages/protocol` | TypeScript stdlib, zod/skema validasi | `core`, `apps/*` |
 | `packages/connectors` | `core` (tipe), MCP SDK | `apps/*` |
 | `packages/meterless` | `core` (tipe), engine vendored | mengedit `vendor/` |
 | `packages/zetaris` | `core` (tipe), HTTP client | `apps/*` |
 | `apps/runtime` | semua `packages/*`, API Node | logika bisnis duplikat |
-| `apps/web` | semua `packages/*` yang isomorphic | API Node-only |
+| `apps/cli` | `protocol`, client WebSocket | `core`, API Node langsung |
+| `apps/web` | `protocol`, client WebSocket | `core`, API Node-only |
 
 Kapabilitas platform masuk lewat interface adapter yang dideklarasikan di `core` dan diimplementasikan
-di `apps/*`.
+di `apps/runtime`. Client tidak mengimplementasikan adapter.
 
 ### 4.1 Adapter platform (wajib sejak kode pertama)
 
-`packages/core` tidak boleh menyentuh API platform. Setiap kapabilitas dideklarasikan sebagai
-interface dan diimplementasikan per runtime:
+Karena hanya `apps/runtime` yang menyentuh platform, adapter hidup di satu tempat. Ini menyederhanakan
+tabel dibanding desain sebelumnya:
 
-| Interface | Browser (PWA) | Node (`apps/runtime`) | Electron (nanti) |
-|---|---|---|---|
-| `Storage` | IndexedDB / OPFS | SQLite atau JSONL | SQLite di userData |
-| `Secrets` | IndexedDB terenkripsi (terbatas) | env / file terproteksi | keychain OS |
-| `Scheduler` | saat tab terbuka | proses latar | main process, auto-start |
-| `Process` | tidak tersedia | `child_process` | `child_process` |
+| Interface | Implementasi | Catatan |
+|---|---|---|
+| `Storage` | SQLite atau JSONL di direktori data | Dapat diganti tanpa menyentuh core |
+| `Secrets` | env atau file terproteksi; keychain OS di Electron | Client tidak pernah menyimpan key |
+| `Scheduler` | timer di proses runtime | Tetap jalan saat tidak ada client terhubung |
+| `Process` | `child_process` | Untuk stdio MCP server |
 
 Alasan aturan ini ketat: tanpa boundary ini, menambahkan Electron nanti berarti penulisan ulang,
-bukan penambahan shell. Lihat ADR-010.
+bukan penambahan shell. Lihat ADR-010 dan ADR-011.
 
 ## 5. Policy dan audit
 
@@ -157,9 +191,13 @@ label. Katalog tidak memerlukan server.
 
 Dicatat jujur supaya tidak jadi asumsi diam-diam:
 
-- Penyimpanan state di PWA: IndexedDB vs OPFS.
-- Format audit log: SQLite lokal vs JSONL.
+- Format penyimpanan runtime: SQLite vs JSONL.
+- Format audit log di dalamnya.
+- Apakah PWA menyimpan cache percakapan lokal untuk tampilan cepat (bukan sumber kebenaran).
 - Strategi sinkronisasi antar perangkat (di luar scope lomba).
 - Shell desktop dan build Android: ditunda sampai setelah lomba.
+
+Yang sudah diputuskan dan tidak lagi terbuka: PWA tidak menyimpan state kanonik. Semua state ada di
+runtime (ADR-011).
 
 Setiap keputusan baru masuk `DECISIONS.md` sebelum diimplementasikan.

@@ -12,12 +12,12 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 
 | Fase | Deliverable | Syarat lulus | Bergantung pada |
 |---|---|---|---|
-| P1 Walking Skeleton | Satu alur tipis end-to-end | Bisa didemokan 30 detik | Akses Zetaris + NIM |
-| P2 Agent Core | Loop, tool registry, policy, audit | Tool call tercatat dan bisa ditolak | P1 |
+| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | Akses Zetaris + NIM |
+| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client | Tool call tercatat dan bisa ditolak | P1 |
 | P3 Memory & Reasoning | H-MEM, Markovian, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
-| P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) |
-| P5 Surfaces | UI app responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
-| P6 Autonomy | Scheduler, channel, jalur model | Tugas berjalan tanpa disuruh | P2, P3 |
+| P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | - (bisa paralel) |
+| P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
+| P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 |
 | P7 Landing Page | Astro site publik | Bisa dibuka publik, badge status akurat | — (bisa paralel) |
 | P8 Submission | Video script, slide, README, audit | Semua deliverable lomba lengkap | P1–P7 |
 

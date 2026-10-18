@@ -48,6 +48,22 @@ rather than an afterthought.
 | Runs on desktop, tablet, and phone from one codebase | Rare | Rare | Planned (PWA first) |
 | Self-hostable, open source | Rare | Rare | Yes — MIT |
 
+## How it fits together
+
+Weebo is one runtime with several clients. The runtime owns everything that needs a real machine —
+scheduling, filesystem, secrets, MCP connectors. Clients are thin.
+
+```
+npx weebo serve          → local runtime (Node)
+       │
+       ├── npx weebo      → CLI, for developers and scripting
+       ├── web app        → PWA, installable on phone and desktop
+       └── desktop app    → Electron, after the hackathon
+```
+
+This is why a browser tab is enough to drive an agent that keeps working: the work happens in the
+runtime, not in the tab.
+
 ## Project status
 
 Honest labels, no marketing:
@@ -72,11 +88,13 @@ Node host and in the browser.
 
 ```
 apps/
-  web/          React + Vite PWA — one surface for desktop, tablet, and phone
-  runtime/      Node host — scheduler, stdio MCP servers, channel bridges
+  runtime/      Local server — agent loop, scheduler, MCP connectors, secrets
+  cli/          Terminal client: `npx weebo` and `npx weebo serve`
+  web/          PWA client — one surface for desktop, tablet, and phone
   landing/      Astro marketing site (public face of the project)
 packages/
   core/         Isomorphic agent loop: intent → memory → plan → tool → verify
+  protocol/     Versioned contract between the runtime and every client
   meterless/    Adapter over Meterless engines (vendored, never edited in place)
   zetaris/      Typed Zetaris MCP/REST client with error mapping
   connectors/   MCP connector registry
@@ -112,11 +130,11 @@ been executed.
 
 Near term (hackathon window):
 
-1. Walking skeleton — one thin end-to-end path from prompt to evidence-backed answer
-2. Agent core — tool registry, policy allow/deny, audit log
+1. Walking skeleton — one thin end-to-end path, driven from the terminal
+2. Agent core — tool registry, policy allow/deny, audit log, runtime protocol
 3. Memory and reasoning — cross-session recall and explainable answers
-4. Application surface — responsive PWA
-5. Autonomy — scheduling, channel bridges, free-tier gateway
+4. Application surface — responsive PWA client
+5. Autonomy — headless scheduling, channel bridges, free-tier gateway
 
 Beyond the hackathon:
 
