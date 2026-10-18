@@ -96,8 +96,8 @@ BYOK dan model lokal tetap tersedia sebagai jalur setara.
 **Konsekuensi.**
 
 - User pemula bisa langsung memakai Weebo tanpa menyiapkan key.
-- Gateway adalah **stretch goal** setelah spine selesai; jika tidak sempat, masuk roadmap dengan
-  alasan teknis tertulis.
+- Gateway adalah item backlog **prioritas 3**, dependensi **P1–P5 lulus**. Jika tidak dikerjakan, alasan
+  teknisnya ditulis di `docs/DECISIONS.md`, bukan dibiarkan implisit.
 - Gateway wajib berlabel jelas sebagai jalur demo, bukan janji layanan permanen.
 - Tidak ada key berbayar di gateway.
 
@@ -191,8 +191,9 @@ bukan di belakang.
 keberlanjutan, dan menulisnya memaksa kejelasan posisi sebelum koding.
 
 **Keputusan.** Landing page dibangun dengan Astro di `apps/landing`, punya fase sendiri (P7), dan
-boleh berjalan paralel dengan fase UI. Hosting awal di subdomain gratis; domain sendiri menyusul saat
-ada anggaran. Setiap kemampuan diberi badge `live` atau `roadmap`.
+boleh berjalan paralel dengan fase UI. Hosting awal di subdomain gratis. Domain sendiri masuk backlog
+**prioritas 11**, dependensi **P8 selesai** (karena butuh anggaran, bukan karena tanggal).
+Setiap kemampuan diberi badge `live` atau `roadmap`.
 
 **Konsekuensi.**
 

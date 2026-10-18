@@ -16,7 +16,7 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 | P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | P0 |
 | P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 |
 | P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
-| P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | - (bisa paralel) |
+| P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) |
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
 | P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 |
 | P7 Landing Page | Astro site publik | Bisa dibuka publik, badge status akurat | — (bisa paralel) |
@@ -167,8 +167,9 @@ tanggal tertentu". Aturan: lihat `AGENTS.md` §8.1 — penundaan berbasis **depe
 | 6 | **Landing page polish** | P7 selesai | Badge status sudah akurat |
 | 7 | Connector katalog luas | MCP + Zetaris stabil | Minimal satu connector eksternal berjalan |
 | 8 | Auto-generate skills | P3 selesai + evaluasi kualitas selesai | Butuh set data evaluasi |
-| 9 | Cloud sync penyimpanan | P5 selesai + storage runtime stabil | Belum ada desain; butuh keputusan produk |
-| 10 | Pindah repo ke GitHub Organization | Tidak ada dependensi teknis | Hanya jika kontrol akses dirasa kurang |
+| 9 | Cloud sync penyimpanan | P5 selesai + storage runtime stabil | Desain penyimpanan diputuskan lebih dulu |
+| 10 | Pindah repo ke GitHub Organization | P8 selesai (semua pekerjaan sudah di `main`) | Hanya jika kontrol akses dirasa kurang |
+| 11 | Domain kustom untuk landing page | P8 selesai | Butuh keputusan anggaran |
 
 **Urutan prioritas berdasarkan dampak skor vs effort** (bobot: Impact 30, Demo 15, Product&UX 10,
 Sponsor tech 10). Live demo URL mendahului Electron karena effort jauh lebih kecil dengan dampak skor

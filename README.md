@@ -158,7 +158,8 @@ The authoritative list, with start conditions, is in [`docs/PHASES.md`](docs/PHA
 | 7 | Connector catalogue beyond MCP basics | MCP and Zetaris stable |
 | 8 | Auto-generated skills | P3 complete, quality evaluation done |
 | 9 | Cloud sync for user-chosen storage | P5 complete, runtime storage stable |
-| 10 | Move the repository to a GitHub Organization | no technical dependency |
+| 10 | Move the repository to a GitHub Organization | P8 complete | Only if access control feels insufficient |
+| 11 | Custom domain for the landing page | P8 complete | Needs a budget decision |
 
 ## Contributing
 

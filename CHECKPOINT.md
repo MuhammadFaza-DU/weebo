@@ -103,8 +103,9 @@ terpenuhi · deliverable wajib lomba aman · user setuju.
 | 6 | Landing page polish | P7 selesai | Badge status sudah akurat |
 | 7 | Connector katalog luas | MCP + Zetaris stabil | Minimal satu connector eksternal berjalan |
 | 8 | Auto-generate skills | P3 + evaluasi kualitas | Butuh set data evaluasi |
-| 9 | Cloud sync penyimpanan | P5 + storage runtime stabil | Belum ada desain |
-| 10 | Pindah repo ke GitHub Organization | Tidak ada dependensi teknis | Hanya jika kontrol akses dirasa kurang |
+| 9 | Cloud sync penyimpanan | P5 + storage runtime stabil | Desain penyimpanan diputuskan dulu |
+| 10 | Pindah repo ke GitHub Organization | P8 selesai | Hanya jika kontrol akses dirasa kurang |
+| 11 | Domain kustom untuk landing page | P8 selesai | Butuh keputusan anggaran |
 
 Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 

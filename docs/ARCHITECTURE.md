@@ -273,7 +273,7 @@ Dicatat jujur supaya tidak jadi asumsi diam-diam:
 - Format penyimpanan runtime: SQLite vs JSONL.
 - Format audit log di dalamnya.
 - Apakah PWA menyimpan cache percakapan lokal untuk tampilan cepat (bukan sumber kebenaran).
-- Strategi sinkronisasi antar perangkat (di luar scope lomba).
+- Strategi sinkronisasi antar perangkat: di luar batas produk saat ini (bukan karena tenggat).
 - Shell desktop (Electron) dan build Android (Capacitor): bergantung pada P5, lihat ADR-010. Boleh
   dimulai begitu dependensinya terpenuhi dan tiga syarat di `AGENTS.md` §8.1 terpenuhi.
 
