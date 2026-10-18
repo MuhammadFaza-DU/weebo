@@ -1,6 +1,6 @@
 # PRD — Weebo
 
-**Status:** v1, disusun sebelum build window dibuka. Dokumen kerja, berbahasa Indonesia.
+**Status:** v2, disusun sebelum build window dibuka. Dokumen kerja, berbahasa Indonesia.
 Materi submission tetap wajib Bahasa Inggris (`AGENTS.md` §1.1).
 
 **Untuk apa dokumen ini.** Menjawab **apa yang dibangun dan untuk siapa**. Tidak menjawab
@@ -9,7 +9,7 @@ bagaimana (itu `docs/PHASES.md` + file fase) dan tidak menjawab kenapa begitu (i
 
 | Dokumen | Menjawab | Kalau bentrok |
 |---|---|---|
-| `docs/PRD.md` (ini) | Apa dan untuk siapa | PRD menang soal definisi user dan prioritas fitur |
+| `docs/PRD.md` (ini) | Apa, untuk siapa, dan bagaimana kualitasnya diukur | PRD menang soal definisi user, prioritas fitur, dan target kualitas |
 | `docs/PHASES.md` + `docs/phases/` | Bagaimana dan kapan | File fase menang soal urutan dan pembagian task |
 | `docs/DECISIONS.md` | Kenapa begitu | ADR menang soal pilihan teknis |
 | `docs/RULES.md` | Kewajiban lomba | RULES menang atas semuanya soal kewajiban lomba |
@@ -17,31 +17,52 @@ bagaimana (itu `docs/PHASES.md` + file fase) dan tidak menjawab kenapa begitu (i
 **Larangan.** PRD tidak boleh memuat task, estimasi waktu, atau nama file kode. Kalau mulai memuat
 itu, isinya sudah salah tempat.
 
+**Catatan versi.** v1 tidak memuat Executive Summary terukur dan tidak memuat Evaluation Strategy —
+dua bagian yang diwajibkan skill `prd`. v2 menambahkan keduanya dan menata ulang mengikuti schema.
+Konsekuensinya dokumen ini lebih panjang; itu diterima karena bagian yang hilang di v1 adalah bagian
+yang menentukan apakah jawaban agent bisa dipercaya.
+
 ---
 
-## 1. Problem
+## 1. Executive Summary
 
-Pertanyaan kerja tidak tinggal di dalam percakapan.
+### 1.1 Problem Statement
 
-Seseorang perlu menjawab *"kenapa angka pengiriman bulan ini turun?"* — dan jawabannya tersebar di
-tabel Postgres, satu spreadsheet, dan API partner yang tidak didokumentasikan. Untuk mendapatkannya
-ia harus meminta ke tim data, menunggu, lalu menerima jawaban yang tidak bisa ia periksa sendiri.
+Pertanyaan kerja tersebar di banyak sistem — database, spreadsheet, API partner — sehingga
+seseorang harus menunggu tim data untuk mendapat jawaban, dan jawaban yang datang tidak bisa ia
+periksa sendiri. Agent percakapan tidak menutup celah ini: ia tidak mencapai data itu, tidak
+mengingat konteks antar sesi, dan tidak menjelaskan dari mana jawabannya berasal.
 
-Dua kerugian yang nyata:
+### 1.2 Proposed Solution
 
-1. **Waktu.** Satu pertanyaan lintas sistem berhenti menunggu manusia lain, bukan menunggu mesin.
-2. **Kepercayaan.** Jawaban yang datang tanpa jejak sumber tidak bisa dipakai untuk mengambil
-   keputusan. Yang tidak bisa diperiksa, tidak bisa dipertanggungjawabkan.
+Weebo adalah agent harness open source self-hosted yang menyatukan tiga hal: **mencapai** data
+tersebar lewat Zetaris, **mengingat** konteks kerja lewat Meterless H-MEM, dan **menjelaskan** alasan
+di balik setiap jawaban beserta sumbernya. Satu runtime, banyak client, BYOK, tanpa layanan hosted.
 
-Agent percakapan tidak menyelesaikan ini. Ia bisa mengobrol, tetapi tidak bisa mencapai data yang
-tersebar, tidak mengingat konteks antar sesi, dan tidak menjelaskan dari mana jawabannya berasal.
+### 1.3 Success Criteria
 
-**Weebo menutup tiga celah itu sekaligus:** mencapai data, mengingat konteks, dan menjelaskan alasan.
+Target, **bukan** hasil pengukuran. Belum satu pun diukur. Cara ukurnya ada di §3.2.
 
-## 2. User
+| # | KPI | Definisi | Target | Kapan diukur |
+|---|---|---|---|---|
+| **K1** | Akurasi sitasi | Dari jawaban yang menyebut sumber, persentase di mana sumber itu **ada** dan **benar-benar memuat** fakta yang diklaim | **≥ 90%** | P1 (smoke), P3, P5, P8 |
+| **K2** | Tingkat fabrikasi | Dari pertanyaan yang datanya **tidak ada**, jumlah jawaban yang mengarang sumber atau angka | **0** | P1, P3, P5, P8 |
+| **K3** | Kelengkapan jejak | Persentase jawaban dengan jejak penuh: tool, argumen, ringkasan hasil | **100%** | P2, P3, P5 |
+| **K4** | Penegakan policy | Persentase tool terlarang yang ditolak **sebelum** dieksekusi | **100%** | P2 |
+| **K5** | Recall memori | Dari 10 fakta yang disemai, persentase terpanggil benar di sesi berbeda | **≥ 80%** | P3, P5 |
 
-Pembedaan ini mengikat dan sengaja dipisah, karena untuk produk open-source self-hosted
-**yang memasang berbeda dari yang mendapat manfaat**.
+**Kenapa lima ini, bukan "pengguna aktif" atau "waktu hemat".** Dalam build window tidak akan ada
+pemakaian nyata, jadi metrik adopsi tidak bisa diklaim tanpa berbohong. Lima KPI di atas adalah
+kemampuan yang **bisa dibuktikan hari itu juga**, dengan hasil yang bisa diperiksa ulang orang lain.
+
+**Metrik pendukung, bukan KPI:** waktu jawab p50 < 30 detik pada dataset demo. Tidak dijadikan KPI
+karena bergantung pada model pihak ketiga yang latensinya di luar kendali kita.
+
+**Aturan pelaporan KPI.** Jika target tidak tercapai, laporkan **angka sebenarnya**. Dilarang menulis
+"jarang berhalusinasi", "cukup akurat", atau "cukup cepat" tanpa angka. K2 yang tidak nol adalah
+temuan, bukan alasan menghapus KPI-nya.
+
+## 2. User Experience & Functionality
 
 ### 2.1 User primer — knowledge worker di tim kecil
 
@@ -77,12 +98,12 @@ Sengaja dinyatakan supaya tidak menjadi scope creep:
   layanan hosted.
 - Pengguna non-teknis yang tidak punya siapa pun untuk memasang runtime.
 
-## 3. User story dan acceptance criteria
+### 2.4 User story dan acceptance criteria
 
 Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diinginkan.
 **Could** = kalau waktu tersisa. Fase merujuk ke `docs/PHASES.md`.
 
-### 3.1 Mencapai data (pilar *bertindak*)
+#### Mencapai data (pilar *bertindak*)
 
 | ID | Story | Prioritas | Fase |
 |---|---|---|---|
@@ -115,7 +136,7 @@ Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diin
 - Connector baru dapat didaftarkan lewat konfigurasi, tanpa perubahan kode inti.
 - Connector yang gagal terhubung melaporkan penyebabnya, bukan gagal diam-diam.
 
-### 3.2 Mengingat (pilar *memory*)
+#### Mengingat (pilar *memory*)
 
 | ID | Story | Prioritas | Fase |
 |---|---|---|---|
@@ -134,7 +155,7 @@ Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diin
 **AC US-08**
 - Penghapusan bersifat permanen dan tidak muncul lagi di retrieval berikutnya.
 
-### 3.3 Menjelaskan (pilar *reasoning*)
+#### Menjelaskan (pilar *reasoning*)
 
 | ID | Story | Prioritas | Fase |
 |---|---|---|---|
@@ -149,7 +170,7 @@ Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diin
 - Model dipilih lewat konfigurasi, bukan tertanam di kode.
 - Mengganti model tidak memerlukan perubahan pada client.
 
-### 3.4 Permukaan dan operasi
+#### Permukaan dan operasi
 
 | ID | Story | Prioritas | Fase |
 |---|---|---|---|
@@ -178,7 +199,7 @@ Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diin
 **AC US-14**
 - Alur utama dapat diselesaikan dari terminal tanpa membuka PWA.
 
-## 4. Non-goals
+### 2.5 Non-goals
 
 Dinyatakan tegas supaya tidak menjadi perdebatan di tengah fase.
 
@@ -193,24 +214,212 @@ Dinyatakan tegas supaya tidak menjadi perdebatan di tengah fase.
 - **Bukan aplikasi native lebih dulu.** PWA adalah jalur kirim utama; Electron dan Capacitor menyusul
   saat dependensinya terpenuhi (ADR-010).
 
-## 5. Ukuran keberhasilan
+## 3. AI System Requirements
 
-**Jujur di depan:** dalam build window tidak akan ada data pemakaian nyata. Metrik adopsi tidak bisa
-diklaim. Yang bisa dibuktikan hanya kemampuan yang didemokan.
+### 3.1 Tool requirements
 
-| Tingkat | Ukuran | Bisa dibuktikan kapan |
+| Tool | Dipakai untuk | Sumber | Batasan |
+|---|---|---|---|
+| `zetaris.query` | Menjalankan query baca ke sumber data terhubung | Zetaris (MCP atau REST, diputuskan P0 T0.3) | **Read-only.** Tidak ada operasi tulis di build window |
+| `zetaris.schema` | Membaca daftar tabel dan kolom yang tersedia | Zetaris | Read-only |
+| `memory.store` | Menyimpan fakta dan konteks sesi | Meterless H-MEM via `MemoryPort` | Tidak boleh menyimpan secret |
+| `memory.recall` | Mengambil memori relevan untuk sebuah giliran | Meterless H-MEM via `MemoryPort` | Hasil selalu disertai id entri |
+| `model.chat` | Menghasilkan jawaban dan rencana tool | NVIDIA NIM | Kena rate limit; perlu fallback model kedua |
+| `model.embed` | Embedding untuk memori | NVIDIA `nemotron-3-embed-1b` | 2048 dimensi; kuota gratis terbatas |
+
+Semua tool melewati **policy layer** (`packages/core`). Tidak ada jalur yang melewatinya — ini
+diverifikasi oleh K4.
+
+### 3.2 Evaluation strategy
+
+**Ini bagian yang menentukan apakah klaim kita bisa dipercaya.** Tanpa ini, "agent menjelaskan kenapa"
+hanya klaim pemasaran.
+
+#### Dataset demo
+
+- Dibangun **oleh kita**, sintetis, disimpan di `eval/dataset/` di dalam repo.
+- Skala kecil supaya bisa diperiksa tangan: sekitar **3 tabel, total ~200 baris**.
+- Wajib dinyatakan **sintetis** di README dan di submission. Jangan pernah memasukkan data nyata
+  milik siapa pun ke repo.
+- Alasan sintetis: data enterprise nyata bukan milik kita untuk dipublikasikan, dan hasil eval harus
+  bisa direproduksi orang lain dari clone bersih.
+
+#### Golden set
+
+Tersimpan di `eval/golden/`, satu file per kategori. Total **30 entri**.
+
+| Kategori | Jumlah | Isi |
 |---|---|---|
-| Kemampuan | Alur US-01 → US-02 berjalan ujung ke ujung di CLI dalam 30 detik | P1 |
-| Kemampuan | Tool call yang ditolak tercatat dengan alasan | P2 |
-| Kemampuan | Memori lintas sesi terbukti, dengan entri yang bisa ditelusuri | P3 |
-| Kemampuan | PWA memenuhi AC US-12 di 375px dan 1440px | P5 |
-| Submission | Video 1–4 menit memperlihatkan alur utama + integrasi Zetaris dan Meterless | P8 |
-| Submission | Slide memuat problem, target user, arsitektur, dan integrasi sponsor | P8 |
+| Lookup satu tabel | 5 | Jawaban ada di satu tabel, satu filter |
+| Lintas tabel | 5 | Butuh join atau korelasi dua tabel |
+| Agregasi | 5 | Hitung, rata-rata, atau tren |
+| Rentang waktu | 3 | Filter berdasarkan periode |
+| Butuh memori | 2 | Hanya bisa dijawab jika konteks sesi sebelumnya diingat |
+| **Tidak bisa dijawab** | **10** | Data tidak ada, tabel tidak ada, atau periode kosong |
 
-Yang **tidak** akan diklaim: jumlah pengguna, retensi, penghematan waktu terukur, atau hasil
-benchmark yang tidak dijalankan.
+Setiap entri memuat: pertanyaan, jawaban yang diharapkan (ditulis manusia), sumber yang diharapkan,
+kategori, dan penanda apakah butuh memori.
 
-## 6. Asumsi yang belum terverifikasi
+**Bekukan sebelum P3.** Setelah dibekukan, perubahan hanya boleh terjadi dengan alasan tertulis di
+`eval/CHANGELOG.md`. Tanpa aturan ini, golden set akan diam-diam disesuaikan dengan implementasi — dan
+eval kehilangan seluruh maknanya.
+
+#### Rubrik penilaian
+
+**K1 — akurasi sitasi.** Tiga pemeriksaan, semuanya harus lulus. Tidak ada nilai sebagian.
+
+1. Sumber yang dikutip benar-benar ada di dataset?
+2. Sumber itu benar-benar memuat nilai atau fakta yang diklaim?
+3. Angka atau pernyataan di jawaban cocok dengan isi sumber?
+
+**K2 — abstention.** Hanya ada lulus atau gagal.
+
+- **Lulus:** menyatakan tidak punya datanya, dan **tidak** mengutip sumber apa pun.
+- **Gagal:** mengutip sumber, atau menyatakan angka sebagai fakta.
+- **Gagal berat:** mengutip sumber nyata tetapi menempelkan fakta yang tidak ada di dalamnya.
+
+**K3 — kelengkapan jejak.** Diperiksa otomatis: ada tool, ada argumen, ada ringkasan hasil. Tidak ada
+penilaian manusia.
+
+**K4 — penegakan policy.** Test otomatis: panggil tool terlarang, pastikan ditolak sebelum eksekusi
+dan penolakan tercatat.
+
+**K5 — recall memori.** Skenario otomatis: semai 10 fakta di sesi A, mulai sesi B, hitung berapa yang
+terpanggil benar.
+
+#### Runner
+
+- `npm run eval` menjalankan golden set lewat **jalur yang sama dengan CLI** — bukan jalur khusus
+  eval, karena jalur khusus akan mengukur hal yang berbeda dari yang dipakai user.
+- Hasil ditulis ke `eval/results/<tanggal>-<fase>.json` plus ringkasan yang bisa dibaca manusia.
+- Model yang dipakai **dicatat di hasil** (nama dan versi). Mengganti model membuat hasil lama tidak
+  bisa dibandingkan.
+- Suhu 0. Jika model tidak mendukung determinisme penuh, catat itu sebagai keterbatasan.
+- Hasil di-commit setiap kali eval dijalankan, supaya jejaknya terlihat.
+
+#### Kapan dijalankan
+
+| Titik | Cakupan | Alasan |
+|---|---|---|
+| Keluar P1 | **5 pertanyaan** (smoke) | Membuktikan pipa menghasilkan sitasi sama sekali, bukan mengukur kualitas |
+| Keluar P3 | **30 penuh** | Memori sudah masuk; K1, K2, K5 baru bermakna di sini |
+| Keluar P5 | **30 penuh lewat PWA** | Membuktikan jalur PWA setara dengan CLI, bukan hanya UI-nya jalan |
+| P8 sebelum submit | **30 penuh, final** | Angka inilah yang dikutip di submission |
+
+#### Siapa menilai
+
+- **K1 dan K2 dinilai dua orang secara independen** pada run final. Selisih pendapat dicatat apa
+  adanya, tidak dirata-ratakan menjadi satu angka yang menyembunyikan perbedaan.
+- Jika hanya satu orang tersedia, tulis di submission bahwa penilaian dilakukan satu orang. Itu
+  keterbatasan yang jujur, bukan yang perlu disembunyikan.
+- K3, K4, K5 otomatis — tidak ada penilaian manusia.
+
+#### Batas yang harus dinyatakan
+
+Dilarang menyebut hasil ini sebagai *benchmark*.
+
+- **N = 30 terlalu kecil** untuk klaim generalisasi. Ini smoke eval, bukan benchmark.
+- **Dataset sintetis** tidak mewakili data enterprise nyata. Hasil tidak bisa dipindahkan.
+- **Satu model, satu pasangan bahasa.** Tidak ada klaim lintas model.
+- **Dibuat oleh orang yang juga menulis implementasi.** Bias ada. Mitigasi: golden set dibekukan
+  sebelum P3, dan rubriknya biner sehingga sulit ditafsirkan longgar.
+
+### 3.3 Model requirements
+
+| Kebutuhan | Nilai | Status |
+|---|---|---|
+| Model chat | NVIDIA NIM, model yang tersedia di akun kita | belum terverifikasi (P0 T0.4) |
+| Model fallback | Minimal satu model kedua di katalog | harus ada — rate limit saat demo adalah risiko nyata |
+| Embedding | `nemotron-3-embed-1b`, 2048 dimensi | belum terverifikasi (P0 T0.4) |
+| Penggantian model | Lewat konfigurasi, bukan kode (US-10) | syarat arsitektur |
+| Suhu untuk eval | 0 | syarat evaluasi |
+
+## 4. Technical Specifications
+
+### 4.1 Architecture overview
+
+Monorepo TypeScript. Satu runtime, banyak client. Runtime adalah satu-satunya yang menyentuh
+kapabilitas platform; client hanya berbicara lewat `packages/protocol`.
+
+```
+apps/runtime    Server lokal: agent loop, scheduler, MCP, secret (Node)
+apps/cli        Client terminal
+apps/web        Client PWA (React + Vite)
+packages/core   Agent loop (intent → memory → plan → tool → verify), isomorphic
+packages/protocol  Kontrak runtime–client, berversi
+packages/meterless Adapter Meterless (engine pihak ketiga di vendor/hmem)
+packages/zetaris   Client Zetaris (MCP/REST, typed)
+```
+
+Detail alur data dan batas modul: `docs/ARCHITECTURE.md`. Alasan pilihan: `docs/DECISIONS.md`
+(ADR-001 … ADR-014). PRD tidak mengulang keduanya.
+
+### 4.2 Integration points
+
+| Titik integrasi | Bentuk | Auth | Status |
+|---|---|---|---|
+| Zetaris | MCP atau REST (diputuskan P0 T0.3) | API key per organisasi | belum terverifikasi |
+| NVIDIA NIM | Chat Completions + embeddings, `https://integrate.api.nvidia.com/v1` | `nvapi-...` | belum terverifikasi |
+| Meterless H-MEM | Pustaka TypeScript, di-vendor | — | belum di-vendor (P0 T0.6) |
+| Connector MCP | MCP + OAuth 2.1 | OAuth 2.1 | direncanakan, P2 |
+| Keychain OS | Penyimpanan secret | — | direncanakan, P5 |
+
+### 4.3 Security and privacy
+
+**Secret.**
+
+- API key disimpan di keychain OS atau environment. **Tidak pernah** di client, kode, atau repo.
+- Key tidak boleh muncul di log, pesan error, jejak audit, atau bundle browser. Ini AC US-11 dan
+  diperiksa pada K4.
+- `.env` masuk `.gitignore`. Riwayat commit diaudit sebelum submit.
+
+**Data.**
+
+- Weebo **self-hosted**: tidak ada telemetri, tidak ada akun, tidak ada server kami.
+- Dataset demo **sintetis**. Tidak pernah ada data nyata milik siapa pun di repo.
+- Audit log tersimpan **lokal**, berisi tool, argumen, dan hasil. Argumen bisa memuat potongan data —
+  karena itu log lokal, tidak pernah dikirim ke mana pun.
+
+**Data yang tetap keluar dari mesin pengguna.** Ini harus dinyatakan jujur, bukan disembunyikan:
+
+| Ke mana | Apa | Kapan |
+|---|---|---|
+| NVIDIA NIM | Prompt dan konteks yang diperlukan untuk menjawab | Setiap giliran |
+| Zetaris | Query dan parameter filter | Setiap pemanggilan tool data |
+
+Klaim "data tidak pernah keluar" akan salah. Yang benar: **data tidak disimpan atau dipusatkan oleh
+Weebo**, tetapi pertanyaan dan query tetap dikirim ke dua layanan itu. Ini harus tertulis di README
+dan di submission.
+
+**Batas yang dinyatakan.** Weebo bukan alat kepatuhan. Ia tidak memberi jaminan SOC 2, tidak
+menyamarkan PII, dan tidak menegakkan kebijakan retensi. Itu di luar cakupan (§2.5).
+
+## 5. Risks & Roadmap
+
+### 5.1 Phased rollout
+
+| Tahap | Isi | Fase | Syarat |
+|---|---|---|---|
+| **MVP** | CLI + PWA, Zetaris + Meterless, policy + audit, jejak alasan | P1–P5 | K1, K2, K3, K4, K5 terukur |
+| **v1.1** | Autonomy (scheduler, channel), aplikasi desktop, gateway kuota | P6 + backlog 2–3 | MVP lulus |
+| **v2.0** | Engine memori sendiri, katalog connector luas, cloud sync opsional | Backlog 5, 7, 9 | v1.1 lulus |
+
+Tahap tidak ditunda karena tanggal, melainkan karena dependensi (`AGENTS.md` §8.1). Daftar lengkap:
+`docs/PHASES.md` §"Backlog lintas fase".
+
+### 5.2 Technical risks
+
+| Risiko | Dampak | Mitigasi |
+|---|---|---|
+| Rate limit NIM saat demo | Demo gagal di depan juri | Model fallback di katalog + cache respons (risiko P1) |
+| Zetaris tidak menyediakan governance yang bisa didemokan | Klaim Impact melemah | Turunkan ke "akses data tersebar" (§5.3) |
+| Meterless tidak bisa dijalankan dari Node | Pilar memory hilang | Uji di P0 T0.6 sebelum kode ditulis |
+| Transport ponsel → runtime tidak selesai | Demo US-12 hilang | Putuskan di P0 T0.7; demo desktop jika gagal |
+| Golden set disesuaikan dengan implementasi | Eval jadi tidak bermakna | Dibekukan sebelum P3 + `eval/CHANGELOG.md` |
+| Target KPI tidak tercapai | Klaim jujur jadi lemah | Laporkan angka sebenarnya; itu temuan, bukan kegagalan yang disembunyikan |
+| Scope melebar (connector, gateway, landing) | Spine tidak selesai | Non-goals §2.5 + backlog berbasis dependensi |
+
+### 5.3 Asumsi yang belum terverifikasi
 
 Wajib diselesaikan atau diturunkan klaimnya di P0. Jangan menulisnya sebagai fakta di submission
 sebelum terbukti.
@@ -221,10 +430,12 @@ sebelum terbukti.
 | 2 | Meterless H-MEM dapat di-vendor dan dijalankan dari Node | Cari jalur integrasi lain, atau turunkan pilar memory |
 | 3 | NVIDIA Nemotron embedding dapat dipakai dalam kuota gratis | Pakai embedding alternatif; pilar memory tetap, kualitas turun |
 | 4 | Transport ponsel → runtime dapat diselesaikan (P0 T0.7) | Demo US-12 hanya di desktop, dan itu dinyatakan jujur |
+| 5 | Dataset sintetis cukup mewakili pola pertanyaan nyata | Eval mengukur pipa, bukan kegunaan nyata — dan itu harus dinyatakan |
 
-## 7. Rujukan
+## 6. Rujukan
 
 - Kewajiban lomba: `docs/RULES.md` §5.1 (Zetaris, Meterless, Cursor), §6.1–§6.4 (deliverable).
 - Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-014.
+- Arsitektur: `docs/ARCHITECTURE.md`.
 - Urutan pengerjaan: `docs/PHASES.md` dan file fase di `docs/phases/`.
 - Batasan tim dan bobot penilaian: `docs/CONTEXT.md`.

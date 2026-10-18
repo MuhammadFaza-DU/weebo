@@ -68,7 +68,12 @@ bagian yang dinilai pada Impact (30 poin, kriteria terbesar).
 | 7 | Di mana NVIDIA berkontribusi | `docs/SPONSORS.md` |
 | 8 | Yang unik dari penggunaan sponsor technology | `docs/SPONSORS.md` |
 | 9 | Visual produk (tangkapan layar nyata) | Aplikasi yang berjalan |
-| 10 | Pengembangan selanjutnya | `docs/PRD.md` §4, `docs/PHASES.md` backlog |
+| 10 | **Bukti kualitas: hasil eval K1–K5** — angka apa adanya, termasuk yang gagal | `eval/results/` run final |
+| 11 | Pengembangan selanjutnya | `docs/PRD.md` §2.5, `docs/PHASES.md` backlog |
+
+Slide 10 tidak diwajibkan aturan, tetapi inilah satu-satunya tempat kita membuktikan jawaban agent
+bisa dipercaya — bukan hanya bisa didemokan. Kutip angka sebenarnya; slide yang mengaku "akurat"
+tanpa angka lebih lemah daripada slide yang jujur menyebut 86%.
 
 ---
 
@@ -82,6 +87,10 @@ bagian yang dinilai pada Impact (30 poin, kriteria terbesar).
 - [ ] Lisensi MIT terdeteksi di halaman repo
 - [ ] Video < 4 menit, publik, tanpa musik berhak cipta
 - [ ] Slide deck selesai
+- [ ] **Eval final 30 penuh dijalankan; angka K1–K5 dikutip apa adanya di submission, termasuk yang
+      tidak mencapai target**
+- [ ] **Eval tidak disebut "benchmark"** — N=30 dan dataset sintetis tidak mendukung klaim itu
+- [ ] Dataset demo dinyatakan **sintetis** di README dan submission
 - [ ] Track dipilih di platform
 - [ ] Tim sudah dibentuk di platform dan terkunci
 - [ ] Submission dikirim minimal 12 jam sebelum tenggat (tie-break §7.3 pakai timestamp)

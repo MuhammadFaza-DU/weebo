@@ -163,7 +163,30 @@ menyimpan endpoint). Menemukannya di P5 berarti menulis ulang keduanya.
 
 ---
 
-### T0.8 — Ringkasan status akses
+### T0.8 — Tetapkan protokol evaluasi dan bentuk dataset demo
+
+**Ini keputusan, bukan kode.** Tanpa protokol yang ditetapkan sekarang, "agent menjawab dengan benar"
+akan selamanya jadi klaim yang tidak bisa dibuktikan — dan itu melubangi K1, K2, K3, K4, K5 di
+`docs/PRD.md` §1.3.
+
+- [ ] Baca `docs/PRD.md` §3.2 (dataset, golden set, rubrik, runner, batas)
+- [ ] Tetapkan bentuk dataset demo: tabel apa saja, kolom apa, berapa baris. Target ~3 tabel, ~200 baris
+- [ ] Pastikan dataset **sintetis** dan tidak memuat data nyata milik siapa pun
+- [ ] Tetapkan siapa yang menulis jawaban harapan di golden set (penulis ≠ penilai akhir, jika bisa)
+- [ ] Tetapkan dua orang penilai K1/K2 untuk run final. Jika hanya satu yang tersedia, catat itu sebagai keterbatasan
+- [ ] Tetapkan bentuk file hasil eval (`eval/results/<tanggal>-<fase>.json`) dan field wajibnya, termasuk nama + versi model
+- [ ] Catat keputusan di `docs/DECISIONS.md` sebagai ADR baru
+
+**Kriteria selesai:** ADR tertulis yang menyebut bentuk dataset, rubrik, penilai, dan field hasil.
+Golden set belum ditulis di sini — itu P1 (T1.8).
+
+**Kenapa di P0, bukan P1:** bentuk dataset menentukan apa yang bisa ditanyakan di golden set. Kalau
+dataset dibuat sambil menulis pertanyaan, pertanyaan akan menyesuaikan diri dengan data yang kebetulan
+ada — dan eval kehilangan kemampuan menemukan kelemahan.
+
+---
+
+### T0.9 — Ringkasan status akses
 
 - [ ] Isi tabel verifikasi di `docs/SETUP-SPONSORS.md` §7
 - [ ] Perbarui `docs/CONTEXT.md` §10 (asumsi yang sudah terjawab)

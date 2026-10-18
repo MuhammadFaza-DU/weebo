@@ -44,7 +44,7 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
   lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`, **`RULES.md`**
   (transkripsi terverifikasi §01–§10 aturan lomba), **`PRD.md`** (problem, user primer/adopter,
-  16 user story dengan acceptance criteria, non-goals, asumsi belum terverifikasi),
+  16 user story dengan acceptance criteria, non-goals, **5 KPI terukur**, **evaluation strategy**),
   `phases/P0-preflight.md`, `phases/P1-walking-skeleton.md`.
 - `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (9 dokumen).
 - `AGENTS.md` §1: `docs/PRD.md` ditetapkan sebagai sumber kebenaran "apa dan untuk siapa", dengan
@@ -67,6 +67,13 @@ Dicatat di `docs/PRD.md`, ringkasnya:
   siapa pun untuk memasang runtime.
 - 16 user story berprioritas Must/Should/Could dengan acceptance criteria. Must = submission tidak
   jujur tanpa ini.
+- **5 KPI terukur** (`docs/PRD.md` §1.3): akurasi sitasi ≥90%, fabrikasi = 0, kelengkapan jejak 100%,
+  penegakan policy 100%, recall memori ≥80%. Semuanya **target, belum diukur**.
+- **Evaluation strategy ditetapkan** (`docs/PRD.md` §3.2): dataset sintetis ~3 tabel/200 baris, golden
+  set 30 entri (20 bisa dijawab + 10 tidak), rubrik biner, runner `npm run eval`, dijalankan di keluar
+  P1 (smoke 5), P3, P5, dan P8. Golden set **dibekukan sebelum P3** dengan `eval/CHANGELOG.md`.
+- **Batas eval dinyatakan**: N=30 dan dataset sintetis berarti ini **smoke eval, bukan benchmark**.
+  Dilarang menyebutnya benchmark di submission.
 
 ## Keputusan yang mengikat
 
@@ -102,7 +109,11 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
   di ponsel (P5). Dijawab di **P0 · T0.7**. Lihat `docs/ARCHITECTURE.md` §2.2.
 - **Apakah Zetaris benar-benar menyediakan akses data ter-governance yang bisa didemokan** — belum
   diverifikasi. Jika tidak, klaim "governed" di PRD §2.1 dan README harus diturunkan menjadi "akses
-  data tersebar" sebelum masuk submission. Lihat `docs/PRD.md` §6.
+  data tersebar" sebelum masuk submission. Lihat `docs/PRD.md` §5.3.
+- **Belum satu pun KPI diukur** — K1 akurasi sitasi, K2 fabrikasi, K3 kelengkapan jejak, K4 penegakan
+  policy, K5 recall memori. Semuanya target. Pengukuran pertama (smoke 5 pertanyaan) baru di P1 T1.8.
+- **Belum ada dataset demo, golden set, atau runner eval.** Protokolnya ditetapkan di P0 T0.8, diwujudkan
+  di P1 T1.8.
 
 ## Risiko dan blocker
 
@@ -138,8 +149,10 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 
 1. **Jalankan P0** — mulai dari T0.1 (bentuk tim di platform) karena itu blocker paling keras.
 2. Selesaikan T0.2–T0.6 (akses sponsor + uji asumsi), catat bukti di `docs/SETUP-SPONSORS.md` §7.
-3. Pilih pembagian lapisan di awal P1, catat di bagian "Pembagian lapisan" di atas.
-4. Setelah P0 lulus, mulai P1 (`docs/phases/P1-walking-skeleton.md`).
+3. Selesaikan T0.8 (protokol evaluasi + bentuk dataset demo) — tanpa ini, K1–K5 di `docs/PRD.md`
+   §1.3 tidak bisa diukur, dan T1.8 tidak bisa dimulai.
+4. Pilih pembagian lapisan di awal P1, catat di bagian "Pembagian lapisan" di atas.
+5. Setelah P0 lulus, mulai P1 (`docs/phases/P1-walking-skeleton.md`).
 
 ## Log checkpoint
 

@@ -6,7 +6,8 @@ Satu alur tipis: user mengirim pertanyaan dari **terminal** → intent terdeteks
 model menjawab → data diambil dari Zetaris → jawaban tampil beserta sumbernya.
 
 **Syarat lulus:** alur di atas bisa didemokan dalam 30 detik, memakai data nyata dari lingkungan
-Zetaris, bukan mock.
+Zetaris, bukan mock. **Plus:** smoke eval 5 pertanyaan dijalankan dan hasilnya dilampirkan apa adanya
+(T1.8) — bukan untuk mengukur kualitas, tetapi membuktikan jawaban menyebut sumber sama sekali.
 
 **Kenapa CLI, bukan UI:** tujuannya membuktikan pipa, bukan tampilan. CLI menghapus seluruh risiko UI
 dan membuat kegagalan integrasi terlihat jelas di terminal. PWA masuk di P5 sebagai client runtime.
@@ -26,6 +27,7 @@ diperindah atau fitur ditambah.
 - [ ] T0.3 selesai — sudah diketahui apakah Zetaris bisa dipanggil dari browser
 - [ ] T0.4 selesai — akses NVIDIA NIM terverifikasi (chat + embedding)
 - [ ] T0.6 selesai — Meterless engine ter-vendor dan conformance suite hijau
+- [ ] T0.8 selesai — protokol evaluasi dan bentuk dataset demo ditetapkan (T1.8 bergantung pada ini)
 
 Jika salah satu belum, **jangan mulai task kode** — selesaikan P0 dulu.
 
@@ -88,7 +90,30 @@ Vendoring **sudah selesai di P0 (T0.6)**. Task ini hanya membungkusnya.
 > Catatan: P1 sengaja memakai CLI, bukan UI. Tujuannya membuktikan pipa, bukan tampilan. Pemisahan
 > client–server (ADR-011) beserta perintah `serve` diwajibkan di P2 (ADR-013).
 
-### T1.8 — Catat bukti
+### T1.8 — Dataset demo, golden set, dan runner evaluasi
+
+Bentuk dataset dan rubrik sudah ditetapkan di **P0 T0.8**. Task ini mewujudkannya.
+
+- [ ] Buat dataset sintetis di `eval/dataset/` sesuai bentuk yang diputuskan di T0.8 (~3 tabel, ~200 baris)
+- [ ] Tulis `eval/golden/` berisi **30 entri**: 20 bisa dijawab (5 lookup, 5 lintas tabel, 5 agregasi, 3 rentang waktu, 2 butuh memori) + 10 tidak bisa dijawab
+- [ ] Setiap entri memuat: pertanyaan, jawaban harapan, sumber harapan, kategori, penanda butuh-memori
+- [ ] Buat `npm run eval` yang menjalankan golden set lewat **jalur yang sama dengan CLI**, bukan jalur khusus
+- [ ] Hasil ditulis ke `eval/results/<tanggal>-p1.json` dengan field wajib termasuk nama dan versi model
+- [ ] Suhu 0
+- [ ] Tulis `eval/README.md`: cara menjalankan, arti setiap kolom, dan batasnya (N=30, dataset sintetis — **bukan benchmark**)
+- [ ] Jalankan **smoke: 5 pertanyaan** dan lampirkan hasilnya di `docs/SPONSORS.md`
+- [ ] Bekukan golden set: buat `eval/CHANGELOG.md` dan catat tanggal pembekuan
+
+**Kriteria selesai:** `npm run eval` berjalan dan menghasilkan file hasil; 5 pertanyaan smoke dijalankan
+dan hasilnya dilampirkan apa adanya, termasuk jika ada yang gagal.
+
+> **Jangan menyempurnakan golden set agar hasilnya bagus.** Kalau pertanyaan gagal dijawab, itu temuan
+> yang benar dan berharga. Setelah dibekukan, perubahan hanya lewat `eval/CHANGELOG.md` dengan alasan.
+
+> Catatan: K1/K2/K5 baru bermakna setelah memori masuk (P3). Di P1 cukup dibuktikan bahwa pipa
+> menghasilkan sitasi sama sekali — bukan bahwa sitasinya akurat.
+
+### T1.9 — Catat bukti
 
 - [ ] Isi `docs/SPONSORS.md` dengan transkrip nyata (Zetaris, NIM, Meterless)
 - [ ] Perbarui `CHECKPOINT.md`

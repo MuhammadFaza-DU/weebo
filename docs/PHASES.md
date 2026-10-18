@@ -12,15 +12,15 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 
 | Fase | Deliverable | Syarat lulus | Bergantung pada | Story PRD |
 |---|---|---|---|---|
-| **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — | — (pendukung) |
-| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | P0 | US-01, US-02, US-09, US-14 |
+| **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab + protokol evaluasi ditetapkan | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — | — (pendukung) |
+| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** + dataset demo, golden set, dan runner eval | Bisa didemokan 30 detik di terminal; smoke eval 5 pertanyaan dijalankan | P0 | US-01, US-02, US-09, US-14 |
 | P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 | US-03, US-04, US-05, US-10 |
-| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 | US-06, US-07, US-08, US-09 |
+| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber; **eval 30 penuh pertama (K1, K2, K5)** | P1 | US-06, US-07, US-08, US-09 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) | — (pendukung) |
-| P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 | US-11, US-12 |
+| P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop; **eval 30 penuh lewat PWA (paritas dengan CLI)** | P4, P2, P3 | US-11, US-12 |
 | P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 | US-13 |
 | P7 Landing Page | Astro site publik | Bisa dibuka publik, badge status akurat | — (bisa paralel) | US-16 |
-| P8 Submission | Video jadi (1–4 menit), slide, README, audit | Semua deliverable lomba lengkap | P1-P7 | — (pendukung) |
+| P8 Submission | Video jadi (1–4 menit), slide, README, audit | Semua deliverable lomba lengkap; **eval final 30 penuh, angka K1–K5 dikutip apa adanya** | P1-P7 | — (pendukung) |
 
 Story berprioritas **Could** dan belum punya fase: US-15 (aplikasi desktop) — masuk backlog.
 
