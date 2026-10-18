@@ -64,6 +64,15 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 | Sponsor access belum ada semua | P1 terblokir | Selesaikan `docs/SETUP-SPONSORS.md` sebelum 22 Okt |
 | Scope melebar (connector, gateway, landing) | Spine tidak selesai | Gateway = stretch; landing punya track paralel |
 
+## Ditunda (keputusan sadar, bukan terlupa)
+
+| Item | Alasan | Kapan ditinjau |
+|---|---|---|
+| Pindah repo ke GitHub Organization | Hanya perlu jika ingin membatasi siapa yang boleh dismiss review. Repo personal ditolak API (422: *only organization repositories can have users and team restrictions*). URL git tetap sama | Jika kontrol akses dirasa kurang, atau setelah lomba |
+| Live demo URL (PWA ter-deploy) | Opsional; dikerjakan hanya jika spine selesai dan ada sisa waktu | Setelah P6 |
+| Desktop native (Tauri) & APK (Capacitor) | Butuh Rust/MSVC dan Android SDK | Setelah submission |
+| Gateway kuota gratis per IP | Stretch; butuh Cloudflare Worker + pengujian kuota | Setelah P1–P5 lulus |
+
 ## Next action
 
 1. Selesaikan pendaftaran akun sponsor (`docs/SETUP-SPONSORS.md`).

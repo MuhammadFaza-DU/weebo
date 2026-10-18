@@ -53,6 +53,7 @@ Hal yang sengaja ditunda. Bukan dibuang.
 
 | Item | Alasan ditunda |
 |---|---|
+| Pindah repo ke GitHub Organization | Diperlukan jika ingin membatasi siapa yang boleh dismiss review (repo personal ditolak API 422). URL git tetap sama. Pindahkan hanya jika benar-benar butuh |
 | Gateway kuota gratis per IP | Stretch setelah spine; butuh Cloudflare Worker + pengujian kuota |
 | Live demo URL (PWA ter-deploy) | Opsional; dikerjakan hanya jika ada sisa waktu |
 | Desktop native (Tauri) | Butuh Rust + MSVC; setelah lomba |
