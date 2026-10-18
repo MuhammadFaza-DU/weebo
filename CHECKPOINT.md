@@ -18,12 +18,21 @@ bermakna.
 
 ## Yang sudah selesai
 
-- Repo `weebo` dibuat: public, MIT, `main` diproteksi, kolaborator diundang.
+- Repo dibuat: `https://github.com/MuhammadFaza-DU/weebo` — **public**, lisensi **MIT terdeteksi** di
+  halaman repo, branch default `main`.
+- Commit awal `a8ba3dc` berisi 22 file scaffolding. **CI hijau** (run 39107601114).
+- Proteksi `main` aktif dan terverifikasi: wajib PR, wajib 1 approval, wajib review CODEOWNERS,
+  force push ditolak, penghapusan branch ditolak, percakapan wajib resolved.
+  `enforce_admins=false` sehingga maintainer bisa bypass saat mendesak.
+- Undangan kolaborator terkirim dengan izin **write**: `slamsmart`, `Manzera-Azb`
+  (**status: menunggu diterima**, belum menjadi collaborator sampai mereka klik accept).
+- Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
-  `CODEOWNERS`, `PREEXISTING.md`.
-- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md`, `SPONSORS.md`, `SETUP-SPONSORS.md`, `REFERENCES.md`,
-  `PHASES.md`, `SUBMISSION.md`, `phases/`.
-- Keputusan produk dan teknis dicatat di `docs/DECISIONS.md` (ADR-001 … ADR-0xx).
+  `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
+- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-010), `SPONSORS.md`, `SETUP-SPONSORS.md`,
+  `REFERENCES.md`, `PHASES.md`, `SUBMISSION.md`, `phases/P1-walking-skeleton.md`.
+- Catatan belajar lokal (enam folder referensi) dibuat. Diabaikan lewat `.git/info/exclude` (lokal,
+  tidak terlihat di repo); terverifikasi tidak ada di GitHub.
 
 ## Keputusan yang mengikat
 
@@ -32,7 +41,7 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 - Stack: monorepo TypeScript, core isomorphic, PWA dulu; native menyusul.
 - Free tier: katalog model + gateway Cloudflare Worker yang memegang key NVIDIA NIM, kuota per IP.
 - Merge: hanya `@MuhammadFaza-DU`.
-- REA: workspace `rea/` gitignored, hasil tidak pernah di-push, kode produk ditulis sendiri.
+- Catatan belajar pribadi disimpan di luar repo dan tidak pernah di-commit.
 
 ## Belum terverifikasi
 
@@ -41,6 +50,7 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 - Akun Cursor — belum dikonfirmasi.
 - Meterless: belum di-*vendor* dan belum dijalankan lokal.
 - Registrasi lomba: akun platform ada, **tim belum dibentuk di platform**.
+- Kedua kolaborator belum menerima undangan (status pending di GitHub).
 
 ## Risiko dan blocker
 
@@ -55,7 +65,7 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 
 1. Selesaikan pendaftaran akun sponsor (`docs/SETUP-SPONSORS.md`).
 2. Bentuk tim di platform genai.works.
-3. Mulai REA Hermes di `rea/hermes/`.
+3. Mulai mempelajari arsitektur Hermes sebagai acuan (catatan lokal, tidak masuk repo).
 4. Susun task P1 di `docs/phases/P1-walking-skeleton.md` sebelum window dibuka.
 
 ## Log checkpoint

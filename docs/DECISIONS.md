@@ -126,9 +126,9 @@ kualitas.
 OpenCode, Zetaris, Meterless) untuk mengambil pola terbaik. Sebagian open source (MIT/Apache-2.0),
 sebagian closed source.
 
-**Keputusan.** Workspace `rea/` di root project, masuk `.gitignore`, tidak pernah di-commit atau
-di-push. Boleh memuat cuplikan referensi untuk belajar, ditandai `REFERENCE ONLY`. Kode produk Weebo
-seluruhnya ditulis sendiri. Tidak ada penyalinan kode, aset, atau teks ke repo.
+**Keputusan.** Catatan belajar disimpan **di luar repo**, di mesin lokal, diabaikan lewat
+`.git/info/exclude`. Boleh memuat cuplikan referensi untuk pemahaman, ditandai `REFERENCE ONLY`.
+Kode produk Weebo seluruhnya ditulis sendiri. Tidak ada penyalinan kode, aset, atau teks ke repo.
 
 **Konsekuensi.**
 

@@ -52,9 +52,8 @@ komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib 
 - Referensi eksternal dipelajari sebagai **pengetahuan**, bukan bahan salin.
 - Dependensi open source dipakai sebagaimana mestinya, dengan lisensi dan atribusi otomatis lewat
   `package.json` dan `LICENSE`.
-- Workspace riset `rea/` bersifat gitignored dan **tidak pernah** di-push. Isinya boleh memuat
-  cuplikan referensi untuk belajar, ditandai `REFERENCE ONLY`. Cuplikan itu tidak boleh dipindahkan
-  ke kode produk.
+- Catatan belajar pribadi disimpan di luar repo dan tidak pernah di-commit. Cuplikan referensi hanya
+  untuk pemahaman, tidak boleh dipindahkan ke kode produk.
 - Jangan mengklaim fitur sudah jalan kalau belum. Status di README dan landing page wajib sesuai
   kenyataan (`live` vs `roadmap`).
 - Jangan mengarang hasil test, angka benchmark, atau transkrip integrasi.
@@ -64,7 +63,8 @@ komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib 
 - Root project: `D:\Progamming\Project dan SourceCode\Lomba\Weebo-Hackaton`.
 - Semua hasil kerja, termasuk scratch, cache, dan hasil riset, berada di dalam root project.
 - Gunakan `.cache/` untuk scratch yang tidak boleh masuk commit.
-- `rea/` berisi workspace riset: **gitignored, tidak boleh di-commit, tidak boleh di-push**.
+- Catatan belajar pribadi tidak disimpan di dalam repo. Jika ada di mesin lokal, pastikan diabaikan
+  oleh Git dan tidak pernah di-commit.
 - Jangan menulis ke `%TEMP%`, home directory, atau folder lain di luar project tanpa persetujuan.
 - Jangan pernah men-commit secret: `.env`, key, token, atau kredensial provider.
 

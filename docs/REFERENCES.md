@@ -4,7 +4,7 @@ Dokumen ini mencatat produk yang dipelajari tim, **apa yang diambil**, dan **apa
 Tujuannya agar keputusan desain punya jejak, bukan kesan.
 
 Aturan (lihat `AGENTS.md` §3): referensi dipelajari sebagai pengetahuan. Tidak ada kode, aset, ikon,
-atau teks milik pihak lain yang disalin ke repo ini. Workspace riset `rea/` bersifat gitignored.
+atau teks milik pihak lain yang disalin ke repo ini. Catatan belajar disimpan di luar repo.
 
 ---
 
@@ -75,8 +75,8 @@ atau teks milik pihak lain yang disalin ke repo ini. Workspace riset `rea/` bers
 
 ## Catatan metodologi
 
-Detail riset per produk berada di workspace `rea/` yang **tidak di-commit**. Dokumen ini hanya
-merangkum kesimpulan yang relevan untuk pengembangan Weebo.
+Detail riset per produk disimpan di luar repo. Dokumen ini hanya merangkum kesimpulan yang relevan
+untuk pengembangan Weebo.
 
 Jika sebuah keputusan di `DECISIONS.md` berasal dari pengamatan produk lain, ADR terkait menyebut
 alasannya — bukan menyalin implementasinya.

@@ -16,8 +16,7 @@ out/
 *.pem
 secrets/
 
-# Research workspace (never committed — see AGENTS.md)
-rea/
+# Local scratch
 .cache/
 
 # Editor and OS
