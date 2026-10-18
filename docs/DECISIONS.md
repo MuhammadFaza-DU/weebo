@@ -182,12 +182,12 @@ bukan di belakang.
 
 ---
 
-## ADR-009 — Landing page adalah deliverable jangka panjang
+## ADR-009 — Landing page adalah deliverable produk, bukan tempelan
 
 **Tanggal:** 2026-10-18
 **Status:** Diterima
 
-**Konteks.** Project ini tidak berhenti di lomba. Landing page dibutuhkan sebagai wajah produk untuk
+**Konteks.** Project ini bukan proyek sekali pakai. Landing page dibutuhkan sebagai wajah produk untuk
 keberlanjutan, dan menulisnya memaksa kejelasan posisi sebelum koding.
 
 **Keputusan.** Landing page dibangun dengan Astro di `apps/landing`, punya fase sendiri (P7), dan
@@ -198,7 +198,8 @@ ada anggaran. Setiap kemampuan diberi badge `live` atau `roadmap`.
 
 - Narasi produk terkunci lebih awal.
 - Perlu audit klaim di akhir agar badge sesuai kenyataan.
-- Live demo URL (PWA ter-deploy) bersifat opsional dan dikerjakan hanya jika ada sisa waktu.
+- Live demo URL (PWA ter-deploy) adalah item backlog **prioritas 1**, dependensi **P5 selesai**.
+  Bukan "opsional jika ada sisa waktu" — aturan penundaan: `AGENTS.md` §8.1.
 
 ---
 
@@ -309,8 +310,9 @@ implementasinya dari spesifikasi. Pengukuran langsung terhadap repo Meterless me
    ditukar tanpa menyentuh core.
 4. Demo memakai **4 service inti**: Store, Mining, Retrieval, TrustLedger. Dreaming, SleepCycle, dan
    ConflictDetection tetap tersedia di kode tetapi tidak didemokan.
-5. Menulis ulang engine dari spesifikasi (opsi "implementasi sendiri") **ditunda sampai setelah
-   lomba**, dengan `MemoryPort` sebagai titik tukar.
+5. Menulis ulang engine dari spesifikasi (opsi "implementasi sendiri") **tidak dikerjakan sekarang**.
+   Ia menjadi item backlog **prioritas 5**, dengan dependensi **P3 selesai + `MemoryPort` stabil**.
+   `MemoryPort` adalah titik tukarnya. Aturan penundaan: `AGENTS.md` §8.1.
 
 **Konsekuensi.**
 

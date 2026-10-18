@@ -200,7 +200,12 @@ mungkin dimulai.
 Agent **wajib menawarkan** item berikutnya saat ketiga syarat terpenuhi — bukan menunggu diminta, dan
 bukan memutuskan sendiri.
 
-**Protokol keluar fase (wajib, keenam-enamnya):**
+### 8.2 Protokol keluar fase
+
+Ini satu-satunya salinan yang mengikat. `docs/PHASES.md` memuat ringkasan; jika berbeda, dokumen ini
+yang berlaku.
+
+**Wajib, keenam-enamnya:**
 
 1. Deliverable bisa didemokan.
 2. `CHECKPOINT.md` diperbarui.

@@ -49,7 +49,7 @@ apps/desktop/   Electron: membungkus apps/web, menjalankan apps/runtime di main 
 apps/mobile/    Capacitor: membungkus apps/web
 ```
 
-## 2.1 Model client-server (ADR-011)
+### 2.1 Model client-server (ADR-011)
 
 Satu runtime, banyak client. Runtime adalah satu-satunya tempat yang menyentuh kapabilitas platform.
 
@@ -75,7 +75,7 @@ Konsekuensi yang harus dijaga:
 - Satu versi protokol, dideklarasikan di `packages/protocol`, agar client lama tidak rusak.
 - Runtime harus bisa dijalankan tanpa client mana pun (headless), karena scheduler tetap bekerja.
 
-## 2.2 Bagaimana perangkat lain mencapai runtime (BELUM DIPUTUSKAN)
+### 2.2 Bagaimana perangkat lain mencapai runtime (BELUM DIPUTUSKAN)
 
 Ini pertanyaan terbuka yang **memblokir demo di ponsel**. Runtime mendengarkan di `localhost`, dan
 `localhost` di ponsel menunjuk ke ponsel itu sendiri — bukan ke laptop.

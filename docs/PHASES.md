@@ -159,17 +159,20 @@ tanggal tertentu". Aturan: lihat `AGENTS.md` §8.1 — penundaan berbasis **depe
 
 | Prioritas | Item | Dependensi | Syarat mulai tambahan |
 |---|---|---|---|
-| 1 | **Live demo URL** (PWA ter-deploy) | P5 selesai | Juri bisa mencoba langsung; menaikkan skor Demo dan Product & UX |
-| 2 | **Desktop native — Electron** | P5 selesai (UI ada) + P2 selesai (protokol) | Shell atas UI yang sama, tanpa Rust. ADR-010 |
-| 3 | **Gateway kuota gratis per IP** | P1–P5 lulus | Butuh Cloudflare Worker + pengujian kuota. ADR-004 |
-| 4 | **APK Android — Capacitor** | P5 selesai | Butuh Android SDK terpasang |
+| 1 | **Live demo URL** (PWA ter-deploy) | P5 selesai | Deploy gratis; juri bisa mencoba langsung |
+| 2 | **Desktop native — Electron** | P5 selesai + P2 selesai | Shell atas UI yang sama, tanpa Rust. ADR-010 |
+| 3 | **Gateway kuota gratis per IP** | P1–P5 lulus | Cloudflare Worker + uji kuota. ADR-004 |
+| 4 | **APK Android — Capacitor** | P5 selesai | Android SDK terpasang |
 | 5 | **Implementasi engine memori sendiri** | P3 selesai + `MemoryPort` stabil | ADR-012 |
-| 6 | **Landing page polish** | P7 selesai | Hanya jika badge status sudah akurat |
-| 7 | Connector katalog luas | MCP + Zetaris stabil | — |
-| 8 | Auto-generate skills | — | Risiko kualitas; butuh evaluasi dulu |
-| 9 | Cloud sync penyimpanan | — | Di luar scope lomba, tidak mendesak |
-| 10 | Pindah repo ke GitHub Organization | — | Hanya jika kontrol akses dirasa kurang |
+| 6 | **Landing page polish** | P7 selesai | Badge status sudah akurat |
+| 7 | Connector katalog luas | MCP + Zetaris stabil | Minimal satu connector eksternal berjalan |
+| 8 | Auto-generate skills | P3 selesai + evaluasi kualitas selesai | Butuh set data evaluasi |
+| 9 | Cloud sync penyimpanan | P5 selesai + storage runtime stabil | Belum ada desain; butuh keputusan produk |
+| 10 | Pindah repo ke GitHub Organization | Tidak ada dependensi teknis | Hanya jika kontrol akses dirasa kurang |
 
 **Urutan prioritas berdasarkan dampak skor vs effort** (bobot: Impact 30, Demo 15, Product&UX 10,
 Sponsor tech 10). Live demo URL mendahului Electron karena effort jauh lebih kecil dengan dampak skor
 yang sebanding.
+
+**Catatan:** tidak ada item yang boleh diberi dependensi `—`. Item tanpa dependensi berarti tidak
+punya alasan ditunda, dan harus dikerjakan atau dihapus dari daftar.

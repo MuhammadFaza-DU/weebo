@@ -144,16 +144,21 @@ The authoritative phase plan lives in [`docs/PHASES.md`](docs/PHASES.md). Summar
 | P7 Landing page | Public Astro site |
 | P8 Submission | Video, slide deck, README, eligibility audit |
 
-Not in the current plan — each becomes available when its dependency is met (see `AGENTS.md` §8.1):
+Not in the current plan — each becomes available when its dependency is met (see `AGENTS.md` §8.1).
+The authoritative list, with start conditions, is in [`docs/PHASES.md`](docs/PHASES.md).
 
-| Item | Depends on |
-|---|---|
-| Native desktop shell (Electron) | P5 client exists, P2 protocol exists |
-| Android build (Capacitor) | P5 client exists, Android SDK installed |
-| Free-tier quota gateway | P1–P5 complete |
-| Own implementation of the memory engine, behind `MemoryPort` | P3 complete |
-| Connector catalogue beyond MCP basics | MCP and Zetaris stable |
-| Cloud sync for user-chosen storage | not scheduled |
+| # | Item | Depends on |
+|---|---|---|
+| 1 | Live demo URL (deployed PWA) | P5 complete |
+| 2 | Native desktop shell (Electron) | P5 client exists, P2 protocol exists |
+| 3 | Free-tier quota gateway | P1–P5 complete |
+| 4 | Android build (Capacitor) | P5 client exists, Android SDK installed |
+| 5 | Own implementation of the memory engine, behind `MemoryPort` | P3 complete, `MemoryPort` stable |
+| 6 | Landing page polish | P7 complete, status badges accurate |
+| 7 | Connector catalogue beyond MCP basics | MCP and Zetaris stable |
+| 8 | Auto-generated skills | P3 complete, quality evaluation done |
+| 9 | Cloud sync for user-chosen storage | P5 complete, runtime storage stable |
+| 10 | Move the repository to a GitHub Organization | no technical dependency |
 
 ## Contributing
 

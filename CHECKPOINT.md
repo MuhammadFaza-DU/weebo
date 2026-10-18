@@ -97,11 +97,16 @@ terpenuhi · deliverable wajib lomba aman · user setuju.
 |---|---|---|---|
 | 1 | Live demo URL (PWA ter-deploy) | P5 selesai | Effort kecil, dampak skor Demo + Product&UX |
 | 2 | Desktop native — **Electron** (bukan Tauri) | P5 + P2 selesai | Shell atas UI yang sama; tanpa Rust (ADR-010) |
-| 3 | Gateway kuota gratis per IP | P1–P5 lulus | Butuh Cloudflare Worker + uji kuota (ADR-004) |
-| 4 | APK Android — Capacitor | P5 selesai | Butuh Android SDK terpasang |
+| 3 | Gateway kuota gratis per IP | P1–P5 lulus | Cloudflare Worker + uji kuota (ADR-004) |
+| 4 | APK Android — Capacitor | P5 selesai | Android SDK terpasang |
 | 5 | Implementasi engine memori sendiri | P3 + `MemoryPort` stabil | ADR-012 |
-| 6 | Landing page polish | P7 selesai | Hanya jika badge status akurat |
-| 7 | Pindah repo ke GitHub Organization | — | Hanya jika kontrol akses dirasa kurang |
+| 6 | Landing page polish | P7 selesai | Badge status sudah akurat |
+| 7 | Connector katalog luas | MCP + Zetaris stabil | Minimal satu connector eksternal berjalan |
+| 8 | Auto-generate skills | P3 + evaluasi kualitas | Butuh set data evaluasi |
+| 9 | Cloud sync penyimpanan | P5 + storage runtime stabil | Belum ada desain |
+| 10 | Pindah repo ke GitHub Organization | Tidak ada dependensi teknis | Hanya jika kontrol akses dirasa kurang |
+
+Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 
 ## Next action
 
