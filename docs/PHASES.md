@@ -15,7 +15,7 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 | **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab + protokol evaluasi ditetapkan | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — | — (pendukung) |
 | P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** + dataset demo, golden set, dan runner eval | Bisa didemokan 30 detik di terminal; smoke eval 5 pertanyaan dijalankan | P0 | US-01, US-02, US-09, US-14 |
 | P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 | US-03, US-04, US-05, US-10 |
-| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber; **eval 30 penuh pertama (K1, K2, K5)** | P1 | US-06, US-07, US-08, US-09 |
+| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber; **eval 30 penuh pertama + baseline; kalibrasi target KPI** | P1 | US-06, US-07, US-08, US-09 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) | — (pendukung) |
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop; **eval 30 penuh lewat PWA (paritas dengan CLI)** | P4, P2, P3 | US-11, US-12 |
 | P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 | US-13 |
@@ -110,6 +110,19 @@ File task dibuat **saat fase itu dimulai**, bukan sebelumnya. Alasannya: pemecah
 pada apa yang dipelajari di fase sebelumnya. Menulis task P5 sekarang berarti menebak.
 
 Aturan: **fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.**
+
+**Kewajiban yang sudah ditetapkan untuk file fase yang belum dibuat.** Ini bukan tebakan task — ini
+syarat yang harus ada di file tersebut saat dibuat, karena ditetapkan oleh dokumen lain:
+
+| Fase | Wajib memuat | Sumber kewajiban |
+|---|---|---|
+| **P3** | Task menjalankan eval **30 penuh dalam dua mode** (baseline tanpa memori + penuh), dan task **meninjau target KPI** berdasarkan hasilnya | `docs/PRD.md` §1.3 (kalibrasi), §3.2 (baseline) |
+| P5 | Task menjalankan eval 30 penuh **lewat PWA**, dibandingkan dengan hasil CLI | `docs/PRD.md` §3.2 |
+| P8 | Task menjalankan eval final dan mengutip angka K1–K5 apa adanya di submission | `docs/PRD.md` §1.3, `docs/SUBMISSION.md` |
+
+**Kalibrasi target KPI tidak boleh dilewati di P3.** Jika file P3 dibuat tanpa task itu, target
+`provisional` akan berubah status menjadi permanen tanpa pernah ditinjau — dan tidak ada yang
+menyadarinya.
 
 ---
 

@@ -68,12 +68,27 @@ Dicatat di `docs/PRD.md`, ringkasnya:
 - 16 user story berprioritas Must/Should/Could dengan acceptance criteria. Must = submission tidak
   jujur tanpa ini.
 - **5 KPI terukur** (`docs/PRD.md` §1.3): akurasi sitasi ≥90%, fabrikasi = 0, kelengkapan jejak 100%,
-  penegakan policy 100%, recall memori ≥80%. Semuanya **target, belum diukur**.
+  penegakan policy 100%, recall memori ≥80%. **Nol pengukuran per 2026-10-18 — semuanya target.**
+- **Asal angka target dinyatakan terbuka:** 90% dan 80% **dipilih tanpa dasar empiris** — bukan dari
+  data, benchmark, atau studi. Berstatus `provisional`.
+- **Aturan kalibrasi target** (`docs/PRD.md` §1.3): ditinjau di keluar P3 setelah eval 30 penuh
+  pertama; boleh **naik maupun turun**; wajib lewat `eval/CHANGELOG.md` dengan angka lama/baru +
+  alasan + tanggal + penyetuju; **K2 (fabrikasi) tidak boleh dikalibrasi turun** karena itu syarat
+  kejujuran, bukan target.
+- **Baseline pembanding ditetapkan** (`docs/PRD.md` §3.2): setiap run penuh dijalankan dua mode —
+  baseline (tanpa memori) dan penuh (dengan memori) — pada golden set dan model yang sama. Yang
+  dibandingkan K1, K2, K5. Tujuannya membuktikan memori benar-benar memberi nilai, bukan diasumsikan.
 - **Evaluation strategy ditetapkan** (`docs/PRD.md` §3.2): dataset sintetis ~3 tabel/200 baris, golden
   set 30 entri (20 bisa dijawab + 10 tidak), rubrik biner, runner `npm run eval`, dijalankan di keluar
   P1 (smoke 5), P3, P5, dan P8. Golden set **dibekukan sebelum P3** dengan `eval/CHANGELOG.md`.
 - **Batas eval dinyatakan**: N=30 dan dataset sintetis berarti ini **smoke eval, bukan benchmark**.
   Dilarang menyebutnya benchmark di submission.
+- **Aturan angka di submission** (`docs/SUBMISSION.md`): hanya angka yang **sudah diukur** boleh muncul
+  di README, slide, dan video. Target tidak boleh tampil sendirian tanpa pasangan hasilnya.
+- **Panjang PRD diterima apa adanya** — 168 → 325 (v2) → 383 baris (v2.1) karena schema `prd`
+  mewajibkan KPI terukur dan evaluation strategy, ditambah bagian kejujuran angka. Tidak dipecah ke
+  dokumen terpisah, tidak dipangkas. Risikonya (lebih jarang dibaca ulang) dinyatakan di header PRD,
+  dengan mitigasi: §3.2 hanya dibaca utuh di P0 T0.8, P1 T1.8, P3, dan P8.
 
 ## Keputusan yang mengikat
 
@@ -111,9 +126,11 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
   diverifikasi. Jika tidak, klaim "governed" di PRD §2.1 dan README harus diturunkan menjadi "akses
   data tersebar" sebelum masuk submission. Lihat `docs/PRD.md` §5.3.
 - **Belum satu pun KPI diukur** — K1 akurasi sitasi, K2 fabrikasi, K3 kelengkapan jejak, K4 penegakan
-  policy, K5 recall memori. Semuanya target. Pengukuran pertama (smoke 5 pertanyaan) baru di P1 T1.8.
-- **Belum ada dataset demo, golden set, atau runner eval.** Protokolnya ditetapkan di P0 T0.8, diwujudkan
-  di P1 T1.8.
+  policy, K5 recall memori. Semuanya target `provisional` tanpa dasar empiris. Pengukuran pertama
+  (smoke 5 pertanyaan) baru di P1 T1.8, dan smoke **bukan** pengukuran kualitas.
+- **Belum ada satu pun artefak eval.** `eval/dataset/`, `eval/golden/` (30 entri), `npm run eval`,
+  `eval/CHANGELOG.md`, `eval/results/`, dan mode baseline — **nol semua**. Dibuat di P1 T1.8, baseline
+  di P3. Selama itu, §3.2 PRD adalah janji tanpa bukti.
 
 ## Risiko dan blocker
 

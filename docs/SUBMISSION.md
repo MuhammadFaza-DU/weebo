@@ -7,6 +7,23 @@ Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 > **§07.3: tie-break memakai timestamp submission.** Jika Impact sama, yang submit lebih awal menang.
 > **Target internal: submit minimal 12 jam sebelum tenggat.** Transkripsi aturan: `docs/RULES.md`.
 
+## Aturan angka di materi submission
+
+**Hanya angka yang sudah diukur boleh muncul di README, slide deck, dan video.**
+
+| Situasi | Yang boleh ditulis |
+|---|---|
+| Belum ada run eval sama sekali | **Tidak menampilkan angka kualitas apa pun.** Tulis kemampuan yang bisa didemokan, bukan persentase |
+| Smoke eval 5 pertanyaan sudah jalan | Boleh menyebut cakupan kecil itu secara eksplisit, tanpa menyebutnya akurasi |
+| Eval 30 penuh sudah jalan | Boleh mengutip K1–K5 **apa adanya**, termasuk yang tidak mencapai target |
+
+**Dilarang:** menampilkan target 90%/80% sebagai kalimat tanpa penanda, karena pembaca akan
+mengiranya hasil. Jika target ditampilkan, ia harus berdampingan dengan hasil dan berlabel jelas
+(*"target 90%, hasil 86%"*), bukan sendirian.
+
+**Dilarang:** menyebut eval sebagai *benchmark*. N=30 dan dataset sintetis tidak mendukung klaim itu
+(`docs/PRD.md` §3.2).
+
 ---
 
 ## Deliverable wajib
@@ -75,6 +92,9 @@ Slide 10 tidak diwajibkan aturan, tetapi inilah satu-satunya tempat kita membukt
 bisa dipercaya — bukan hanya bisa didemokan. Kutip angka sebenarnya; slide yang mengaku "akurat"
 tanpa angka lebih lemah daripada slide yang jujur menyebut 86%.
 
+Jika eval final belum sempat dijalankan, **buang slide 10** — jangan diisi target sebagai gantinya.
+Slide yang tidak ada lebih baik daripada slide yang menampilkan janji sebagai hasil.
+
 ---
 
 ## Audit sebelum submit
@@ -89,7 +109,10 @@ tanpa angka lebih lemah daripada slide yang jujur menyebut 86%.
 - [ ] Slide deck selesai
 - [ ] **Eval final 30 penuh dijalankan; angka K1–K5 dikutip apa adanya di submission, termasuk yang
       tidak mencapai target**
+- [ ] **Tidak ada angka target yang ditampilkan tanpa pasangan hasilnya** (lihat "Aturan angka di
+      materi submission" di atas)
 - [ ] **Eval tidak disebut "benchmark"** — N=30 dan dataset sintetis tidak mendukung klaim itu
+- [ ] **Baseline vs penuh dibandingkan** dan hasilnya disebut, termasuk jika memori tidak menaikkan K1/K5
 - [ ] Dataset demo dinyatakan **sintetis** di README dan submission
 - [ ] Track dipilih di platform
 - [ ] Tim sudah dibentuk di platform dan terkunci

@@ -5,6 +5,11 @@
 **Syarat lulus:** setiap item di bawah punya status yang bisa dibuktikan. Tidak boleh ada yang
 berstatus "sepertinya bisa".
 
+**Batas fase ini — dinyatakan di depan:** P0 **tidak mengukur KPI apa pun**. Kelima KPI di
+`docs/PRD.md` §1.3 berstatus `provisional` dan **nol pengukuran** sampai P1 T1.8 dijalankan. Yang
+dihasilkan P0 hanyalah *protokol* pengukurannya (T0.8), bukan angkanya. Jangan keluar dari fase ini
+dengan klaim bahwa kualitas jawaban sudah terukur.
+
 **Status yang sah** (definisi tunggal, dipakai juga di `docs/SETUP-SPONSORS.md` §7):
 
 | Status | Arti |
@@ -174,11 +179,18 @@ akan selamanya jadi klaim yang tidak bisa dibuktikan — dan itu melubangi K1, K
 - [ ] Pastikan dataset **sintetis** dan tidak memuat data nyata milik siapa pun
 - [ ] Tetapkan siapa yang menulis jawaban harapan di golden set (penulis ≠ penilai akhir, jika bisa)
 - [ ] Tetapkan dua orang penilai K1/K2 untuk run final. Jika hanya satu yang tersedia, catat itu sebagai keterbatasan
-- [ ] Tetapkan bentuk file hasil eval (`eval/results/<tanggal>-<fase>.json`) dan field wajibnya, termasuk nama + versi model
+- [ ] Tetapkan bentuk file hasil eval (`eval/results/<tanggal>-<fase>.json`) dan field wajibnya, termasuk nama + versi model **dan penanda mode (baseline / penuh)**
+- [ ] **Catat asal angka target K1–K5 secara terbuka:** dipilih tanpa dasar empiris, berstatus `provisional`
+- [ ] **Tetapkan aturan kalibrasi** di ADR: ditinjau di keluar P3, boleh naik maupun turun, wajib lewat `eval/CHANGELOG.md` dengan angka lama/baru + alasan + tanggal + penyetuju, dan **K2 tidak boleh dikalibrasi turun**
+- [ ] Tetapkan bentuk run baseline (mode tanpa memori) dan cara penandaannya di file hasil
 - [ ] Catat keputusan di `docs/DECISIONS.md` sebagai ADR baru
 
-**Kriteria selesai:** ADR tertulis yang menyebut bentuk dataset, rubrik, penilai, dan field hasil.
-Golden set belum ditulis di sini — itu P1 (T1.8).
+**Kriteria selesai:** ADR tertulis yang menyebut bentuk dataset, rubrik, penilai, field hasil, **asal
+angka target, aturan kalibrasi, dan bentuk baseline**. Golden set belum ditulis di sini — itu P1 (T1.8).
+
+**Kenapa asal angka target wajib dicatat di sini:** angka 90% dan 80% tidak berasal dari data apa pun.
+Kalau asalnya tidak ditulis, enam hari kemudian angka itu akan tampak seperti hasil pengukuran — dan
+tidak ada yang berani mengubahnya karena dikira punya dasar. Mencatatnya sekarang mencegah itu.
 
 **Kenapa di P0, bukan P1:** bentuk dataset menentukan apa yang bisa ditanyakan di golden set. Kalau
 dataset dibuat sambil menulis pertanyaan, pertanyaan akan menyesuaikan diri dengan data yang kebetulan

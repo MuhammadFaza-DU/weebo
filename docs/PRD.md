@@ -19,8 +19,20 @@ itu, isinya sudah salah tempat.
 
 **Catatan versi.** v1 tidak memuat Executive Summary terukur dan tidak memuat Evaluation Strategy —
 dua bagian yang diwajibkan skill `prd`. v2 menambahkan keduanya dan menata ulang mengikuti schema.
-Konsekuensinya dokumen ini lebih panjang; itu diterima karena bagian yang hilang di v1 adalah bagian
-yang menentukan apakah jawaban agent bisa dipercaya.
+
+**Konsekuensi ukuran, dicatat sadar.** Dokumen ini tumbuh dari **168 baris (v1) → 325 baris (v2) →
+385 baris (v2.1, snapshot 2026-10-18)**. Pertambahan v2.1 berasal dari bagian yang mencatat kejujuran
+angka: asal target, aturan kalibrasi, baseline pembanding, dan daftar artefak yang belum ada.
+Angka ini akan bergeser setiap dokumen disunting; yang penting adalah arahnya, bukan angka tepatnya.
+
+Keputusan yang diambil: **diterima apa adanya** — §3.2 tidak dipecah ke dokumen terpisah dan tidak
+dipangkas. Alasannya, bagian yang membuat dokumen memanjang justru bagian yang menentukan apakah
+jawaban agent bisa dipercaya. Memindahkannya ke dokumen lain akan membuat PRD terlihat ringkas tetapi
+memutus keterkaitan antara "apa yang dijanjikan" dan "bagaimana dibuktikan".
+
+**Risiko dari keputusan itu, dinyatakan terbuka:** dokumen sepanjang ini lebih jarang dibaca ulang
+daripada dokumen 168 baris. Mitigasinya — §3.2 hanya perlu dibaca utuh saat P0 T0.8, P1 T1.8, P3, dan
+P8. Di luar itu, tabel KPI di §1.3 sudah cukup.
 
 ---
 
@@ -54,6 +66,30 @@ Target, **bukan** hasil pengukuran. Belum satu pun diukur. Cara ukurnya ada di �
 **Kenapa lima ini, bukan "pengguna aktif" atau "waktu hemat".** Dalam build window tidak akan ada
 pemakaian nyata, jadi metrik adopsi tidak bisa diklaim tanpa berbohong. Lima KPI di atas adalah
 kemampuan yang **bisa dibuktikan hari itu juga**, dengan hasil yang bisa diperiksa ulang orang lain.
+
+#### Status dan asal angka target
+
+**Nol pengukuran per 2026-10-18.** Kelima KPI di atas seluruhnya **target**, bukan hasil. Tidak ada
+satu pun angka yang sudah diukur.
+
+**Asal angka target: dipilih tanpa dasar empiris.** Angka 90% dan 80% ditetapkan berdasarkan penilaian
+kualitatif, bukan dari data, benchmark, atau pengukuran pendahuluan. Tidak ada studi yang mendasari
+angka itu. Ini dinyatakan terbuka supaya tidak ada yang mengira angka tersebut punya otoritas
+empiris — dan supaya tidak dipertahankan hanya karena sudah tertulis.
+
+**Karena itu target berstatus `provisional`.** Aturan kalibrasinya:
+
+| Item | Aturan |
+|---|---|
+| Kapan ditinjau | Setelah eval 30 penuh **pertama**, yaitu keluar P3 |
+| Siapa yang memutuskan | User. Agent hanya mengusulkan beserta alasannya |
+| Arah perubahan | Boleh **naik maupun turun**. Menurunkan target bukan pelanggaran — mempertahankan target yang terbukti tidak masuk akal justru lebih buruk |
+| Syarat formal | Setiap perubahan wajib tercatat di `eval/CHANGELOG.md` dengan: angka lama, angka baru, alasan, tanggal, dan siapa yang menyetujui |
+| Larangan | Mengubah target **tanpa** alasan tertulis. Mengubah target agar hasil yang buruk terlihat baik |
+| Yang tidak boleh berubah | K2 (fabrikasi) tetap **0**. Itu bukan target yang bisa dikalibrasi turun — ia syarat kejujuran |
+
+**Yang tetap berlaku setelah kalibrasi:** angka target lama tidak dihapus dari changelog. Riwayatnya
+harus terbaca, supaya terlihat kalau target pernah diturunkan dan mengapa.
 
 **Metrik pendukung, bukan KPI:** waktu jawab p50 < 30 detik pada dataset demo. Tidak dijadikan KPI
 karena bergantung pada model pihak ketiga yang latensinya di luar kendali kita.
@@ -302,9 +338,38 @@ terpanggil benar.
 | Titik | Cakupan | Alasan |
 |---|---|---|
 | Keluar P1 | **5 pertanyaan** (smoke) | Membuktikan pipa menghasilkan sitasi sama sekali, bukan mengukur kualitas |
-| Keluar P3 | **30 penuh** | Memori sudah masuk; K1, K2, K5 baru bermakna di sini |
+| Keluar P3 | **30 penuh + baseline** | Memori sudah masuk; K1, K2, K5 baru bermakna di sini. Titik kalibrasi target |
 | Keluar P5 | **30 penuh lewat PWA** | Membuktikan jalur PWA setara dengan CLI, bukan hanya UI-nya jalan |
 | P8 sebelum submit | **30 penuh, final** | Angka inilah yang dikutip di submission |
+
+#### Baseline pembanding
+
+**Masalahnya:** angka "akurasi sitasi 90%" tidak bermakna tanpa pembanding. Juri tidak bisa tahu apakah
+itu bagus, dan kita sendiri tidak bisa tahu apakah memori dan Zetaris benar-benar memberi nilai.
+
+**Karena itu setiap run penuh dijalankan dalam dua mode**, pada golden set yang sama, dengan model
+yang sama, pada waktu yang berdekatan:
+
+| Mode | Yang aktif | Yang dimatikan |
+|---|---|---|
+| **Baseline** | Model + Zetaris | Memori (tidak ada recall, tidak ada store) |
+| **Penuh** | Model + Zetaris + memori | — |
+
+**Yang dibandingkan:** K1, K2, dan K5. K3 dan K4 tidak dibandingkan karena keduanya soal
+infrastruktur, bukan kualitas jawaban.
+
+**Dua pertanyaan yang dijawab baseline:**
+
+1. Apakah memori menaikkan K1 dan K5? Jika tidak, pilar memory tidak memberi nilai terukur — dan itu
+   temuan yang harus dinyatakan, bukan disembunyikan.
+2. Apakah memori menurunkan K2 (fabrikasi)? Jika memori justru membuat agent mengarang lebih yakin,
+   itu risiko yang harus terlihat.
+
+**Baseline tidak membandingkan Zetaris vs tanpa Zetaris.** Tanpa Zetaris, agent tidak punya data sama
+sekali, sehingga hampir semua pertanyaan akan dijawab "tidak tahu" — itu membandingkan ada-tidaknya
+data, bukan kualitas reasoning. Yang dibandingkan hanya ada-tidaknya memori.
+
+**Hasil baseline di-commit bersama hasil penuh** di `eval/results/`, dengan penanda mode di dalam file.
 
 #### Siapa menilai
 
@@ -323,6 +388,24 @@ Dilarang menyebut hasil ini sebagai *benchmark*.
 - **Satu model, satu pasangan bahasa.** Tidak ada klaim lintas model.
 - **Dibuat oleh orang yang juga menulis implementasi.** Bias ada. Mitigasi: golden set dibekukan
   sebelum P3, dan rubriknya biner sehingga sulit ditafsirkan longgar.
+
+#### Belum ada — status per 2026-10-18
+
+Ini rencana, bukan sesuatu yang sudah berdiri. Jangan merujuk ke bagian ini seolah artefaknya ada.
+
+| Artefak | Status | Dibuat di |
+|---|---|---|
+| `eval/dataset/` (dataset sintetis) | **belum ada** | P1 T1.8 |
+| `eval/golden/` (30 entri) | **belum ada** | P1 T1.8 |
+| `npm run eval` (runner) | **belum ada** | P1 T1.8 |
+| `eval/CHANGELOG.md` | **belum ada** | P1 T1.8 (dibuat saat pembekuan) |
+| `eval/results/` (hasil run) | **belum ada** | P1 T1.8 (run smoke pertama) |
+| Mode baseline | **belum ada** | P3 (run penuh pertama) |
+| Angka K1–K5 | **belum ada satu pun** | P1 (smoke, bukan pengukuran kualitas) |
+
+**Konsekuensi yang harus diingat:** selama P1 T1.8 belum selesai, seluruh §3.2 ini adalah janji tanpa
+bukti. Jangan mengutip "kami mengevaluasi kualitas jawaban" di dokumen mana pun sebelum runner benar-
+benar berjalan dan hasilnya ada di `eval/results/`.
 
 ### 3.3 Model requirements
 

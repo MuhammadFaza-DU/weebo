@@ -107,6 +107,22 @@ Bentuk dataset dan rubrik sudah ditetapkan di **P0 T0.8**. Task ini mewujudkanny
 **Kriteria selesai:** `npm run eval` berjalan dan menghasilkan file hasil; 5 pertanyaan smoke dijalankan
 dan hasilnya dilampirkan apa adanya, termasuk jika ada yang gagal.
 
+**Status artefak — nol per 2026-10-18.** Dataset, golden set, runner, dan changelog **belum ada sama
+sekali**. Task ini membuat semuanya dari nol. Perkirakan sebagai task terberat di P1: menulis 30 entri
+golden set dengan jawaban harapan adalah kerja manual, bukan kerja kode.
+
+**Risiko yang harus diwaspadai di task ini:**
+
+| Risiko | Tanda | Tindakan |
+|---|---|---|
+| Golden set ditulis sambil menyesuaikan diri dengan implementasi | Pertanyaan yang "kebetulan" cocok dengan yang bisa dijawab | Tulis pertanyaan **sebelum** menjalankan eval pertama; jangan revisi setelah melihat hasil |
+| 30 entri terasa terlalu banyak di tengah P1 | Task melebar jauh dari 2 jam | Pecah: 10 entri pertama untuk smoke, 20 sisanya jadi task lanjutan. Jangan kurangi jumlahnya diam-diam |
+| Hasil smoke buruk lalu golden set "diperbaiki" | Commit yang mengubah golden set tanpa entri changelog | Larang. Hasil buruk dilaporkan, bukan dihilangkan |
+
+**Angka target masih `provisional` di titik ini.** Smoke eval P1 **tidak** dipakai untuk menilai apakah
+target 90%/80% tercapai — 5 pertanyaan terlalu sedikit. Kalibrasi target dilakukan di keluar P3
+(`docs/PRD.md` §1.3). Jangan menurunkan target di P1 karena smoke eval terlihat buruk.
+
 > **Jangan menyempurnakan golden set agar hasilnya bagus.** Kalau pertanyaan gagal dijawab, itu temuan
 > yang benar dan berharga. Setelah dibekukan, perubahan hanya lewat `eval/CHANGELOG.md` dengan alasan.
 
