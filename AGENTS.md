@@ -49,7 +49,8 @@ Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
 
 - Integrasi **Zetaris** dan **Meterless** harus benar-benar dipanggil saat runtime di kode — bukan
   hanya disebut di README.
-- Pengembangan menggunakan **Cursor**.
+- Pengembangan memakai **Cursor** (syarat lomba). Cara tim memakainya: **review**, bukan menulis kode
+  — lihat §20.
 - **NVIDIA Nemotron** diintegrasikan di tempat ia memberi nilai nyata.
 - Deliverable: repo GitHub dengan README (setup, usage, dependencies), video demo 1–4 menit, dan
   slide deck.
@@ -159,15 +160,20 @@ punya rencana task. **Fase tidak boleh dimulai tanpa file task-nya dibuat lebih 
 Panduan memecah fase menjadi task (ukuran, format, kriteria selesai yang baik vs buruk, larangan):
 lihat `docs/PHASES.md`.
 
-**Protokol keluar fase (wajib, lima-limanya):**
+**Protokol keluar fase (wajib, keenam-enamnya):**
 
 1. Deliverable bisa didemokan.
 2. `CHECKPOINT.md` diperbarui.
 3. Commit dibuat dan tag `stable-YYYY-MM-DD-vN` ditawarkan.
 4. Approval eksplisit user diminta dan diterima.
 5. Laporan verifikasi disampaikan, termasuk apa yang belum terverifikasi.
+6. `docs/CURSOR-LOG.md` diperbarui — agent **wajib menanyakan** apakah ada review di Cursor pada fase
+   ini, lalu mencatat jawabannya apa adanya, termasuk "tidak ada".
 
-Jangan memulai fase berikutnya sebelum kelima hal ini selesai.
+Jangan memulai fase berikutnya sebelum keenam hal ini selesai.
+
+**Tentang Cursor (lihat §20).** Cursor dipakai untuk **review**, bukan menulis kode. Jangan pernah
+menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 
 ## 9. Task
 
@@ -273,3 +279,32 @@ Perubahan yang memengaruhi setidaknya satu dari:
 - Ajukan pertanyaan melalui popup jika tool tersedia.
 - Jangan menebak jika keputusan dapat mengubah scope, biaya, keamanan, atau arah produk.
 - Jangan membuat asumsi yang tidak bisa diverifikasi; nyatakan ketidakpastian secara eksplisit.
+
+## 20. Cursor — cara pakai yang benar
+
+Aturan lomba mewajibkan tim memakai Cursor dan menjelaskan pemakaiannya di submission.
+
+**Cara tim ini memakai Cursor: untuk review, bukan menulis kode.**
+
+- Seluruh penulisan kode dilakukan dengan agent harness lain.
+- Cursor dipakai untuk membaca, menelusuri, dan mereview perubahan.
+- Tim tidak membangun di dalam Cursor. Jangan menulis sebaliknya di dokumen mana pun.
+
+**Kewajiban agent:**
+
+1. Pada setiap penutupan fase, **tanyakan** apakah ada review di Cursor pada fase itu.
+2. Catat jawabannya di `docs/CURSOR-LOG.md` apa adanya, **termasuk "tidak ada"**.
+3. Jangan mengarang entri log. Log kosong lebih baik daripada log palsu.
+4. Jangan menulis klaim "kode ditulis di Cursor" dalam bentuk apa pun.
+
+**Yang dilarang:**
+
+- Membuat entri log untuk pekerjaan yang tidak terjadi.
+- Menyarankan mengambil tangkapan layar Cursor untuk pekerjaan yang dikerjakan di alat lain.
+- Menulis di submission bahwa Cursor dipakai untuk menulis kode.
+
+**Yang sah dan dianjurkan:**
+
+- Memakai Cursor untuk review nyata, lalu mencatat apa yang di-review.
+- Menulis bagian *"what needs work"* pada Product Feedback berdasarkan pengalaman nyata dengan plan
+  yang dipakai.

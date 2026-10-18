@@ -116,7 +116,7 @@ not in the README.
 | **Zetaris** | Data harness — live, governed queries across scattered sources via MCP/REST |
 | **Meterless** | Context layer — H-MEM memory engine (vendored, Apache-2.0), with a custom embedding adapter replacing its reference mock |
 | **NVIDIA Nemotron** | Free-tier model path via NVIDIA NIM; the default zero-setup experience |
-| **Cursor** | Development environment used to build Weebo |
+| **Cursor** | Review surface — code is written in other agent harnesses, Cursor is used to review it |
 
 Integration evidence, transcripts, and the exact call sites live in
 [`docs/SPONSORS.md`](docs/SPONSORS.md). Account setup: [`docs/SETUP-SPONSORS.md`](docs/SETUP-SPONSORS.md).

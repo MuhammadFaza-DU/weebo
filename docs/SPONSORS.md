@@ -105,15 +105,25 @@ Implementasi sendiri direncanakan pasca-lomba (ADR-012).
 
 ---
 
-## 4. Cursor — lingkungan pengembangan
+## 4. Cursor — alat review
 
 | Item | Isi |
 |---|---|
-| Peran | Lingkungan pengembangan tim selama build window |
-| Status | **Belum dikonfirmasi** — akses akun belum diverifikasi |
+| Peran di Weebo | **Review kode**, bukan menulis kode |
+| Dipakai untuk | Membaca, menelusuri, dan mereview perubahan dari agent harness lain |
+| Tidak dipakai untuk | Menulis atau membangun kode |
+| Log | `docs/CURSOR-LOG.md`, diisi setiap penutupan fase |
+| Status | **Belum dipakai** |
 
-Bagian ini akan diisi dengan catatan nyata: bagaimana Cursor dipakai, bagian mana yang terbantu, dan
-bagian mana yang kurang. Bukan testimoni kosong.
+**Kenapa review, bukan build:** tim memakai agent harness masing-masing untuk menulis kode. Cursor
+berperan sebagai permukaan review — tempat perubahan dibaca ulang, dinavigasi, dan diperiksa
+konsistensinya terhadap arsitektur.
+
+**Yang dicatat di submission:** apa yang benar-benar di-review, dan apa yang kurang dari plan yang
+dipakai. Termasuk bagian *"what needs work"* — pengalaman nyata dengan kuota Free adalah feedback yang
+sah dan berharga bagi penyelenggara.
+
+**Jangan menulis** bahwa kode ditulis di Cursor. Itu tidak benar dan tidak perlu.
 
 ---
 

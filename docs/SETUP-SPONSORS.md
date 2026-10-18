@@ -80,7 +80,7 @@ Rencana: engine open source, di-*vendor* lewat `npx degit`.
 
 ## 5. Cursor
 
-Rencana: dipakai selama build window (syarat lomba).
+Rencana: dipakai untuk **review**, bukan menulis kode. Seluruh penulisan kode memakai agent harness lain.
 
 **Aturan lomba (kutipan):** *"Every submission must integrate Zetaris and Meterless, and teams must
 use Cursor for development."* Submission juga wajib menjelaskan *"how Cursor was used during
@@ -97,16 +97,14 @@ development"*.
 
 - [ ] Konfirmasi plan yang dipakai: ______________
 - [ ] Pasang Cursor, buka repo ini
-- [ ] Uji satu agent request, catat apakah berhasil
+- [ ] Lakukan satu review nyata pada kode hasil fase berjalan
 - [ ] Catat batasan yang teramati (kuota, model)
-- [ ] Putuskan pembagian: bagian mana yang dikerjakan di Cursor
-- [ ] Catat jujur di submission bagaimana Cursor dipakai
+- [ ] Isi `docs/CURSOR-LOG.md` setiap penutupan fase
 
-**Yang harus dibuktikan:** keputusan tertulis tentang cara memenuhi syarat lomba, beserta catatan
-jujur tentang batasan plan yang dipakai.
+**Yang harus dibuktikan:** log review nyata di `docs/CURSOR-LOG.md`, bukan klaim.
 
-> Catatan: verifikasi kepatuhan "use Cursor" dilakukan lewat narasi submission, bukan inspeksi kode.
-> Jangan menulis klaim yang tidak sesuai kenyataan.
+> Aturan lengkap: `AGENTS.md` §20. Jangan menulis di dokumen mana pun bahwa kode **ditulis** di
+> Cursor — kode ditulis di alat lain, Cursor dipakai untuk review.
 
 ---
 

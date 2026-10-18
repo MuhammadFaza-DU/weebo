@@ -13,7 +13,7 @@ Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 | 1 | Repo GitHub publik + README (setup, usage, dependencies) | | | Harus bisa dijalankan dari clone bersih |
 | 2 | Video demo 1–4 menit (YouTube/Vimeo, publik) | | | Menunjukkan workflow utama + integrasi sponsor |
 | 3 | Slide deck | | | Masalah, user, solusi, arsitektur, stack, sponsor, visual, future |
-| 4 | Penjelasan integrasi Zetaris + Meterless + Cursor + NVIDIA | | | Ada di `docs/SPONSORS.md`, diringkas di submission |
+| 4 | Penjelasan integrasi Zetaris + Meterless + Cursor + NVIDIA | | | Ada di `docs/SPONSORS.md`, diringkas di submission. Untuk Cursor: pakai isi `docs/CURSOR-LOG.md` |
 | 5 | Pemilihan track (Track 03 — Reasoning Architecture) | | | |
 | 6 | Deklarasi pre-existing component | | | Lihat `PREEXISTING.md` |
 

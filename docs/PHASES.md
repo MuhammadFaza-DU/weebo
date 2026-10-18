@@ -103,15 +103,17 @@ Aturan: **fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.**
 
 ---
 
-## Protokol keluar fase (wajib, lima-limanya)
+## Protokol keluar fase (wajib, keenam-enamnya)
 
 1. Deliverable bisa didemokan.
 2. `CHECKPOINT.md` diperbarui.
 3. Commit dibuat dan tag `stable-YYYY-MM-DD-vN` ditawarkan ke user.
 4. Approval eksplisit user diminta dan diterima.
 5. Laporan verifikasi disampaikan, termasuk apa yang **belum** terverifikasi.
+6. `docs/CURSOR-LOG.md` diperbarui — agent wajib menanyakan apakah ada review di Cursor pada fase ini,
+   lalu mencatat jawabannya apa adanya, termasuk "tidak ada".
 
-Jangan memulai fase berikutnya sebelum kelima hal ini selesai.
+Jangan memulai fase berikutnya sebelum keenam hal ini selesai.
 
 ---
 

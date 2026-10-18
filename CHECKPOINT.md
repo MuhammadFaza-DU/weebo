@@ -57,6 +57,8 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 - Free tier: katalog model + gateway Cloudflare Worker yang memegang key NVIDIA NIM, kuota per IP.
 - Merge: hanya `@MuhammadFaza-DU`.
 - Catatan belajar pribadi disimpan di luar repo dan tidak pernah di-commit.
+- **Cursor dipakai untuk review, bukan menulis kode.** Log-nya di `docs/CURSOR-LOG.md`, diisi setiap
+  penutupan fase. Jangan mengarang entri log atau mengklaim kode ditulis di Cursor (AGENTS.md §20).
 
 ## Belum terverifikasi
 

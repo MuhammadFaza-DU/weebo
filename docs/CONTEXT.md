@@ -183,11 +183,12 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 |---|---|
 | Fase | Gate hasil, bukan durasi. Tanpa timebox |
 | Task | ≤ 2 jam, kriteria selesai objektif, dicatat di `docs/phases/` |
-| Keluar fase | 5 syarat: demo-able, CHECKPOINT, commit+tag, approval, laporan verifikasi |
+| Keluar fase | 6 syarat: demo-able, CHECKPOINT, commit+tag, approval, laporan verifikasi, **log Cursor** |
 | Subagent | Default implementer + reviewer read-only; **tanya user dulu** native atau subagent |
 | Merge | Hanya `@MuhammadFaza-DU`; CI wajib hijau; review code owner wajib |
 | Desain | Canvas penuh + HALT sebelum kode UI |
 | Bahasa | Dokumen internal Indonesia, materi publik Inggris |
+| Cursor | Dipakai untuk **review**, bukan menulis kode. Log diisi agent setiap fase |
 
 ---
 
