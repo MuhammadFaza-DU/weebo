@@ -456,6 +456,92 @@ if (agentsText === null) {
 }
 
 // ---------------------------------------------------------------------------
+// Pemeriksaan 8: kontradiksi klaim berisiko tinggi (wajib vs opsional)
+// ---------------------------------------------------------------------------
+//
+// Kenapa ada: pemeriksa bentuk tidak bisa menangkap dua dokumen yang menyatakan
+// hal BERLAWANAN dengan kata berbeda. Contoh nyata yang pernah lolos:
+// `docs/RULES.md` §5.1 "teams must use Cursor for development" sementara
+// dokumen lain menulis "Cursor opsional". Keduanya lolos semua pemeriksaan di
+// atas, karena tidak ada satu pun aturan bentuk yang dilanggar.
+//
+// Ini heuristik, bukan pembacaan makna. Ruang lingkupnya sengaja sempit:
+// hanya istilah sponsor yang kewajibannya bisa membuat submission gugur.
+//
+// Penanganan negasi: "tidak wajib" MENGANDUNG "wajib". Negasi harus dibuang
+// lebih dulu, kalau tidak klaim yang sama terdeteksi sebagai wajib sekaligus
+// opsional lalu saling meniadakan (bug ini benar-benar terjadi di prototipe).
+
+const PROTECTED_TERMS = ["Zetaris", "Meterless", "Cursor", "NVIDIA"];
+
+// `integrat` menangkap bentuk Inggris (integrate/integration).
+// `integrasi` menangkap bentuk Indonesia (integrasi, diintegrasikan,
+// mengintegrasikan). Keduanya wajib ada: tanpa `integrasi`, kalimat
+// "NVIDIA wajib diintegrasikan" lolos tanpa terdeteksi — bug ini benar-benar
+// terjadi dan hanya tertangkap oleh selftest.
+const USAGE_RE =
+  /(integrat|integrasi|mengintegrasikan|memakai|memakainya|\buse\b|\bused\b|digunakan|dipakai|development|pengembangan)/i;
+
+// Filter konteks: hanya klaim tentang kewajiban bagi submission/tim.
+// Tanpa filter ini, kalimat seperti "Zetaris wajib diakses lewat runtime"
+// (soal transport, bukan soal kewajiban lomba) akan salah dianggap kontradiksi.
+const CONTEXT_RE = /(submission|peserta|\btim\b|\bteam\b|lomba|hackathon|syarat|requirement)/i;
+
+const NEGATED_REQUIRED_RE =
+  /(tidak\s+wajib|tidak\s+diwajibkan|not\s+required|not\s+mandatory|tidak\s+harus)/gi;
+
+const OPTIONAL_RE =
+  /(\boptional\b|\bopsional\b|tidak\s+wajib|tidak\s+diwajibkan|not\s+required|\bnot\s+mandatory\b|tidak\s+harus)/i;
+
+const REQUIRED_RE =
+  /(\bmust\b|\bwajib\b|\bdiwajibkan\b|\brequired\b|\bmandatory\b|syarat\s+wajib)/i;
+
+const claimFindings = [];
+
+for (const abs of mdFiles) {
+  const rel = toPosix(relative(ROOT, abs));
+  const lines = stripFencedCode(readText(abs));
+
+  lines.forEach((line, i) => {
+    if (!CONTEXT_RE.test(line)) return;
+    if (!USAGE_RE.test(line)) return;
+
+    for (const term of PROTECTED_TERMS) {
+      if (!line.includes(term)) continue;
+
+      const stripped = line.replace(NEGATED_REQUIRED_RE, " ");
+      const isOptional = OPTIONAL_RE.test(line);
+      const isRequired = REQUIRED_RE.test(stripped) && !isOptional;
+
+      if (isRequired) {
+        claimFindings.push({ term, kind: "wajib", file: rel, line: i + 1, text: line.trim() });
+      } else if (isOptional) {
+        claimFindings.push({ term, kind: "opsional", file: rel, line: i + 1, text: line.trim() });
+      }
+    }
+  });
+}
+
+for (const term of PROTECTED_TERMS) {
+  const forTerm = claimFindings.filter((f) => f.term === term);
+  const required = forTerm.filter((f) => f.kind === "wajib");
+  const optional = forTerm.filter((f) => f.kind === "opsional");
+
+  if (required.length > 0 && optional.length > 0) {
+    const first = required[0];
+    const second = optional[0];
+    fail(
+      "kontradiksi-klaim",
+      second.file,
+      second.line,
+      `"${term}" dinyatakan OPSIONAL di sini, tetapi WAJIB di ${first.file}:${first.line}. ` +
+        `Tinjau: ini kontradiksi nyata, atau dua klaim berbeda? Jika berbeda, perjelas cakupannya.`,
+    );
+  }
+}
+
+
+// ---------------------------------------------------------------------------
 // Laporan
 // ---------------------------------------------------------------------------
 
@@ -478,6 +564,7 @@ const label = {
   "rujukan-task": "Rujukan task fase",
   "tabel-rusak": "Integritas tabel",
   "fakta-turunan": "Fakta turunan",
+  "kontradiksi-klaim": "Kontradiksi klaim (wajib vs opsional)",
 };
 
 console.log(`Memeriksa ${mdFiles.length} berkas Markdown.\n`);
@@ -513,6 +600,18 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log("LULUS — tidak ada inkonsistensi yang terdeteksi.");
-console.log("Batas: pemeriksa ini hanya memeriksa bentuk yang bisa dibaca mesin.");
-console.log("Keselarasan makna tetap tanggung jawab penulis (AGENTS.md §21).");
+console.log("LULUS — tidak ada kerusakan BENTUK yang terdeteksi.");
+console.log("");
+console.log("INI BUKAN PERNYATAAN BAHWA ISI DOKUMEN BENAR.");
+console.log("Yang TIDAK diperiksa:");
+console.log("  - apakah dua dokumen menyatakan hal yang saling bertentangan");
+console.log("    dengan kata berbeda (mis. 'wajib' vs 'harus' vs 'must');");
+console.log("  - apakah sebuah kalimat masih sesuai kenyataan;");
+console.log("  - apakah angka dalam prosa masih benar (hanya bentuk terdaftar");
+console.log("    yang diperiksa, mis. jumlah urutan baca §1.1);");
+console.log("  - apakah tanggal atau nilai yang diulang di beberapa berkas cocok.");
+console.log("");
+console.log("Yang DIPERIKSA sebagian: kontradiksi 'wajib vs opsional' hanya untuk");
+console.log(`  istilah ${PROTECTED_TERMS.join(", ")} — heuristik sempit, bukan pembacaan makna.`);
+console.log("");
+console.log("Keselarasan makna tetap tanggung jawab penulis (AGENTS.md §21.7).");

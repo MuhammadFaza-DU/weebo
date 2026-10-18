@@ -80,6 +80,20 @@ function reset() {
     join(WORK, "docs", "phases", "P1-walking-skeleton.md"),
     ["# P1", "", "### T1.1 — Satu", "", "### T1.2 — Dua", ""].join("\n"),
   );
+
+  // Sumber klaim "wajib" untuk menguji deteksi kontradiksi.
+  writeFileSync(
+    join(WORK, "docs", "RULES.md"),
+    [
+      "# RULES",
+      "",
+      "## 05 What you can use",
+      "",
+      "- **5.1** Every submission must integrate Zetaris and Meterless, and teams must use Cursor for",
+      "  development.",
+      "",
+    ].join("\n"),
+  );
 }
 
 function runChecker() {
@@ -227,6 +241,30 @@ writeFileSync(join(WORK, "suspect.md"), "Kerjakan T2.1 nanti.\n");
     console.log("  GAGAL rujukan ke fase tanpa berkas tidak menggagalkan");
   }
 }
+
+console.log("\nKontradiksi klaim (wajib vs opsional) — heuristik sempit:");
+
+expectFail(
+  "kontradiksi Cursor: opsional vs RULES yang mewajibkan",
+  "Cursor bersifat opsional untuk pengembangan oleh tim.\n",
+  "dinyatakan OPSIONAL",
+);
+
+expectFail(
+  "kontradiksi NVIDIA: wajib dan opsional di berkas berbeda",
+  "NVIDIA wajib diintegrasikan oleh tim.\nNVIDIA opsional dipakai oleh tim.\n",
+  "dinyatakan OPSIONAL",
+);
+
+expectPass(
+  "negasi 'tidak wajib' tidak dihitung sebagai wajib",
+  "NVIDIA tidak wajib diintegrasikan oleh tim.\n",
+);
+
+expectPass(
+  "klaim transport tanpa konteks lomba tidak dihitung",
+  "Zetaris opsional dipakai lewat runtime.\n",
+);
 
 console.log("\nBerkas di luar repo (di-ignore) harus DILEWATI:");
 reset();

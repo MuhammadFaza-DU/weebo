@@ -64,13 +64,16 @@ Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
 **Syarat wajib yang tidak boleh dilanggar:**
 
 - Integrasi **Zetaris** dan **Meterless** harus benar-benar dipanggil saat runtime di kode — bukan
-  hanya disebut di README. *(Kutipan aturan: "Every submission must integrate Zetaris and Meterless.")*
+  hanya disebut di README.
 - Pengembangan memakai **Cursor** (syarat lomba). Cara tim memakainya: **review**, bukan menulis kode
-  — lihat §20. *(Kutipan aturan: "teams must use Cursor for development.")*
+  — lihat §20.
 - Deliverable: repo GitHub dengan README (setup, usage, dependencies), video demo 1–4 menit, slide
   deck, penjelasan integrasi sponsor, pemilihan track, dan deklarasi pre-existing. Daftar lengkap:
   `docs/SUBMISSION.md`.
 - Semua materi submission berbahasa Inggris.
+
+> **Sumber kewajiban di atas:** `docs/RULES.md` §5.1 dan §6.1–§6.4. Kutipan verbatim tidak diulang di
+> sini (§21.7) — `docs/RULES.md` adalah satu-satunya sumbernya.
 
 **Sangat dianjurkan, bukan syarat diskualifikasi:**
 
@@ -348,6 +351,8 @@ kebebasan berkarya, melainkan isi `main`.
 - Di akhir pekerjaan, laporkan: skill yang dipakai, keputusan penting, hasil verifikasi, dan hal yang
   belum terverifikasi.
 - Sebelum commit yang menyentuh dokumen, jalankan `node scripts/check-docs.mjs` (§21.4).
+- Jika commit menyentuh dokumen di peta dampak §21.3, lakukan **review makna** dan nyatakan hasilnya
+  dalam satu baris (§21.7). Keluaran `LULUS` **bukan** pengganti review makna.
 - Untuk pekerjaan UI, ikuti protokol canvas-first, approval gate, dan pemeriksaan kualitas visual.
 - Untuk pekerjaan data atau backend, ikuti prinsip test-first, contract-first, validasi input, dan
   verifikasi yang dapat diulang.
@@ -474,6 +479,10 @@ baru yang belum di-ignore), sehingga berkas yang di-exclude seperti `rea.md` tid
 disengaja: tanpa itu, hasil di mesin lokal berbeda dari CI, dan pemeriksa akan gagal karena berkas
 yang tidak akan pernah di-commit — alarm palsu yang membuat orang berhenti mempercayainya.
 
+**Keluaran `LULUS` berbunyi "tidak ada kerusakan BENTUK", bukan "isi dokumen benar".** Pemeriksa
+mencetak daftar hal yang **tidak** diperiksa setiap kali lulus. Jangan meringkasnya menjadi "dokumen
+sudah konsisten" — itu klaim yang tidak didukung pemeriksa (§21.5, §21.7).
+
 CI menjalankan pemeriksa yang sama pada setiap push dan pull request. **Jangan mengakali pemeriksa**
 dengan melemahkan pola atau menambahkan pengecualian tanpa alasan tertulis — itu menghapus satu-satunya
 penjaga yang kita punya.
@@ -483,12 +492,23 @@ kesalahan. Jalankan bila `check-docs.mjs` diubah.
 
 ### 21.5 Batas yang harus dinyatakan
 
-**Pemeriksa hanya memeriksa bentuk yang bisa dibaca mesin.** Ia tidak tahu apakah sebuah kalimat masih
-benar secara makna, apakah sebuah klaim masih sesuai kenyataan, atau apakah dua dokumen menceritakan hal
-yang sama dengan kata berbeda.
+**Pemeriksa hanya memeriksa bentuk yang bisa dibaca mesin.**
 
-Keselarasan makna **tetap tanggung jawab penulis.** Pemeriksa yang lulus bukan bukti dokumen benar —
-hanya bukti tidak ada kerusakan struktural.
+Ia **tidak** tahu apakah:
+
+- dua dokumen menyatakan hal yang saling bertentangan dengan kata berbeda
+  (`"wajib"` vs `"harus"` vs `"must"` vs `"required"`);
+- sebuah kalimat masih sesuai kenyataan;
+- angka di dalam prosa masih benar (hanya bentuk terdaftar yang diperiksa, mis. jumlah urutan baca §1.1);
+- tanggal atau nilai yang diulang di beberapa berkas cocok;
+- sebuah klaim sudah tidak berlaku karena keadaan berubah.
+
+Satu-satunya pengecualian sebagian: **kontradiksi `wajib` vs `opsional`** untuk `Zetaris`, `Meterless`,
+`Cursor`, dan `NVIDIA`. Itu heuristik sempit, bukan pembacaan makna. Kalimat yang tidak memakai kata
+kerja pemakaian, atau tidak menyebut tim/submission, tidak akan terdeteksi.
+
+**Karena itu: `LULUS` bukan bukti dokumen benar.** Ia hanya bukti tidak ada kerusakan struktural.
+Dilarang melaporkan "dokumen sudah konsisten" berdasarkan keluaran pemeriksa saja — lihat §21.7.
 
 ### 21.6 Kalau sinkronisasi tidak bisa dilakukan sekarang
 
@@ -499,3 +519,46 @@ Kadang dokumen tujuan belum ada (mis. berkas fase P2–P8 belum dibuat). Dalam k
 3. Jangan menghapus kewajiban itu diam-diam.
 
 Utang yang tercatat boleh menunggu. Utang yang tidak tercatat akan hilang.
+
+### 21.7 Review makna — kewajiban yang tidak bisa diotomatiskan
+
+Pemeriksa menjawab *"apakah bentuknya rusak?"*. Ia tidak menjawab *"apakah isinya masih benar?"*.
+Pertanyaan kedua **wajib dijawab manusia atau agent dengan membaca**, dan hasilnya **wajib dinyatakan**.
+
+#### Kapan wajib
+
+Setiap kali sebuah commit menyentuh dokumen yang muncul di **peta dampak §21.3**. Tidak perlu untuk
+typo atau perubahan format.
+
+#### Apa yang dilakukan
+
+1. **Baca kedua sisi.** Dokumen yang diubah, dan dokumen yang tercantum di kolom kanan peta dampak.
+2. **Bandingkan klaimnya, bukan pilihan katanya.** `"wajib"` dan `"harus"` dan `"must"` adalah klaim
+   yang sama. Itu **bukan** inkonsistensi.
+3. **Nyatakan hasilnya dalam satu baris** di laporan akhir, menyebut apa yang dibandingkan:
+
+   ```
+   Review makna: AGENTS.md §2 dibandingkan dengan docs/RULES.md §5.1, docs/PRD.md §6 — klaim sama.
+   ```
+
+   Jika berbeda, tulis bedanya dan **jangan perbaiki sendiri** — laporkan ke user, karena perbedaan
+   klaim bisa berarti keputusan berubah, bukan kesalahan penulisan.
+
+#### Dua larangan
+
+**1. Dilarang menyeragamkan kata tanpa alasan.** Menemukan `"wajib"` di satu tempat dan `"harus"` di
+tempat lain **bukan** alasan menyunting apa pun. Yang berbahaya adalah dua **klaim** yang berbeda, bukan
+dua **kata** yang berbeda. Menyeragamkan kata hanya menghasilkan churn dan kesempatan memasukkan
+kesalahan baru.
+
+**2. Dilarang menyalin ulang fakta yang sudah punya sumber.** Jika menemukan fakta yang sama ditulis di
+beberapa tempat (§21.1), **ganti salinannya dengan rujukan** ke sumber — bukan diseragamkan katanya.
+Rujukan menghapus titik yang bisa menyimpang; penyeragaman kata hanya menyamarkan titik itu.
+
+Contoh yang benar: bukan menyalin ulang *"Zetaris, Meterless, dan Cursor wajib"* ke dokumen kelima,
+tetapi menulis *"lihat `docs/RULES.md` §5.1"*.
+
+#### Yang harus dinyatakan jujur
+
+Jika review makna **tidak** dilakukan (mis. karena waktu), tulis itu apa adanya di laporan:
+*"review makna belum dilakukan untuk perubahan ini"*. Jangan menutupinya dengan keluaran `LULUS`.

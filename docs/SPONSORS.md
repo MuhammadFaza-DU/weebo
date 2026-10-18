@@ -117,8 +117,8 @@ stabil (ADR-012).
 | Log | `docs/CURSOR-LOG.md`, diisi setiap penutupan fase |
 | Status | **Belum dipakai** |
 
-**Tuntutan aturan:** §5.1 *"teams must use Cursor for development"* dan §6.4 *"how Cursor was used
-during development"*. Keduanya ada di `docs/RULES.md`.
+**Tuntutan aturan:** `docs/RULES.md` §5.1 (pemakaian Cursor wajib) dan §6.4 (wajib menjelaskan
+pemakaiannya). Kutipan verbatim tidak diulang di sini (§21.7).
 
 **Kenapa review, bukan build:** tim memakai agent harness masing-masing untuk menulis kode. Cursor
 berperan sebagai permukaan review — tempat perubahan dibaca ulang, dinavigasi, dan diperiksa

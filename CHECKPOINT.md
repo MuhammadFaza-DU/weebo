@@ -50,9 +50,15 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
 - `AGENTS.md` §21: **aturan sinkronisasi lintas dokumen** — larangan duplikasi fakta turunan, pemicu
   kewajiban sync, peta dampak (file mana memengaruhi file mana), dan kewajiban menjalankan pemeriksa
   sebelum commit.
-- `scripts/check-docs.mjs`: pemeriksa konsistensi dokumen tanpa dependensi (8 kelas pemeriksaan).
-  `scripts/check-docs.selftest.mjs`: selftest 16 kasus yang menyuntik kerusakan untuk membuktikan
+- `scripts/check-docs.mjs`: pemeriksa konsistensi dokumen tanpa dependensi (9 kelas pemeriksaan,
+  termasuk **detektor kontradiksi `wajib` vs `opsional`** untuk Zetaris/Meterless/Cursor/NVIDIA).
+  `scripts/check-docs.selftest.mjs`: selftest 20 kasus yang menyuntik kerusakan untuk membuktikan
   pemeriksa masih bekerja. Keduanya berjalan di CI pada setiap push dan PR.
+- `AGENTS.md` §21.7: **review makna wajib** saat peta dampak §21.3 terpicu — karena pemeriksa tidak
+  bisa membaca makna. Dua larangan eksplisit: (a) dilarang menyeragamkan kata tanpa alasan,
+  (b) dilarang menyalin ulang fakta yang sudah punya sumber — ganti dengan rujukan.
+- Keluaran pemeriksa diubah: dari `"tidak ada inkonsistensi"` menjadi **`"tidak ada kerusakan BENTUK"`**
+  disertai daftar hal yang **tidak** diperiksa. Ini mencegah `LULUS` disalahartikan sebagai "isi benar".
 - **Pemeriksa memakai `git ls-files`, bukan menelusuri disk.** Ditemukan dari selisih lokal (23 berkas)
   vs CI (22 berkas): `rea.md` adalah catatan lokal yang di-exclude. Tanpa perbaikan ini, pemeriksa
   bisa gagal di mesin lokal karena berkas yang tidak akan pernah masuk repo.
@@ -144,6 +150,12 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 - **Belum ada satu pun artefak eval.** `eval/dataset/`, `eval/golden/` (30 entri), `npm run eval`,
   `eval/CHANGELOG.md`, `eval/results/`, dan mode baseline — **nol semua**. Dibuat di P1 T1.8, baseline
   di P3. Selama itu, §3.2 PRD adalah janji tanpa bukti.
+- **Ditemukan saat review makna 2026-10-18 — klaim "materi submission wajib Bahasa Inggris" tidak
+  punya dasar di `docs/RULES.md`.** Klaim itu muncul di `AGENTS.md` §1 (Bahasa dokumen), `AGENTS.md`
+  §2, dan `docs/PRD.md` baris 4 — tetapi transkripsi aturan **tidak memuat kewajiban bahasa sama
+  sekali**. §5.3 justru menyebut *"Any language, framework, model or cloud"* (soal stack, bukan
+  bahasa submission). **Belum diperbaiki — menunggu keputusan user.** Pilihan: (a) turunkan statusnya
+  dari "syarat wajib lomba" menjadi keputusan tim, atau (b) hapus kewajibannya.
 
 ## Risiko dan blocker
 

@@ -84,9 +84,8 @@ Rencana: engine open source, di-*vendor* lewat `npx degit`.
 
 Rencana: dipakai untuk **review**, bukan menulis kode. Seluruh penulisan kode memakai agent harness lain.
 
-**Aturan lomba (kutipan):** *"Every submission must integrate Zetaris and Meterless, and teams must
-use Cursor for development."* Submission juga wajib menjelaskan *"how Cursor was used during
-development"*.
+**Aturan lomba:** lihat `docs/RULES.md` §5.1 (kewajiban Zetaris, Meterless, dan Cursor) dan §6.4
+(kewajiban menjelaskan pemakaian Cursor). Kutipan verbatim tidak diulang di sini (§21.7).
 
 **Fakta terverifikasi 2026-10-18 (dari halaman resmi Cursor):**
 
