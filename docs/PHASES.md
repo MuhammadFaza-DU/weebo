@@ -14,7 +14,7 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 |---|---|---|---|
 | P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | Akses Zetaris + NIM |
 | P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client | Tool call tercatat dan bisa ditolak | P1 |
-| P3 Memory & Reasoning | H-MEM, Markovian, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
+| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | - (bisa paralel) |
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
 | P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 |

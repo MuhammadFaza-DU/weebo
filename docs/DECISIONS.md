@@ -46,7 +46,7 @@ pengetahuan, memori, dan reasoning menjadi keputusan serta aksi yang bisa diperc
 **Konsekuensi.**
 
 - Fitur "menjelaskan kenapa" (jejak langkah + sumber) menjadi inti, bukan tambahan.
-- Memory (Meterless H-MEM) dan reasoning compression (Markovian) mendapat porsi besar.
+- Memory (Meterless H-MEM) dan reasoning yang dapat dijelaskan mendapat porsi besar.
 - Track 01 dan 02 tetap terlayani sebagian, tetapi tidak dikejar sebagai target penilaian.
 
 ---

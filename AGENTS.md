@@ -140,16 +140,19 @@ syarat lulusnya terpenuhi.
 
 | Fase | Deliverable | Syarat lulus |
 |---|---|---|
-| P1 Walking Skeleton | Satu alur tipis: prompt → intent → memory → model → Zetaris → jawaban → UI | Bisa didemokan 30 detik |
-| P2 Agent Core | Loop, tool registry, policy allow/deny, audit log | Tool call tercatat dan bisa ditolak |
-| P3 Memory & Reasoning | H-MEM mining/retrieval/audit, Markovian, jejak "kenapa" | Mengingat lintas sesi dan menjelaskan sumber |
+| P1 Walking Skeleton | Satu alur tipis **lewat CLI**: prompt → intent → memory → model → Zetaris → jawaban | Bisa didemokan 30 detik di terminal |
+| P2 Agent Core | Loop, tool registry, policy allow/deny, audit log, protokol runtime–client | Tool call tercatat dan bisa ditolak |
+| P3 Memory & Reasoning | H-MEM mining/retrieval/audit, embedding nyata, jejak "kenapa" | Mengingat lintas sesi dan menjelaskan sumber |
 | P4 Design System | Token + komponen dasar di canvas | HALT + approval eksplisit user |
-| P5 Surfaces | UI app: chat, tasks, connectors, settings BYOK, responsif | Jalan di layar HP dan desktop |
-| P6 Autonomy | Scheduler, channel bridge, jalur model | Tugas berjalan tanpa disuruh |
+| P5 Surfaces | **PWA** sebagai client runtime: chat, tasks, connectors, settings BYOK, responsif | Jalan di layar HP dan desktop |
+| P6 Autonomy | Scheduler headless, channel bridge, jalur model | Tugas berjalan tanpa client terhubung |
 | P7 Landing Page | Astro: narasi, fitur + badge status, CTA | Bisa dibuka publik |
 | P8 Submission | Video script, slide deck, README, PREEXISTING, audit klaim | Semua deliverable lomba lengkap |
 
-P4 dan P7 boleh berjalan paralel oleh orang berbeda. Detail task: `docs/phases/`.
+P4 dan P7 boleh berjalan paralel oleh orang berbeda.
+
+File task per fase dibuat saat fase itu dimulai. Saat ini baru `docs/phases/P1-walking-skeleton.md`
+yang ada; P2–P8 menyusul. Jangan menganggap fase tanpa file sudah punya rencana task.
 
 **Protokol keluar fase (wajib, lima-limanya):**
 

@@ -73,7 +73,7 @@ Honest labels, no marketing:
 | Repository scaffolding, architecture, and decision records | Done |
 | Sponsor technology accounts and access verification | In progress |
 | Agent core (loop, tool registry, policy, audit) | Not started |
-| Memory and reasoning (Meterless H-MEM, Markovian) | Not started |
+| Memory and reasoning (Meterless H-MEM, with a custom embedding adapter) | Not started |
 | Data connector (Zetaris MCP/REST) | Not started |
 | Application surface (PWA) | Not started |
 | Scheduler, channels, free-tier gateway | Not started |
@@ -83,8 +83,9 @@ See [`docs/PHASES.md`](docs/PHASES.md) for the phase framework and exit criteria
 
 ## Architecture
 
-Weebo is a TypeScript monorepo. The agent core is isomorphic so the same runtime can execute in a
-Node host and in the browser.
+Weebo is a TypeScript monorepo: one runtime, several clients. The runtime owns everything that needs
+a real machine — agent loop, scheduling, filesystem, secrets, MCP connectors. The agent core is
+isomorphic and free of platform APIs, so it can be exercised in tests without a host.
 
 ```
 apps/
