@@ -11,10 +11,15 @@ bermakna.
 
 | Item | Nilai |
 |---|---|
-| Fase aktif | **Pra-window** — scaffolding dan riset |
+| Fase aktif | **P0 — Preflight** (belum dimulai) |
 | Build window | 22–27 Okt 2026 UTC (belum dibuka) |
 | Track | Track 03 — Reasoning Architecture |
 | Kode produk | Belum ada (sesuai aturan eligibilitas) |
+
+## Pembagian lapisan
+
+**Belum ditetapkan.** Dipilih di awal P1 dan dicatat di sini. Tiga opsi ada di `docs/PHASES.md`
+bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` sampai itu berubah.
 
 ## Yang sudah selesai
 
@@ -33,7 +38,8 @@ bermakna.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
 - `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-012), `CONTEXT.md`, `SPONSORS.md`,
-  `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md`, `SUBMISSION.md`, `phases/P1-walking-skeleton.md`.
+  `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task + 3 opsi pembagian
+  lapisan), `SUBMISSION.md`, `phases/P0-preflight.md`, `phases/P1-walking-skeleton.md`.
 - `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (CHECKPOINT → DECISIONS → CONTEXT → fase).
 - Catatan belajar lokal (enam folder referensi) dibuat. Diabaikan lewat `.git/info/exclude` (lokal,
   tidak terlihat di repo); terverifikasi tidak ada di GitHub.
@@ -54,12 +60,16 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 
 ## Belum terverifikasi
 
-- Akses Zetaris (trial 30 hari) — belum didaftarkan.
-- Akses NVIDIA NIM — belum didaftarkan.
-- Akun Cursor — belum dikonfirmasi.
-- Meterless: belum di-*vendor* dan belum dijalankan lokal.
-- Registrasi lomba: akun platform ada, **tim belum dibentuk di platform**.
+Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
+
+- Akses Zetaris (trial 30 hari) — belum didaftarkan. → T0.2
+- Apakah Zetaris bisa dipanggil dari browser — belum diuji. → T0.3
+- Akses NVIDIA NIM + rate limit sebenarnya — belum didaftarkan/diukur. → T0.4
+- Cursor: plan Free terverifikasi ada, tapi cukup atau tidak untuk 6 hari **belum diuji**. → T0.5
+- Meterless: conformance suite belum dijalankan di lingkungan kita. → T0.6
+- Registrasi lomba: akun platform ada, **tim belum dibentuk di platform**. → T0.1
 - Kedua kolaborator belum menerima undangan (status pending di GitHub).
+- Pembagian pemilik lapisan — belum diputuskan (dipilih di awal P1).
 
 ## Risiko dan blocker
 
@@ -83,10 +93,10 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 
 ## Next action
 
-1. Selesaikan pendaftaran akun sponsor (`docs/SETUP-SPONSORS.md`).
-2. Bentuk tim di platform genai.works.
-3. Mulai mempelajari arsitektur Hermes sebagai acuan (catatan lokal, tidak masuk repo).
-4. Susun task P1 di `docs/phases/P1-walking-skeleton.md` sebelum window dibuka.
+1. **Jalankan P0** — mulai dari T0.1 (bentuk tim di platform) karena itu blocker paling keras.
+2. Selesaikan T0.2–T0.6 (akses sponsor + uji asumsi), catat bukti di `docs/SETUP-SPONSORS.md` §7.
+3. Pilih pembagian lapisan di awal P1, catat di bagian "Pembagian lapisan" di atas.
+4. Setelah P0 lulus, mulai P1 (`docs/phases/P1-walking-skeleton.md`).
 
 ## Log checkpoint
 

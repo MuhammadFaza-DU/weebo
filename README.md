@@ -131,6 +131,7 @@ been executed.
 
 Near term (hackathon window):
 
+0. Preflight — verify sponsor access and answer architecture assumptions before writing code
 1. Walking skeleton — one thin end-to-end path, driven from the terminal
 2. Agent core — tool registry, policy allow/deny, audit log, runtime protocol
 3. Memory and reasoning — cross-session recall and explainable answers

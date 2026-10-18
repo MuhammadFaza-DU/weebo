@@ -10,7 +10,34 @@ dan apa yang berbahaya untuk diulang"*.
 
 ---
 
-## 1. Bobot penilaian lomba
+## 1. Bentuk produk dan arsitektur (ringkas)
+
+Wajib dipahami sebelum mengusulkan perubahan apa pun.
+
+**Satu runtime, banyak client.** `apps/runtime` adalah server lokal (Node) — satu-satunya yang menyentuh
+filesystem, scheduler, secret, dan MCP. Semua surface adalah client yang bicara lewat
+`packages/protocol`.
+
+| Surface | Peran | Kapan |
+|---|---|---|
+| `apps/cli` | `npx weebo`, `npx weebo serve` — untuk developer dan scripting | P1 |
+| `apps/web` | PWA, wajah produk untuk pengguna | P5 |
+| `apps/desktop` | Electron (bukan Tauri) | Setelah lomba |
+
+**Konsekuensi yang sering salah dipahami:**
+
+- **P1 memakai CLI, bukan UI.** Tujuannya membuktikan pipeline, bukan tampilan.
+- **PWA tidak punya mode standalone.** Selalu terhubung ke runtime. Kalau runtime mati, PWA mati.
+- **Demo lomba wajib menjalankan `npx weebo serve` lebih dulu.**
+- `packages/core` tidak dipanggil langsung oleh client mana pun.
+- CLI diposisikan untuk developer; **wajah produk tetap PWA**.
+
+**Memori:** engine Meterless di-*vendor* (Apache-2.0) + adapter embedding sendiri lewat `MemoryPort`.
+Embedding memakai NVIDIA `nemotron-3-embed-1b`.
+
+---
+
+## 2. Bobot penilaian lomba
 
 Open Agent Hackathon 2026 — skor 100 poin:
 
@@ -32,7 +59,7 @@ syarat lulus setiap fase.
 
 ---
 
-## 2. Batasan tim — paralelisasi tidak linear
+## 3. Batasan tim — paralelisasi tidak linear
 
 Tim 3 orang, tapi **3 orang ≠ 3× lebih cepat**.
 
@@ -47,7 +74,7 @@ periode itu.
 
 ---
 
-## 3. Angka yang sudah diukur (jangan menebak ulang)
+## 4. Angka yang sudah diukur (jangan menebak ulang)
 
 ### Meterless H-MEM
 
@@ -81,13 +108,13 @@ raw = 0.35·semantic + 0.20·keyword + 0.10·tag + 0.10·domain
 
 ---
 
-## 4. Provider model gratis (terverifikasi 2026-10-18)
+## 5. Provider model gratis (terverifikasi 2026-10-18)
 
 Angka berubah dari waktu ke waktu — **verifikasi ulang sebelum dipakai**.
 
 | Provider | Limit gratis | Kartu kredit | Catatan |
 |---|---|---|---|
-| **NVIDIA NIM** | ~40 RPM | Tidak (verifikasi telepon) | Sponsor lomba; 132 model; endpoint [OI]-compatible |
+| **NVIDIA NIM** | ~40 RPM (dari dokumentasi, **belum diukur**) | Tidak (verifikasi telepon) | Sponsor lomba; 132 model; endpoint [OI]-compatible |
 | Groq | 30 RPM / ~14.400 RPD | Tidak | Tercepat (LPU) |
 | OpenRouter | 50–200 RPD (1.000 dengan top-up $10 sekali) | Tidak | 35+ model `:free` |
 | GitHub Models | 150–1.000/hari | Tidak | Cukup akun GitHub |
@@ -100,7 +127,7 @@ prototipe). Provider lain lewat BYOK user.
 
 ---
 
-## 5. Peringatan etis dan legal — jangan dilanggar
+## 6. Peringatan etis dan legal — jangan dilanggar
 
 Ini bukan formalitas. Aturan lomba mensyaratkan submission sebagai *"original work product"* dan
 *"solely owned by you"*.
@@ -121,7 +148,7 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 
 ---
 
-## 6. Fakta teknis lingkungan
+## 7. Fakta teknis lingkungan
 
 | Item | Status |
 |---|---|
@@ -135,7 +162,7 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 
 ---
 
-## 7. Keputusan yang sudah ditolak (jangan diusulkan ulang tanpa alasan baru)
+## 8. Keputusan yang sudah ditolak (jangan diusulkan ulang tanpa alasan baru)
 
 | Diusulkan | Ditolak karena |
 |---|---|
@@ -150,7 +177,7 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 
 ---
 
-## 8. Cara kerja yang disepakati
+## 9. Cara kerja yang disepakati
 
 | Hal | Aturan |
 |---|---|
@@ -164,12 +191,24 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 
 ---
 
-## 9. Yang belum diketahui (jangan diasumsikan)
+## 10. Asumsi terbuka dan di mana ia dijawab
 
-- Apakah Zetaris bisa dipanggil dari browser, atau wajib lewat server.
-- Apakah conformance suite Meterless bisa jalan tanpa Node penuh.
-- Rate limit NVIDIA NIM yang sebenarnya (angka ~40 RPM dari dokumentasi, belum diukur sendiri).
-- Apakah akun Cursor sudah aktif untuk semua anggota.
-- Pembagian pemilik lapisan per orang (sengaja fleksibel, tim memilih).
+Semua asumsi di bawah **wajib diuji di P0**, bukan ditebak. Lihat `docs/phases/P0-preflight.md`.
 
-Jika salah satu ini menjadi penghalang, **uji dulu**, jangan menebak.
+| Asumsi | Dijawab di | Status |
+|---|---|---|
+| Apakah Zetaris bisa dipanggil dari browser, atau wajib lewat server | P0 · T0.3 | belum diuji |
+| Apakah conformance suite Meterless bisa jalan di lingkungan kita | P0 · T0.6 | belum diuji |
+| Rate limit NVIDIA NIM yang sebenarnya (~40 RPM masih dari dokumentasi) | P0 · T0.4 | belum diukur |
+| Apakah plan Cursor Free cukup untuk 6 hari kerja tim | P0 · T0.5 | belum diuji |
+| Pembagian pemilik lapisan per orang | P1 awal, dicatat di `CHECKPOINT.md` | belum diputuskan |
+
+**Fakta yang sudah terverifikasi (2026-10-18) — jangan diuji ulang:**
+
+- Cursor plan Free **ada**: $0, tanpa kartu kredit, tidak kedaluwarsa. Isi: Agent + Chat + Tab dengan
+  kuota terbatas yang **angkanya tidak dipublikasikan Cursor**. Model pihak ketiga tidak termasuk.
+  Klaim bahwa MCP/skills tidak tersedia di Free **belum terverifikasi** — jangan dijadikan patokan.
+- `nemotron-3-embed-1b`: 2048 dimensi, konteks 32.768 token, mendukung bahasa Indonesia.
+- Engine Meterless referensi: ≈42,6 KB, 10 file, **zero runtime dependencies**.
+
+Jika sebuah asumsi menjadi penghalang, **uji dulu**, jangan menebak.

@@ -12,7 +12,8 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 
 | Fase | Deliverable | Syarat lulus | Bergantung pada |
 |---|---|---|---|
-| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | Akses Zetaris + NIM |
+| **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — |
+| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | P0 |
 | P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client | Tool call tercatat dan bisa ditolak | P1 |
 | P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | - (bisa paralel) |
@@ -22,6 +23,83 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 | P8 Submission | Video script, slide, README, audit | Semua deliverable lomba lengkap | P1–P7 |
 
 P4 dan P7 boleh berjalan paralel oleh orang berbeda dan tidak memblokir spine.
+
+---
+
+## Panduan memecah fase menjadi task
+
+Fase adalah gate hasil. **Task adalah unit eksekusi.** Tanpa pemecahan yang baik, fase akan dikerjakan
+sebagai satu blok besar dan hasilnya tidak bisa diverifikasi.
+
+### Aturan ukuran
+
+| Aturan | Nilai |
+|---|---|
+| Ukuran maksimum | ±2 jam kerja |
+| Ukuran ideal | 30–90 menit |
+| Satu task = satu perubahan | Bisa diverifikasi sendiri tanpa menunggu task lain |
+| Jumlah per fase | 5–10 task. Lebih dari itu, fase terlalu besar dan perlu dipecah |
+
+### Format wajib per task
+
+```markdown
+### Tn.m — Judul singkat
+
+- [ ] Langkah konkret (diawali kata kerja: buat, tulis, jalankan, uji)
+- [ ] Langkah konkret
+- [ ] Verifikasi: perintah atau cek yang membuktikan task selesai
+
+**Kriteria selesai:** pernyataan objektif yang bisa diperiksa orang lain.
+```
+
+### Kriteria selesai yang baik vs buruk
+
+| ❌ Buruk | ✅ Baik |
+|---|---|
+| "UI sudah bagus" | "`npm run dev` menampilkan halaman chat; input teks mengirim dan jawaban muncul" |
+| "Integrasi jalan" | "`npx weebo \"test\"` mengembalikan jawaban yang menyebut satu sumber data nyata" |
+| "Test lulus" | "`npm test` hijau, 8 test, 0 gagal; output ditempel di PR" |
+| "Sudah dioptimalkan" | "Query yang sama turun dari 3.200 ms ke 800 ms, diukur 3 kali" |
+
+Aturan: kalau kriteria selesai tidak bisa diperiksa orang lain tanpa bertanya, itu bukan kriteria.
+
+### Larangan
+
+- Task yang tidak bisa diverifikasi sendiri (mis. "riset dulu", tanpa output jelas).
+- Task yang mencampur dua hal berbeda (mis. "buat client Zetaris dan UI-nya").
+- Task tanpa kriteria selesai.
+- Menghapus task yang tidak selesai — pindahkan ke backlog dengan alasan.
+
+### Urutan dalam satu fase
+
+1. **Fondasi** — tipe, kontrak, konfigurasi.
+2. **Jalur utama** — satu alur tipis yang membuktikan sesuatu berjalan.
+3. **Penguatan** — error handling, test, tepi kasus.
+4. **Bukti** — catat hasil di dokumen, perbarui CHECKPOINT, tawarkan commit + tag.
+
+### Contoh pemecahan yang benar
+
+Fase "P2 Agent Core" (contoh, belum ditulis):
+
+| Task | Ukuran | Kriteria selesai |
+|---|---|---|
+| T2.1 Definisikan `ToolPolicy` | 30 mnt | Tipe ada, `npm run typecheck` hijau |
+| T2.2 Implementasi registry | 90 mnt | Test: daftar tool, ambil berdasarkan nama |
+| T2.3 Policy check sebelum eksekusi | 60 mnt | Test: tool ber-`requiresApproval` ditolak tanpa izin |
+| T2.4 Audit log | 60 mnt | Test: setiap eksekusi menulis satu entri tanpa secret |
+| T2.5 Wiring ke `runTurn` | 45 mnt | Satu perintah CLI memicu satu tool dan tercatat di audit |
+
+### Catatan tentang fase yang belum punya file
+
+Saat ini baru **P0** dan **P1** yang punya file task. P2–P8 **belum**.
+
+Artinya: rencana fase ada di level tinggi (tabel di atas), tapi **task-level belum ada**. Jangan
+menganggap fase tanpa file sudah punya rencana yang bisa dieksekusi.
+
+File task dibuat **saat fase itu dimulai**, bukan sebelumnya. Alasannya: pemecahan task bergantung
+pada apa yang dipelajari di fase sebelumnya. Menulis task P5 sekarang berarti menebak.
+
+Aturan: **fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.**
 
 ---
 
@@ -44,6 +122,39 @@ Jangan memulai fase berikutnya sebelum kelima hal ini selesai.
 - Setiap task menuliskan **kriteria selesai** yang objektif ("`npm test` hijau dan endpoint
   mengembalikan 200"), bukan subjektif ("terlihat bagus").
 - Task yang tidak selesai dipindahkan ke backlog dengan alasan, bukan dihapus.
+
+---
+
+## Pembagian pemilik lapisan
+
+Sengaja **belum ditetapkan**. Tim memilih di awal P1, lalu mencatatnya di `CHECKPOINT.md`.
+
+Alasan tidak ditetapkan sekarang: pembagian bergantung pada kekuatan masing-masing orang dan pada
+temuan P0 (misalnya, kalau Zetaris ternyata butuh proxy, beban `apps/runtime` naik).
+
+**Aturan yang berlaku sampai pembagian ditetapkan:**
+
+- `CODEOWNERS` menunjuk `@MuhammadFaza-DU` untuk semua path (ADR-005). Ini tidak berubah.
+- Setiap orang wajib membuka PR; tidak ada push langsung ke `main`.
+- Sebelum menyentuh folder yang belum jelas pemiliknya, tanyakan di PR atau chat tim.
+
+### Tiga opsi yang bisa dipilih
+
+| Opsi | Orang 1 | Orang 2 | Orang 3 | Cocok jika |
+|---|---|---|---|---|
+| **A — Per lapisan** | Agent core + Meterless | UI + design system | Runtime/connector + landing | Ada satu orang kuat di arsitektur, satu di visual |
+| **B — Per lapisan (varian)** | Agent core + Zetaris | Connector + runtime | UI + design system + landing | Ada satu orang kuat di data/integrasi |
+| **C — Per peran** | Koordinasi + integrasi sponsor + submission | Agent core + memory | UI + connector + landing | Ada satu orang yang mau pegang dokumen dan demo |
+
+### Cara memilih (lakukan di awal P1)
+
+1. Setiap orang tuliskan: paling nyaman di area apa, paling tidak nyaman di apa.
+2. Cocokkan dengan tabel di atas.
+3. Tulis hasilnya di `CHECKPOINT.md` bagian "Pembagian lapisan".
+4. Perbarui `CODEOWNERS` hanya jika perlu pembatasan tambahan.
+
+Aturan tambahan: **pemilik lapisan bukan pemilik mutlak.** Siapa pun boleh menyentuh folder lain,
+asal lewat PR dan memberi tahu pemiliknya.
 
 ---
 

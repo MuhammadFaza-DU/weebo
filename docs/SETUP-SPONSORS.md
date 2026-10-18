@@ -82,10 +82,31 @@ Rencana: engine open source, di-*vendor* lewat `npx degit`.
 
 Rencana: dipakai selama build window (syarat lomba).
 
-- [ ] Konfirmasi akun Cursor aktif untuk ketiga anggota, atau minimal satu yang dipakai bersama
-- [ ] Catat paket yang dipakai: ______________
-- [ ] Uji membuka repo ini di Cursor
-- [ ] Catat jika ada batasan (kuota, model)
+**Aturan lomba (kutipan):** *"Every submission must integrate Zetaris and Meterless, and teams must
+use Cursor for development."* Submission juga wajib menjelaskan *"how Cursor was used during
+development"*.
+
+**Fakta terverifikasi 2026-10-18 (dari halaman resmi Cursor):**
+
+| Item | Fakta |
+|---|---|
+| Plan Free | Ada, $0/bulan, tanpa kartu kredit, tidak kedaluwarsa |
+| Isi | Agent + Chat + Tab dengan kuota terbatas |
+| Angka pasti | **Tidak dipublikasikan** Cursor. Artikel yang menyebut angka memakai era harga lama |
+| Model pihak ketiga | Tidak termasuk di Free (hanya model Cursor) |
+
+- [ ] Konfirmasi plan yang dipakai: ______________
+- [ ] Pasang Cursor, buka repo ini
+- [ ] Uji satu agent request, catat apakah berhasil
+- [ ] Catat batasan yang teramati (kuota, model)
+- [ ] Putuskan pembagian: bagian mana yang dikerjakan di Cursor
+- [ ] Catat jujur di submission bagaimana Cursor dipakai
+
+**Yang harus dibuktikan:** keputusan tertulis tentang cara memenuhi syarat lomba, beserta catatan
+jujur tentang batasan plan yang dipakai.
+
+> Catatan: verifikasi kepatuhan "use Cursor" dilakukan lewat narasi submission, bukan inspeksi kode.
+> Jangan menulis klaim yang tidak sesuai kenyataan.
 
 ---
 
@@ -107,8 +128,11 @@ Isi setelah semua dicek:
 | Registrasi lomba | | | |
 | Tim di platform | | | |
 | Zetaris | | | |
-| NVIDIA NIM | | | |
-| Meterless | | | |
+| Zetaris dari browser (T0.3) | | | menentukan arsitektur |
+| NVIDIA NIM chat | | | |
+| NVIDIA NIM embedding | | | |
+| NVIDIA NIM rate limit | | | hasil pengukuran sendiri |
+| Meterless conformance (T0.6) | | | scorecard |
 | Cursor | | | |
 | Model lokal | | | |
 

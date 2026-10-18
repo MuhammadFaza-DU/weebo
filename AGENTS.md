@@ -140,6 +140,7 @@ syarat lulusnya terpenuhi.
 
 | Fase | Deliverable | Syarat lulus |
 |---|---|---|
+| **P0 Preflight** | Semua akses terverifikasi, asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab |
 | P1 Walking Skeleton | Satu alur tipis **lewat CLI**: prompt → intent → memory → model → Zetaris → jawaban | Bisa didemokan 30 detik di terminal |
 | P2 Agent Core | Loop, tool registry, policy allow/deny, audit log, protokol runtime–client | Tool call tercatat dan bisa ditolak |
 | P3 Memory & Reasoning | H-MEM mining/retrieval/audit, embedding nyata, jejak "kenapa" | Mengingat lintas sesi dan menjelaskan sumber |
@@ -151,8 +152,12 @@ syarat lulusnya terpenuhi.
 
 P4 dan P7 boleh berjalan paralel oleh orang berbeda.
 
-File task per fase dibuat saat fase itu dimulai. Saat ini baru `docs/phases/P1-walking-skeleton.md`
-yang ada; P2–P8 menyusul. Jangan menganggap fase tanpa file sudah punya rencana task.
+File task per fase dibuat saat fase itu dimulai. Saat ini baru `docs/phases/P0-preflight.md` dan
+`docs/phases/P1-walking-skeleton.md` yang ada; P2–P8 menyusul. Jangan menganggap fase tanpa file sudah
+punya rencana task. **Fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.**
+
+Panduan memecah fase menjadi task (ukuran, format, kriteria selesai yang baik vs buruk, larangan):
+lihat `docs/PHASES.md`.
 
 **Protokol keluar fase (wajib, lima-limanya):**
 

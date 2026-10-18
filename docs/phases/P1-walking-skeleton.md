@@ -19,11 +19,14 @@ diperindah atau fitur ditambah.
 
 ## Prasyarat
 
-- [ ] Akses Zetaris terverifikasi (`docs/SETUP-SPONSORS.md` §2)
-- [ ] Akses NVIDIA NIM terverifikasi (`docs/SETUP-SPONSORS.md` §3)
-- [ ] Meterless engine bisa di-vendor dan demo lokalnya jalan (`docs/SETUP-SPONSORS.md` §4)
+**Fase P0 harus lulus lebih dulu** (`docs/phases/P0-preflight.md`). Secara spesifik:
 
-Jika salah satu belum, **jangan mulai task kode** — selesaikan prasyaratnya dulu.
+- [ ] T0.1 selesai — tim sudah dibentuk di platform
+- [ ] T0.2 selesai — akses Zetaris terverifikasi dengan satu query nyata
+- [ ] T0.4 selesai — akses NVIDIA NIM terverifikasi (chat + embedding)
+- [ ] T0.6 selesai — Meterless engine ter-vendor dan conformance suite hijau
+
+Jika salah satu belum, **jangan mulai task kode** — selesaikan P0 dulu.
 
 ---
 
