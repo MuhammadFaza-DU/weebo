@@ -43,13 +43,30 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
 - `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-014), `CONTEXT.md`, `SPONSORS.md`,
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
   lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`, **`RULES.md`**
-  (transkripsi terverifikasi §01–§10 aturan lomba), `phases/P0-preflight.md`,
-  `phases/P1-walking-skeleton.md`.
-- `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (8 dokumen).
+  (transkripsi terverifikasi §01–§10 aturan lomba), **`PRD.md`** (problem, user primer/adopter,
+  16 user story dengan acceptance criteria, non-goals, asumsi belum terverifikasi),
+  `phases/P0-preflight.md`, `phases/P1-walking-skeleton.md`.
+- `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (9 dokumen).
+- `AGENTS.md` §1: `docs/PRD.md` ditetapkan sebagai sumber kebenaran "apa dan untuk siapa", dengan
+  batas peran tegas — tidak mengatur urutan kerja (file fase) dan tidak mengatur pilihan teknis (ADR).
 - `AGENTS.md` §8.1: penundaan berbasis dependensi, dilarang memakai gate tanggal — dengan satu
   pengecualian sah: larangan commit kode produk sebelum 22 Okt 2026 00:00 UTC.
 - Catatan belajar lokal (enam folder referensi) dibuat. Diabaikan lewat `.git/info/exclude` (lokal,
   tidak terlihat di repo); terverifikasi tidak ada di GitHub.
+
+## Keputusan produk yang sudah ditetapkan
+
+Dicatat di `docs/PRD.md`, ringkasnya:
+
+- **User primer: knowledge worker di tim kecil** (analis/operations/PM, 3–30 orang, tidak menulis
+  kode). Ia penerima manfaat sebenarnya dan paling membutuhkan penjelasan "kenapa" — selaras dengan
+  Track 03.
+- **Adopter: developer/IT di tim yang sama.** Ia yang memasang dan merawat, bukan yang mendapat
+  manfaat dari jawaban agent. Dipisah supaya narasi Impact tidak jatuh menjadi "alat untuk developer".
+- **Bukan user:** tim enterprise dengan tata kelola formal, pengguna layanan hosted, non-teknis tanpa
+  siapa pun untuk memasang runtime.
+- 16 user story berprioritas Must/Should/Could dengan acceptance criteria. Must = submission tidak
+  jujur tanpa ini.
 
 ## Keputusan yang mengikat
 
@@ -83,6 +100,9 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 - Pembagian pemilik lapisan — belum diputuskan (dipilih di awal P1).
 - **Bagaimana ponsel/tablet mencapai runtime di `localhost`** — belum diputuskan. Memblokir demo PWA
   di ponsel (P5). Dijawab di **P0 · T0.7**. Lihat `docs/ARCHITECTURE.md` §2.2.
+- **Apakah Zetaris benar-benar menyediakan akses data ter-governance yang bisa didemokan** — belum
+  diverifikasi. Jika tidak, klaim "governed" di PRD §2.1 dan README harus diturunkan menjadi "akses
+  data tersebar" sebelum masuk submission. Lihat `docs/PRD.md` §6.
 
 ## Risiko dan blocker
 

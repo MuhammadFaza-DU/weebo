@@ -21,6 +21,10 @@ Berlaku untuk semua yang bekerja di repo ini: manusia maupun agent AI.
    tim, angka yang sudah diukur, dan hal-hal yang sengaja ditolak.
 8. `docs/RULES.md` adalah transkripsi terverifikasi aturan resmi lomba. Jika dokumen lain bertentangan
    dengan file ini soal kewajiban lomba, `docs/RULES.md` yang menang.
+9. `docs/PRD.md` adalah sumber kebenaran **apa yang dibangun dan untuk siapa** — definisi user, user
+   story, prioritas fitur, dan non-goals. Menang atas dokumen lain soal definisi user dan prioritas
+   fitur. **Tidak** mengatur urutan pengerjaan (itu file fase) dan **tidak** mengatur pilihan teknis
+   (itu ADR). PRD tidak boleh memuat task, estimasi, atau nama file kode.
 
 Jika ada konflik antar dokumen, hentikan pekerjaan yang berisiko dan minta keputusan user.
 
@@ -31,13 +35,14 @@ Agent yang baru masuk **wajib** membaca berurutan sebelum mengubah apa pun:
 1. `CHECKPOINT.md` — status sekarang, risiko, next action.
 2. `docs/DECISIONS.md` — keputusan yang mengikat (ADR-001 … terbaru).
 3. `docs/CONTEXT.md` — bobot penilaian, batasan tim, angka terukur, daftar yang sudah ditolak.
-4. `docs/PHASES.md` dan file fase aktif di `docs/phases/`.
-5. `docs/SUBMISSION.md` — deliverable dan tenggat yang mengikat.
-6. `docs/SPONSORS.md` — bukti integrasi yang harus dikumpulkan.
-7. `PREEXISTING.md` — aturan eligibilitas yang mengikat.
-8. `docs/RULES.md` — aturan resmi lomba, terverifikasi.
+4. `docs/PRD.md` — apa yang dibangun dan untuk siapa: user, user story, prioritas fitur, non-goals.
+5. `docs/PHASES.md` dan file fase aktif di `docs/phases/`.
+6. `docs/SUBMISSION.md` — deliverable dan tenggat yang mengikat.
+7. `docs/SPONSORS.md` — bukti integrasi yang harus dikumpulkan.
+8. `PREEXISTING.md` — aturan eligibilitas yang mengikat.
+9. `docs/RULES.md` — aturan resmi lomba, terverifikasi.
 
-Tanpa kedelapannya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
+Tanpa kesembilannya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
 batasan yang sudah dihitung.
 
 **Bahasa dokumen.** Dokumen internal (`AGENTS.md`, `CHECKPOINT.md`, `docs/*` dalam Bahasa Indonesia)

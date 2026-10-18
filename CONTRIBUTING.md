@@ -8,7 +8,8 @@ AI agents working in this repository.
 
 Then read, in this order: [`CHECKPOINT.md`](CHECKPOINT.md) for current status,
 [`docs/DECISIONS.md`](docs/DECISIONS.md) for binding decisions,
-[`docs/CONTEXT.md`](docs/CONTEXT.md) for the constraints and measurements behind them, and
+[`docs/CONTEXT.md`](docs/CONTEXT.md) for the constraints and measurements behind them,
+[`docs/PRD.md`](docs/PRD.md) for what we build and for whom, and
 [`docs/RULES.md`](docs/RULES.md) for the verified hackathon rules.
 
 ## Ground rules

@@ -42,6 +42,7 @@ tercantum.
 | 10 | `docs/phases/P0-preflight.md` | `4f1aa8d` | 2026-10-18 | Rencana fase preflight |
 | 11 | `docs/CURSOR-LOG.md` | `4cb8fca` | 2026-10-18 | Template log pemakaian Cursor |
 | 12 | `docs/RULES.md` | `[lihat git log]` | 2026-10-18 | Transkripsi terverifikasi aturan lomba §01–§10 |
+| 13 | `docs/PRD.md` | `[lihat git log]` | 2026-10-18 | Definisi produk: problem, user, 16 user story, non-goals |
 
 ---
 

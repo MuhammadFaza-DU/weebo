@@ -168,8 +168,9 @@ The authoritative list, with start conditions, is in [`docs/PHASES.md`](docs/PHA
 
 Read [`AGENTS.md`](AGENTS.md) first — it is the binding rulebook for both humans and AI agents
 working in this repository. It lists the required reading order for anyone (or any agent) picking up
-this project — eight documents, starting with `CHECKPOINT.md` and ending with `docs/RULES.md`.
+this project — nine documents, starting with `CHECKPOINT.md` and ending with `docs/RULES.md`.
 
+What Weebo is building, and for whom, is defined in [`docs/PRD.md`](docs/PRD.md).
 The official hackathon rules are transcribed and verified in [`docs/RULES.md`](docs/RULES.md).
 
 Then see [`CONTRIBUTING.md`](CONTRIBUTING.md).

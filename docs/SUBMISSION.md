@@ -47,20 +47,28 @@ Struktur yang diusulkan:
 
 Jangan menampilkan fitur yang belum jalan. Juri akan mencocokkan video dengan repo.
 
+**Sumber narasi masalah:** `docs/PRD.md` §1 dan §2.1. Jangan menyusun ulang dari nol — bagian 0:00–0:40
+sudah ditulis di sana, dan penyimpangan dari PRD membuat slide dan video bercerita berbeda.
+
 ---
 
 ## Isi slide deck
 
-1. Masalah dan siapa yang terdampak
-2. Solusi dan posisi produk
-3. Arsitektur dan alur agent
-4. Stack teknis
-5. Integrasi Zetaris — apa, di mana, bukti
-6. Integrasi Meterless — apa, di mana, bukti
-7. Di mana NVIDIA berkontribusi
-8. Yang unik dari penggunaan sponsor technology
-9. Visual produk (tangkapan layar nyata)
-10. Pengembangan selanjutnya
+Nomor 1–2 di bawah **wajib diambil dari `docs/PRD.md`**, bukan dikarang saat menyusun slide. Ini
+bagian yang dinilai pada Impact (30 poin, kriteria terbesar).
+
+| # | Slide | Sumber |
+|---|---|---|
+| 1 | Masalah dan siapa yang terdampak | `docs/PRD.md` §1, §2.1 |
+| 2 | Solusi dan posisi produk | `docs/PRD.md` §2, §4 |
+| 3 | Arsitektur dan alur agent | `docs/ARCHITECTURE.md` |
+| 4 | Stack teknis | `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` |
+| 5 | Integrasi Zetaris — apa, di mana, bukti | `docs/SPONSORS.md` |
+| 6 | Integrasi Meterless — apa, di mana, bukti | `docs/SPONSORS.md` |
+| 7 | Di mana NVIDIA berkontribusi | `docs/SPONSORS.md` |
+| 8 | Yang unik dari penggunaan sponsor technology | `docs/SPONSORS.md` |
+| 9 | Visual produk (tangkapan layar nyata) | Aplikasi yang berjalan |
+| 10 | Pengembangan selanjutnya | `docs/PRD.md` §4, `docs/PHASES.md` backlog |
 
 ---
 

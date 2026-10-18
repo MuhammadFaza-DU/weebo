@@ -10,17 +10,19 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 
 ## Ringkasan
 
-| Fase | Deliverable | Syarat lulus | Bergantung pada |
-|---|---|---|---|
-| **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — |
-| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | P0 |
-| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 |
-| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
-| P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) |
-| P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
-| P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 |
-| P7 Landing Page | Astro site publik | Bisa dibuka publik, badge status akurat | — (bisa paralel) |
-| P8 Submission | Video jadi (1–4 menit), slide, README, audit | Semua deliverable lomba lengkap | P1-P7 |
+| Fase | Deliverable | Syarat lulus | Bergantung pada | Story PRD |
+|---|---|---|---|---|
+| **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — | — (pendukung) |
+| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | P0 | US-01, US-02, US-09, US-14 |
+| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 | US-03, US-04, US-05, US-10 |
+| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 | US-06, US-07, US-08, US-09 |
+| P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) | — (pendukung) |
+| P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 | US-11, US-12 |
+| P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 | US-13 |
+| P7 Landing Page | Astro site publik | Bisa dibuka publik, badge status akurat | — (bisa paralel) | US-16 |
+| P8 Submission | Video jadi (1–4 menit), slide, README, audit | Semua deliverable lomba lengkap | P1-P7 | — (pendukung) |
+
+Story berprioritas **Could** dan belum punya fase: US-15 (aplikasi desktop) — masuk backlog.
 
 P4 dan P7 boleh berjalan paralel oleh orang berbeda dan tidak memblokir spine.
 
@@ -30,6 +32,14 @@ P4 dan P7 boleh berjalan paralel oleh orang berbeda dan tidak memblokir spine.
 
 Fase adalah gate hasil. **Task adalah unit eksekusi.** Tanpa pemecahan yang baik, fase akan dikerjakan
 sebagai satu blok besar dan hasilnya tidak bisa diverifikasi.
+
+**Dari mana task berasal.** Task diturunkan dari **user story berprioritas di `docs/PRD.md` §3**, bukan
+dikarang. Setiap task yang menyentuh produk harus menunjuk ke satu ID story (mis. `US-03`) atau
+menyatakan dirinya sebagai pekerjaan pendukung (mis. setup, CI). Task yang tidak bisa ditautkan ke
+story mana pun adalah tanda scope creep — atau tanda PRD perlu diperbarui lebih dulu.
+
+Prioritas story menentukan urutan: **Must** sebelum **Should**, **Should** sebelum **Could**. Story
+berprioritas **Could** tidak boleh dikerjakan selama masih ada **Must** yang belum selesai di fase itu.
 
 ### Aturan ukuran
 
