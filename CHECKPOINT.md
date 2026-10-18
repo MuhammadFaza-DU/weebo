@@ -51,8 +51,11 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
   kewajiban sync, peta dampak (file mana memengaruhi file mana), dan kewajiban menjalankan pemeriksa
   sebelum commit.
 - `scripts/check-docs.mjs`: pemeriksa konsistensi dokumen tanpa dependensi (8 kelas pemeriksaan).
-  `scripts/check-docs.selftest.mjs`: selftest 15 kasus yang menyuntik kerusakan untuk membuktikan
+  `scripts/check-docs.selftest.mjs`: selftest 16 kasus yang menyuntik kerusakan untuk membuktikan
   pemeriksa masih bekerja. Keduanya berjalan di CI pada setiap push dan PR.
+- **Pemeriksa memakai `git ls-files`, bukan menelusuri disk.** Ditemukan dari selisih lokal (23 berkas)
+  vs CI (22 berkas): `rea.md` adalah catatan lokal yang di-exclude. Tanpa perbaikan ini, pemeriksa
+  bisa gagal di mesin lokal karena berkas yang tidak akan pernah masuk repo.
 - **Pemeriksa menangkap satu bug nyata pada eksekusi pertamanya:** baris tabel `docs/CONTEXT.md` §5
   (NVIDIA + Groq tergabung dalam satu baris). Sudah diperbaiki. Bug serupa di `PREEXISTING.md`
   (baris 7 + 8 tergabung) ditemukan **manual** di sesi yang sama, sebelum pemeriksa ada — itulah yang

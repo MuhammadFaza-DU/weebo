@@ -469,6 +469,11 @@ Pemeriksa ini menangkap: tautan internal rusak, rujukan `berkas.md` §N yang tid
 user story / task yang tidak ada, **tabel Markdown yang kolomnya tidak konsisten**, jumlah urutan baca
 yang tidak cocok, dan karakter rusak (U+FFFD / mojibake).
 
+**Cakupannya adalah isi repo, bukan seluruh disk.** Pemeriksa memakai `git ls-files` (ditambah berkas
+baru yang belum di-ignore), sehingga berkas yang di-exclude seperti `rea.md` tidak diperiksa. Ini
+disengaja: tanpa itu, hasil di mesin lokal berbeda dari CI, dan pemeriksa akan gagal karena berkas
+yang tidak akan pernah di-commit — alarm palsu yang membuat orang berhenti mempercayainya.
+
 CI menjalankan pemeriksa yang sama pada setiap push dan pull request. **Jangan mengakali pemeriksa**
 dengan melemahkan pola atau menambahkan pengecualian tanpa alasan tertulis — itu menghapus satu-satunya
 penjaga yang kita punya.

@@ -26,7 +26,6 @@ function reset() {
     join(ROOT, "scripts", "check-docs.mjs"),
     join(WORK, "scripts", "check-docs.mjs"),
   );
-
   // AGENTS.md minimal: §1.1 dengan 3 butir, supaya fakta turunan bisa diuji.
   writeFileSync(
     join(WORK, "AGENTS.md"),
@@ -84,6 +83,17 @@ function reset() {
 }
 
 function runChecker() {
+  // Fixture harus jadi repo git sungguhan: pemeriksa memakai `git ls-files`
+  // supaya hasil lokal dan CI identik. Tanpa git, pemeriksa jatuh ke mode
+  // penelusuran disk dan selftest tidak lagi menguji jalur produksi.
+  try {
+    execFileSync("git", ["init", "-q"], { cwd: WORK, stdio: "ignore" });
+    execFileSync("git", ["add", "-A"], { cwd: WORK, stdio: "ignore" });
+  } catch (err) {
+    console.error("GAGAL menyiapkan repo git untuk fixture:", err.message);
+    process.exit(1);
+  }
+
   try {
     const out = execFileSync(process.execPath, [join(WORK, "scripts", "check-docs.mjs")], {
       encoding: "utf8",
@@ -215,6 +225,29 @@ writeFileSync(join(WORK, "suspect.md"), "Kerjakan T2.1 nanti.\n");
       output,
     });
     console.log("  GAGAL rujukan ke fase tanpa berkas tidak menggagalkan");
+  }
+}
+
+console.log("\nBerkas di luar repo (di-ignore) harus DILEWATI:");
+reset();
+writeFileSync(join(WORK, ".gitignore"), "catatan-lokal.md\n");
+writeFileSync(
+  join(WORK, "catatan-lokal.md"),
+  "Catatan riset lokal dengan tautan rusak [x](./tidak-ada.md) dan \uFFFD.\n",
+);
+{
+  const { code, output } = runChecker();
+  if (code === 0) {
+    passed += 1;
+    console.log("  OK    berkas di-ignore tidak diperiksa (hasil sama dengan CI)");
+  } else {
+    failures.push({
+      name: "berkas di-ignore tidak diperiksa (hasil sama dengan CI)",
+      expectedFragment: "(exit 0)",
+      code,
+      output,
+    });
+    console.log("  GAGAL berkas di-ignore tidak diperiksa (hasil sama dengan CI)");
   }
 }
 

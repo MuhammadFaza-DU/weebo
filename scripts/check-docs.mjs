@@ -11,6 +11,7 @@
 
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname, resolve, relative, sep } from "node:path";
+import { execFileSync } from "node:child_process";
 
 const ROOT = resolve(import.meta.dirname, "..");
 
@@ -28,25 +29,63 @@ function readText(absPath) {
   return readFileSync(absPath, "utf8");
 }
 
-// Semua file Markdown yang dilacak, kecuali yang sengaja dikecualikan.
-// `rea/` dan `rea.md` adalah catatan riset lokal (lihat .git/info/exclude).
+// Semua file Markdown yang menjadi bagian repo, kecuali yang sengaja dikecualikan.
+//
+// Kenapa memakai git, bukan sekadar menelusuri disk: catatan riset lokal
+// (`rea.md`, `rea/`) di-exclude lewat `.git/info/exclude` dan tidak pernah masuk
+// repo. Kalau pemeriksa menelusuri disk apa adanya, hasil lokal berbeda dari CI
+// (lokal 23 berkas, CI 22) dan lokal bisa gagal karena berkas yang tidak akan
+// pernah di-commit. Itu alarm palsu yang membuat orang berhenti mempercayai
+// pemeriksa.
+//
+// Yang diperiksa: berkas yang dilacak git + berkas baru yang belum di-ignore.
+// Persis himpunan yang akan menjadi isi repo.
 const SKIP_DIRS = new Set(["node_modules", ".git", "rea", ".cache", "vendor"]);
 
-function collectMarkdownFiles(dir, out = []) {
+function listRepoMarkdownFiles() {
+  try {
+    const tracked = execFileSync("git", ["ls-files", "*.md"], {
+      cwd: ROOT,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    const untracked = execFileSync(
+      "git",
+      ["ls-files", "--others", "--exclude-standard", "*.md"],
+      { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
+    );
+
+    const paths = new Set();
+    for (const line of `${tracked}\n${untracked}`.split(/\r?\n/)) {
+      const rel = line.trim();
+      if (!rel) continue;
+      const segments = rel.split("/");
+      if (segments.some((s) => SKIP_DIRS.has(s))) continue;
+      if (existsSync(join(ROOT, rel))) paths.add(rel);
+    }
+    return [...paths].sort();
+  } catch {
+    // git tidak tersedia (mis. arsip sumber tanpa .git). Jatuh ke penelusuran disk.
+    const found = [];
+    walkDisk(ROOT, found);
+    return found.map((abs) => toPosix(relative(ROOT, abs))).sort();
+  }
+}
+
+function walkDisk(dir, out) {
   for (const entry of readdirSync(dir)) {
     if (SKIP_DIRS.has(entry)) continue;
     const abs = join(dir, entry);
     const st = statSync(abs);
     if (st.isDirectory()) {
-      collectMarkdownFiles(abs, out);
+      walkDisk(abs, out);
     } else if (entry.endsWith(".md")) {
       out.push(abs);
     }
   }
-  return out;
 }
 
-const mdFiles = collectMarkdownFiles(ROOT).sort();
+const mdFiles = listRepoMarkdownFiles().map((rel) => join(ROOT, rel));
 
 // ---------------------------------------------------------------------------
 // Utilitas parsing
