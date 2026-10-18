@@ -117,15 +117,26 @@ stabil (ADR-012).
 | Log | `docs/CURSOR-LOG.md`, diisi setiap penutupan fase |
 | Status | **Belum dipakai** |
 
+**Tuntutan aturan:** §5.1 *"teams must use Cursor for development"* dan §6.4 *"how Cursor was used
+during development"*. Keduanya ada di `docs/RULES.md`.
+
 **Kenapa review, bukan build:** tim memakai agent harness masing-masing untuk menulis kode. Cursor
 berperan sebagai permukaan review — tempat perubahan dibaca ulang, dinavigasi, dan diperiksa
 konsistensinya terhadap arsitektur.
 
-**Yang dicatat di submission:** apa yang benar-benar di-review, dan apa yang kurang dari plan yang
-dipakai. Termasuk bagian *"what needs work"* — pengalaman nyata dengan kuota Free adalah feedback yang
-sah dan berharga bagi penyelenggara.
+**Penilaian risiko (jujur):** posisi review-only **defensibel tetapi lebih lemah** daripada memakai
+Cursor untuk menulis kode. "Development" secara wajar mencakup review, tetapi juri bisa membaca lebih
+ketat.
 
-**Jangan menulis** bahwa kode ditulis di Cursor. Itu tidak benar dan tidak perlu.
+**Dua mitigasi yang tersedia — perlu keputusan sebelum P8:**
+
+1. **Perkuat klaim:** gunakan Cursor untuk sebagian pekerjaan nyata (refactor, perbaikan bug, atau
+   penulisan satu modul), lalu catat di `docs/CURSOR-LOG.md`. Klaim jadi lebih kuat dan tetap jujur.
+2. **Tetap review-only:** jelaskan eksplisit di submission bagaimana Cursor dipakai, dan jangan
+   mengklaim lebih dari kenyataan. Risiko: dianggap kurang memenuhi §5.1.
+
+**Jangan menulis** bahwa kode ditulis di Cursor jika tidak. Itu pelanggaran kejujuran, dan §10.2
+menyatakan diskualifikasi bersifat final.
 
 ---
 

@@ -19,6 +19,8 @@ Berlaku untuk semua yang bekerja di repo ini: manusia maupun agent AI.
    dokumen itu, kode yang salah — kecuali ada keputusan baru yang dicatat.
 7. `docs/CONTEXT.md` memuat pengetahuan kerja yang tidak ada di ADR: bobot penilaian lomba, batasan
    tim, angka yang sudah diukur, dan hal-hal yang sengaja ditolak.
+8. `docs/RULES.md` adalah transkripsi terverifikasi aturan resmi lomba. Jika dokumen lain bertentangan
+   dengan file ini soal kewajiban lomba, `docs/RULES.md` yang menang.
 
 Jika ada konflik antar dokumen, hentikan pekerjaan yang berisiko dan minta keputusan user.
 
@@ -33,8 +35,9 @@ Agent yang baru masuk **wajib** membaca berurutan sebelum mengubah apa pun:
 5. `docs/SUBMISSION.md` — deliverable dan tenggat yang mengikat.
 6. `docs/SPONSORS.md` — bukti integrasi yang harus dikumpulkan.
 7. `PREEXISTING.md` — aturan eligibilitas yang mengikat.
+8. `docs/RULES.md` — aturan resmi lomba, terverifikasi.
 
-Tanpa ketujuhnya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
+Tanpa kedelapannya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
 batasan yang sudah dihitung.
 
 **Bahasa dokumen.** Dokumen internal (`AGENTS.md`, `CHECKPOINT.md`, `docs/*` dalam Bahasa Indonesia)
@@ -79,9 +82,10 @@ komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib 
 **22 Okt 2026 00:00 UTC**. Ini satu-satunya gate tanggal yang sah (lihat §8.1). Konsekuensinya jika
 dilanggar: karya tidak dihitung, dan deklarasi di `PREEXISTING.md` menjadi tidak benar.
 
-> Catatan sumber: teks aturan lengkap berada di halaman resmi lomba yang dirender sebagai accordion.
-> **Simpan tangkapan layar §04–§07 ke `docs/` sebelum mengandalkan kutipan mana pun.** Jika sebuah
-> kutipan tidak bisa diverifikasi, tulis sebagai parafrase, bukan sebagai kutipan.
+> **Sumber aturan:** transkripsi lengkap §01–§10 ada di `docs/RULES.md`, terverifikasi dari tangkapan
+> layar halaman resmi (2026-10-18). Jangan mengutip aturan dari sumber sekunder — beberapa artikel dan
+> ringkasan AI memuat klaim yang salah (mis. menyebut Zetaris/Meterless hanya wajib di Wildcard;
+> padahal §5.1 mewajibkannya untuk **semua** submission).
 
 ## 3. Kejujuran dan originalitas
 

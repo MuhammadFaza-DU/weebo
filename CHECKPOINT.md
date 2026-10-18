@@ -42,10 +42,12 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
 - `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-014), `CONTEXT.md`, `SPONSORS.md`,
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
-  lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`,
-  `phases/P0-preflight.md`, `phases/P1-walking-skeleton.md`.
-- `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (7 dokumen).
-- `AGENTS.md` §8.1: penundaan berbasis dependensi, dilarang memakai gate tanggal.
+  lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`, **`RULES.md`**
+  (transkripsi terverifikasi §01–§10 aturan lomba), `phases/P0-preflight.md`,
+  `phases/P1-walking-skeleton.md`.
+- `AGENTS.md` §1.1: urutan baca wajib untuk agent baru (8 dokumen).
+- `AGENTS.md` §8.1: penundaan berbasis dependensi, dilarang memakai gate tanggal — dengan satu
+  pengecualian sah: larangan commit kode produk sebelum 22 Okt 2026 00:00 UTC.
 - Catatan belajar lokal (enam folder referensi) dibuat. Diabaikan lewat `.git/info/exclude` (lokal,
   tidak terlihat di repo); terverifikasi tidak ada di GitHub.
 

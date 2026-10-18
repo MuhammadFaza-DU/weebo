@@ -58,6 +58,18 @@ Impact atau Demo?"*
 Konsekuensi yang sudah dipakai: UI tidak dibangun sebelum pipeline terbukti; demo 30 detik menjadi
 syarat lulus setiap fase.
 
+### Fakta aturan yang mengubah strategi (terverifikasi §07, §08, §03, §05)
+
+| Fakta | Section | Konsekuensi |
+|---|---|---|
+| **Tie-break pakai Impact, lalu timestamp submission** | 7.3 | **Submit jauh sebelum tenggat.** Kalau Impact sama, yang lebih awal menang |
+| Track boleh diganti kapan saja sebelum deadline | 3.3 | Track 03 tidak mengunci; bisa dinilai ulang sebelum submit |
+| Hadiah dibagi rata kecuali tim menulis pembagian berbeda | 8.5 | Tim 3 orang perlu kesepakatan **tertulis** jika ingin pembagian lain |
+| Kode hasil AI sah dan diharapkan | 5.5 | Tidak perlu menyembunyikan pemakaian AI; yang dinilai hasil dan tanggung jawab |
+| Cross-track tidak dinilai dua kali | 3.4 | Jangan mencoba memainkan dua track sekaligus |
+
+Transkripsi lengkap: `docs/RULES.md`.
+
 ### Hadiah in-kind (terpisah dari skor)
 
 | Hadiah | Nilai | Relevan untuk kita? |

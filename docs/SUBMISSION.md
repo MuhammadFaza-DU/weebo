@@ -4,6 +4,9 @@ Semua materi harus berbahasa **Inggris**. Dokumen ini boleh berbahasa Indonesia 
 
 Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 
+> **§07.3: tie-break memakai timestamp submission.** Jika Impact sama, yang submit lebih awal menang.
+> **Target internal: submit minimal 12 jam sebelum tenggat.** Transkripsi aturan: `docs/RULES.md`.
+
 ---
 
 ## Deliverable wajib
@@ -28,10 +31,8 @@ Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 Aturan lomba: harus menunjukkan **main workflow**, bagaimana agent menyelesaikan challenge, fitur
 kunci, dan bagaimana Zetaris + Meterless diintegrasikan.
 
-> **Catatan sumber:** teks aturan resmi berada di halaman event yang dirender sebagai accordion
-> (§06 Submission requirements) dan tidak terbaca oleh fetch teks. Struktur di bawah adalah rencana
-> tim, bukan kutipan aturan. **Simpan tangkapan layar §04–§07 ke `docs/rules/` sebelum submission**,
-> lalu cocokkan struktur ini dengan teks aslinya.
+> **Catatan sumber:** struktur di bawah mengikuti §6.1 dan §6.2 di `docs/RULES.md` (terverifikasi dari
+> tangkapan layar halaman resmi). Rencana isi tetap keputusan tim.
 
 Struktur yang diusulkan:
 
@@ -75,7 +76,7 @@ Jangan menampilkan fitur yang belum jalan. Juri akan mencocokkan video dengan re
 - [ ] Slide deck selesai
 - [ ] Track dipilih di platform
 - [ ] Tim sudah dibentuk di platform dan terkunci
-- [ ] Submission dikirim sebelum tenggat, bukan pada menit terakhir
+- [ ] Submission dikirim minimal 12 jam sebelum tenggat (tie-break §7.3 pakai timestamp)
 
 ---
 
