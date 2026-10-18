@@ -14,7 +14,7 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 |---|---|---|---|
 | **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — |
 | P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** | Bisa didemokan 30 detik di terminal | P0 |
-| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client | Tool call tercatat dan bisa ditolak | P1 |
+| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 |
 | P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber | P1 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | - (bisa paralel) |
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop | P4, P2, P3 |
@@ -117,8 +117,6 @@ Jangan memulai fase berikutnya sebelum keenam hal ini selesai.
 
 ---
 
----
-
 ## Pembagian pemilik lapisan
 
 Sengaja **belum ditetapkan**. Tim memilih di awal P1, lalu mencatatnya di `CHECKPOINT.md`.
@@ -154,15 +152,24 @@ asal lewat PR dan memberi tahu pemiliknya.
 
 ## Backlog lintas fase
 
-Hal yang sengaja ditunda. Bukan dibuang.
+Pekerjaan yang **belum dikerjakan sekarang**, bukan yang "dibuang" dan bukan yang "ditunda sampai
+tanggal tertentu". Aturan: lihat `AGENTS.md` §8.1 — penundaan berbasis **dependensi**, bukan tanggal.
 
-| Item | Alasan ditunda |
-|---|---|
-| Pindah repo ke GitHub Organization | Diperlukan jika ingin membatasi siapa yang boleh dismiss review (repo personal ditolak API 422). URL git tetap sama. Pindahkan hanya jika benar-benar butuh |
-| Desktop native — **Electron** | Tanpa Rust, shell atas UI yang sama. Fase pertama setelah submission (ADR-010) |
-| APK Android — Capacitor | Butuh Android SDK; setelah submission |
-| Gateway kuota gratis per IP | Stretch setelah spine; butuh Cloudflare Worker + pengujian kuota |
-| Live demo URL (PWA ter-deploy) | Opsional; dikerjakan hanya jika ada sisa waktu |
-| Cloud sync penyimpanan | Di luar scope lomba |
-| Connector katalog luas | Setelah MCP + Zetaris stabil |
-| Auto-generate skills | Risiko kualitas; setelah lomba |
+**Syarat mulai (ketiganya wajib):** dependensi terpenuhi · deliverable wajib lomba aman · user setuju.
+
+| Prioritas | Item | Dependensi | Syarat mulai tambahan |
+|---|---|---|---|
+| 1 | **Live demo URL** (PWA ter-deploy) | P5 selesai | Juri bisa mencoba langsung; menaikkan skor Demo dan Product & UX |
+| 2 | **Desktop native — Electron** | P5 selesai (UI ada) + P2 selesai (protokol) | Shell atas UI yang sama, tanpa Rust. ADR-010 |
+| 3 | **Gateway kuota gratis per IP** | P1–P5 lulus | Butuh Cloudflare Worker + pengujian kuota. ADR-004 |
+| 4 | **APK Android — Capacitor** | P5 selesai | Butuh Android SDK terpasang |
+| 5 | **Implementasi engine memori sendiri** | P3 selesai + `MemoryPort` stabil | ADR-012 |
+| 6 | **Landing page polish** | P7 selesai | Hanya jika badge status sudah akurat |
+| 7 | Connector katalog luas | MCP + Zetaris stabil | — |
+| 8 | Auto-generate skills | — | Risiko kualitas; butuh evaluasi dulu |
+| 9 | Cloud sync penyimpanan | — | Di luar scope lomba, tidak mendesak |
+| 10 | Pindah repo ke GitHub Organization | — | Hanya jika kontrol akses dirasa kurang |
+
+**Urutan prioritas berdasarkan dampak skor vs effort** (bobot: Impact 30, Demo 15, Product&UX 10,
+Sponsor tech 10). Live demo URL mendahului Electron karena effort jauh lebih kecil dengan dampak skor
+yang sebanding.

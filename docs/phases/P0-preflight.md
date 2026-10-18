@@ -2,11 +2,20 @@
 
 **Tujuan:** menutup semua blocker dan menjawab semua asumsi **sebelum satu baris kode produk ditulis**.
 
-**Syarat lulus:** setiap item di bawah punya status yang bisa dibuktikan — `terverifikasi`, `gagal`,
-atau `diterima sebagai risiko`. Tidak boleh ada yang berstatus "sepertinya bisa".
+**Syarat lulus:** setiap item di bawah punya status yang bisa dibuktikan. Tidak boleh ada yang
+berstatus "sepertinya bisa".
 
-Status yang sah (sama dengan `docs/SETUP-SPONSORS.md` §7): `terverifikasi`, `terdaftar belum diuji`,
-`belum`, `gagal`, `diterima sebagai risiko`. Item yang masih `belum` **wajib** diselesaikan sebelum P1.
+**Status yang sah** (definisi tunggal, dipakai juga di `docs/SETUP-SPONSORS.md` §7):
+
+| Status | Arti |
+|---|---|
+| `terverifikasi` | Sudah diuji, hasilnya sesuai harapan, ada bukti |
+| `terdaftar belum diuji` | Akun/akses ada, tapi belum dibuktikan bekerja |
+| `belum` | Belum dikerjakan sama sekali |
+| `gagal` | Sudah diuji, tidak berhasil |
+| `diterima sebagai risiko` | Diketahui gagal/tidak tersedia, dan tim memutuskan melanjutkan tanpa itu |
+
+Item yang masih `belum` atau `terdaftar belum diuji` **wajib** diselesaikan sebelum P1.
 
 **Kenapa fase ini ada:** P1 bergantung pada tiga hal yang saat ini **belum ada satu pun**: akses
 Zetaris, akses NVIDIA NIM, dan bentuk tim di platform lomba. Selain itu ada empat asumsi arsitektur
@@ -47,22 +56,25 @@ Fase ini **tidak menghasilkan fitur**. Ia menghasilkan kepastian.
 
 ---
 
-### T0.3 — Uji Zetaris dari browser (menentukan arsitektur)
-
-**Ini pertanyaan arsitektur, bukan sekadar uji coba.** Hasilnya menentukan apakah PWA bisa memanggil
-Zetaris langsung atau wajib lewat runtime.
+### T0.3 — Uji Zetaris dari browser (menentukan desain client, bukan arsitektur P1)
 
 - [ ] Ambil endpoint Zetaris (MCP atau REST)
 - [ ] Coba satu request dari console browser di halaman lokal
 - [ ] Catat: berhasil / gagal karena CORS / gagal karena auth
-- [ ] Simpulkan: **PWA bisa langsung** atau **wajib lewat runtime**
+- [ ] Simpulkan: **PWA bisa memanggil Zetaris langsung** atau **wajib lewat runtime**
 
 **Kriteria selesai:** kesimpulan tertulis di `docs/SPONSORS.md` beserta bukti (pesan error atau
 respons sukses).
 
-**Kenapa di P0:** kalau ternyata wajib lewat runtime, itu memperkuat ADR-011 dan tidak mengubah
-rencana. Kalau ternyata bisa langsung, kita punya opsi tambahan. Yang berbahaya adalah menemukannya
-di tengah P1.
+**Apa yang hasilnya ubah dan tidak ubah:**
+
+- **Tidak mengubah** arsitektur client–runtime. ADR-011 sudah menetapkan semua client lewat
+  `packages/protocol`; itu berlaku apa pun hasilnya.
+- **Mengubah** desain `packages/zetaris`: kalau browser tidak bisa memanggil langsung, semua akses
+  Zetaris **wajib** lewat runtime, dan PWA tidak boleh punya jalur langsung sama sekali.
+
+**Kenapa tetap diuji di P0:** kalau ternyata browser bisa memanggil langsung, tim mungkin tergoda
+menambah jalur pintas di PWA. Keputusan itu harus diambil sadar, bukan ditemukan saat koding.
 
 ---
 

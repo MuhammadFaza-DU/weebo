@@ -20,7 +20,8 @@ library TypeScript, sehingga memilih Flutter akan memutus akses langsung ke engi
 diintegrasikan.
 
 **Keputusan.** Monorepo TypeScript. Core agent isomorphic (Node + browser). UI React + Vite sebagai
-PWA untuk lomba. Target desktop jangka panjang: **Electron** (lihat ADR-010), mobile: Capacitor.
+PWA (jalur kirim utama). Target desktop: **Electron** (lihat ADR-010), mobile native: Capacitor.
+Keduanya dimulai saat dependensinya terpenuhi, bukan pada tanggal tertentu.
 
 **Konsekuensi.**
 
@@ -84,7 +85,9 @@ mereka; meniru mekanisme itu berarti mengakali pembatasan pihak lain dan tidak a
 
 **Keputusan.** Dua komponen terpisah:
 
-1. **Katalog model** — file JSON di repo, tanpa server. User melihat daftar model, tier, dan konteks.
+1. **Katalog model** — data statis di `packages/core/src/models/catalog.ts` (modul TypeScript, bukan
+   file JSON terpisah, agar tipenya ikut `typecheck` dan bisa dipakai langsung oleh `core`), tanpa
+   server. User melihat daftar model, tier, dan konteks.
 2. **Gateway** — Cloudflare Worker yang memegang key NVIDIA NIM, membatasi N request per IP per hari,
    hanya meneruskan ke model gratis.
 
@@ -199,7 +202,7 @@ ada anggaran. Setiap kemampuan diberi badge `live` atau `roadmap`.
 
 ---
 
-## ADR-010 — Native menyusul, dengan Electron sebagai target
+## ADR-010 — Target native: Electron, dimulai setelah dependensi terpenuhi
 
 
 **Tanggal:** 2026-10-18
@@ -214,48 +217,28 @@ mesin tim, sementara Electron hanya menuntut Node.
 
 **Keputusan.**
 
-- Untuk lomba: kirim **PWA**. Video demo menampilkan PWA (installable, responsif di HP dan desktop).
-- Target desktop jangka panjang: **Electron**, bukan Tauri.
-- Mobile jangka panjang: **Capacitor**.
+- Jalur kirim utama: **PWA** (installable, responsif di HP dan desktop). Video demo menampilkan PWA.
+- Target desktop: **Electron**, bukan Tauri.
+- Target mobile native: **Capacitor**.
 - Tauri menjadi opsi yang dipertimbangkan hanya jika ukuran aplikasi menjadi masalah nyata.
 - `apps/runtime` dirancang sejak sekarang agar dapat berjalan sebagai proses Node mandiri **dan** di
   dalam main process Electron.
+- **Kapan Electron/Capacitor dimulai:** berbasis dependensi, bukan tanggal. Dependensi keduanya adalah
+  **P5 selesai** (client PWA ada) dan, untuk Electron, **P2 selesai** (protokol runtime–client ada).
+  Syarat mulai lengkap ada di `AGENTS.md` §8.1.
 
 **Konsekuensi.**
 
-- Tidak ada instalasi Rust/MSVC yang memblokir build window.
-- Menambah Electron nanti adalah penambahan *shell* di atas UI yang sama, bukan penulisan ulang.
+- Tidak ada instalasi Rust/MSVC yang memblokir pekerjaan awal.
+- Menambah Electron adalah penambahan *shell* di atas UI yang sama, bukan penulisan ulang.
 - Ukuran aplikasi desktop akan lebih besar (Electron ±120–250 MB vs Tauri 5–15 MB). Diterima sebagai
   pertukaran atas hilangnya risiko toolchain.
-- Adapter boundary harus ditegakkan sejak kode pertama; kalau dilanggar, Electron nanti menjadi
-  pekerjaan ulang.
+- Adapter boundary harus ditegakkan sejak kode pertama; kalau dilanggar, Electron menjadi pekerjaan
+  ulang.
 - Klaim "tersedia di desktop dan Android" sampai migrasi selesai harus disampaikan sebagai PWA
   installable, bukan installer native.
-
----
-
-## ADR-013 — Pengecualian sementara: CLI boleh memanggil core langsung di P1
-
-**Tanggal:** 2026-10-18
-**Status:** Diterima, berlaku hanya untuk P1
-
-**Konteks.** ADR-011 menetapkan semua surface adalah client yang bicara lewat `packages/protocol`.
-Namun P1 bertujuan membuktikan pipeline (intent → memory → model → Zetaris → jawaban) dalam waktu
-sesingkat mungkin. Membangun protokol berversi + server WebSocket lebih dulu menambah satu lapisan
-yang bisa gagal sebelum pipeline terbukti.
-
-**Keputusan.** Pada **P1 saja**, `apps/cli` boleh memanggil `packages/core` langsung di proses yang
-sama. Pemisahan client–server lewat `packages/protocol` menjadi **syarat keluar P2**, dan pengecualian
-ini berakhir di sana.
-
-**Konsekuensi.**
-
-- P1 lebih cepat dan risikonya lebih kecil.
-- Ada satu titik di mana arsitektur menyimpang dari ADR-011. Penyimpangan ini dicatat, bukan
-  disembunyikan.
-- P2 **wajib** menutup penyimpangan itu. Jika tidak, ADR-011 kehilangan makna dan Electron nanti
-  menjadi penulisan ulang.
-- Pengecualian ini tidak boleh diperluas ke `apps/web`.
+- Electron dan Capacitor **boleh dimulai lebih awal** jika dependensinya terpenuhi dan tiga syarat di
+  `AGENTS.md` §8.1 terpenuhi. Jangan menunggu tanggal apa pun.
 
 ---
 
@@ -338,10 +321,38 @@ implementasinya dari spesifikasi. Pengukuran langsung terhadap repo Meterless me
 - Klaim "original work" tetap sah: engine adalah dependensi Apache-2.0, seluruh kode harness,
   connector, runtime, adapter, dan UI ditulis sendiri.
 - Tim **tidak** memiliki memory system sendiri pada saat submission. Ini dicatat jujur di README dan
-  submission, dan menjadi item pertama roadmap pasca-lomba.
+  submission, dan menjadi item backlog berprioritas 5 (bergantung pada P3 + `MemoryPort` stabil).
 - `MemoryPort` wajib ditegakkan sejak awal; kalau core memanggil engine langsung, penukaran nanti
   menjadi penulisan ulang.
 
 **Catatan keputusan terkait:** embedding memakai NVIDIA Nemotron-3-Embed-1B (`nemotron-3-embed-1b`),
 vektor 2048 dimensi, konteks 32.768 token, mendukung bahasa Indonesia. Dapat dipotong ke 1024/512
 dimensi untuk menghemat penyimpanan, dengan normalisasi L2 ulang.
+
+---
+
+## ADR-013 — Pengecualian sementara: CLI boleh memanggil core langsung di P1
+
+**Tanggal:** 2026-10-18
+**Status:** Diterima, berlaku hanya untuk P1
+
+**Konteks.** ADR-011 menetapkan semua surface adalah client yang bicara lewat `packages/protocol`.
+Namun P1 bertujuan membuktikan pipeline (intent → memory → model → Zetaris → jawaban) dalam waktu
+sesingkat mungkin. Membangun protokol berversi + server WebSocket lebih dulu menambah satu lapisan
+yang bisa gagal sebelum pipeline terbukti.
+
+**Keputusan.** Pada **P1 saja**, `apps/cli` boleh memanggil `packages/core` langsung di proses yang
+sama. Pemisahan client–server lewat `packages/protocol` menjadi **syarat keluar P2**, dan pengecualian
+ini berakhir di sana.
+
+**Konsekuensi.**
+
+- P1 lebih cepat dan risikonya lebih kecil.
+- Ada satu titik di mana arsitektur menyimpang dari ADR-011. Penyimpangan ini dicatat, bukan
+  disembunyikan.
+- P2 **wajib** menutup penyimpangan itu, dan syarat lulus P2 sudah mencantumkannya
+  (`AGENTS.md` §8, `docs/PHASES.md`). Jika tidak, ADR-011 kehilangan makna dan Electron nanti
+  menjadi penulisan ulang.
+- Pengecualian ini tidak boleh diperluas ke `apps/web`.
+
+---

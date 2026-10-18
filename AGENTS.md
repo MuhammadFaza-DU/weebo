@@ -109,8 +109,8 @@ komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib 
   di balik jawaban).
 - Weebo bukan chatbot. Setiap fitur harus lolos pertanyaan: "apakah ini membuat agent melakukan
   pekerjaan nyata?"
-- Aplikasi tersedia untuk desktop, tablet, dan ponsel dari satu codebase. Untuk lomba: PWA dulu,
-  native menyusul.
+- Aplikasi tersedia untuk desktop, tablet, dan ponsel dari satu codebase. Jalur kirim utama: PWA.
+  Electron dan Capacitor dimulai saat dependensinya terpenuhi (ADR-010, §8.1).
 - **CLI adalah surface resmi**, diposisikan untuk developer dan scripting, bukan wajah utama produk.
   Wajah produk tetap PWA.
 
@@ -155,7 +155,7 @@ syarat lulusnya terpenuhi.
 |---|---|---|
 | **P0 Preflight** | Semua akses terverifikasi, asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab |
 | P1 Walking Skeleton | Satu alur tipis **lewat CLI**: prompt → intent → memory → model → Zetaris → jawaban | Bisa didemokan 30 detik di terminal |
-| P2 Agent Core | Loop, tool registry, policy allow/deny, audit log, protokol runtime–client | Tool call tercatat dan bisa ditolak |
+| P2 Agent Core | Loop, tool registry, policy allow/deny, audit log, **protokol runtime–client selesai** | Tool call tercatat dan bisa ditolak; CLI bicara ke runtime lewat `packages/protocol`, bukan memanggil core langsung |
 | P3 Memory & Reasoning | H-MEM mining/retrieval/audit, embedding nyata, jejak "kenapa" | Mengingat lintas sesi dan menjelaskan sumber |
 | P4 Design System | Token + komponen dasar di canvas | HALT + approval eksplisit user |
 | P5 Surfaces | **PWA** sebagai client runtime: chat, tasks, connectors, settings BYOK, responsif | Jalan di layar HP dan desktop |
@@ -171,6 +171,34 @@ punya rencana task. **Fase tidak boleh dimulai tanpa file task-nya dibuat lebih 
 
 Panduan memecah fase menjadi task (ukuran, format, kriteria selesai yang baik vs buruk, larangan):
 lihat `docs/PHASES.md`.
+
+### 8.1 Penundaan berbasis dependensi — dilarang memakai gate tanggal
+
+Fase dan pekerjaan ditunda karena **dependensi belum terpenuhi**, bukan karena tanggal. Dilarang
+menulis "setelah lomba", "pasca-lomba", "after the hackathon", atau padanannya sebagai alasan
+penundaan.
+
+**Alasan:** ADR-007 menetapkan fase adalah gate hasil, bukan durasi. Gate tanggal bertentangan dengan
+itu dan menghapus opsionalitas — pekerjaan yang sebenarnya bisa dimulai lebih awal menjadi tidak
+mungkin dimulai.
+
+**Cara yang benar:** setiap item yang ditunda wajib punya tiga hal:
+
+| Kolom | Isi |
+|---|---|
+| **Dependensi** | Apa yang harus selesai lebih dulu agar item ini bisa dimulai |
+| **Syarat mulai** | Kondisi yang harus benar saat memulai |
+| **Prioritas** | Urutan jika waktu tersisa |
+
+**Syarat mulai — ketiganya wajib:**
+
+1. Dependensi item tersebut sudah terpenuhi.
+2. Deliverable wajib lomba sudah aman: repo bisa dijalankan dari clone bersih, video demo siap,
+   slide deck siap, README lengkap.
+3. User menyetujui secara eksplisit untuk memulai.
+
+Agent **wajib menawarkan** item berikutnya saat ketiga syarat terpenuhi — bukan menunggu diminta, dan
+bukan memutuskan sendiri.
 
 **Protokol keluar fase (wajib, keenam-enamnya):**
 

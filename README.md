@@ -58,7 +58,7 @@ npx weebo serve          → local runtime (Node)
        │
        ├── npx weebo      → CLI, for developers and scripting
        ├── web app        → PWA, installable on phone and desktop
-       └── desktop app    → Electron, after the hackathon
+       └── desktop app    → Electron, once the PWA client exists (P5)
 ```
 
 This is why a browser tab is enough to drive an agent that keeps working: the work happens in the
@@ -77,7 +77,7 @@ Honest labels, no marketing:
 | Data connector (Zetaris MCP/REST) | Not started |
 | Application surface (PWA) | Not started |
 | Scheduler, channels | Not started |
-| Free-tier quota gateway | Not started — planned after the hackathon |
+| Free-tier quota gateway | Not started — depends on P1–P5 being complete |
 | Landing page | Not started |
 
 See [`docs/PHASES.md`](docs/PHASES.md) for the phase framework and exit criteria.
@@ -116,7 +116,7 @@ not in the README.
 |---|---|
 | **Zetaris** | Data harness — live, governed queries across scattered sources via MCP/REST |
 | **Meterless** | Context layer — H-MEM memory engine (vendored, Apache-2.0), with a custom embedding adapter replacing its reference mock |
-| **NVIDIA Nemotron** | Free-tier model path via NVIDIA NIM. Planned, not built — the quota gateway is post-hackathon |
+| **NVIDIA Nemotron** | Free-tier model path via NVIDIA NIM. Not built yet — the quota gateway depends on P1–P5 |
 | **Cursor** | Review surface — code is written in other agent harnesses, Cursor is used to review it |
 
 Integration evidence, transcripts, and the exact call sites live in
@@ -144,19 +144,22 @@ The authoritative phase plan lives in [`docs/PHASES.md`](docs/PHASES.md). Summar
 | P7 Landing page | Public Astro site |
 | P8 Submission | Video, slide deck, README, eligibility audit |
 
-Beyond the hackathon:
+Not in the current plan — each becomes available when its dependency is met (see `AGENTS.md` §8.1):
 
-- Native desktop shell (Electron) and Android build (Capacitor) on the same monorepo
-- Free-tier quota gateway
-- Own implementation of the memory engine, behind `MemoryPort`
-- Connector catalogue beyond MCP basics
-- Cloud sync for user-chosen storage
+| Item | Depends on |
+|---|---|
+| Native desktop shell (Electron) | P5 client exists, P2 protocol exists |
+| Android build (Capacitor) | P5 client exists, Android SDK installed |
+| Free-tier quota gateway | P1–P5 complete |
+| Own implementation of the memory engine, behind `MemoryPort` | P3 complete |
+| Connector catalogue beyond MCP basics | MCP and Zetaris stable |
+| Cloud sync for user-chosen storage | not scheduled |
 
 ## Contributing
 
 Read [`AGENTS.md`](AGENTS.md) first — it is the binding rulebook for both humans and AI agents
 working in this repository. It lists the required reading order for anyone (or any agent) picking up
-this project: `CHECKPOINT.md` → `docs/DECISIONS.md` → `docs/CONTEXT.md` → the active phase file.
+this project — seven documents, starting with `CHECKPOINT.md` and ending with `PREEXISTING.md`.
 
 Then see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

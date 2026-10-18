@@ -4,13 +4,15 @@
 
 ## How it was verified
 
-<!-- Commands you ran and their result. If something could not be verified, say so. -->
+<!-- Commands you ran and their result. If a script does not exist yet, say so — do not claim a pass. -->
 
 ```
 npm run lint
 npm run typecheck
 npm test
 ```
+
+If these scripts do not exist yet, write "not yet available" instead of pasting output.
 
 ## Checklist
 

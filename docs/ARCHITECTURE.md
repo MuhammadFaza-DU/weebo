@@ -34,13 +34,15 @@ packages/
   core/         Agent loop. Isomorphic. Tidak ada import Node-only.
   protocol/     Kontrak antara runtime dan semua client: tipe request/response,
                 skema event, versi protokol.
-  packages/meterless  Adapter Meterless (kita tulis sendiri; engine pihak ketiga di vendor/hmem)
+  meterless/    Adapter Meterless (kita tulis sendiri; engine pihak ketiga di vendor/hmem)
   zetaris/      Client Zetaris: MCP + REST fallback, typed, dengan error mapping.
   connectors/   Registry connector MCP + definisi tool.
   gateway/      Cloudflare Worker: kuota gratis per IP, hanya model gratis.
+vendor/
+  hmem/         Engine H-MEM Meterless (Apache-2.0, pihak ketiga). TIDAK BOLEH DIEDIT.
 ```
 
-Shell native (setelah submission, lihat ADR-010):
+Shell native (boleh dimulai setelah P5 selesai, lihat ADR-010 dan `AGENTS.md` §8.1):
 
 ```
 apps/desktop/   Electron: membungkus apps/web, menjalankan apps/runtime di main process
@@ -73,7 +75,7 @@ Konsekuensi yang harus dijaga:
 - Satu versi protokol, dideklarasikan di `packages/protocol`, agar client lama tidak rusak.
 - Runtime harus bisa dijalankan tanpa client mana pun (headless), karena scheduler tetap bekerja.
 
-### 2.2 Bagaimana perangkat lain mencapai runtime (BELUM DIPUTUSKAN)
+## 2.2 Bagaimana perangkat lain mencapai runtime (BELUM DIPUTUSKAN)
 
 Ini pertanyaan terbuka yang **memblokir demo di ponsel**. Runtime mendengarkan di `localhost`, dan
 `localhost` di ponsel menunjuk ke ponsel itu sendiri — bukan ke laptop.
@@ -131,7 +133,7 @@ memori yang dipakai, dan langkah yang diambil.
 | `packages/meterless` | `core` (tipe), engine vendored | mengedit `vendor/` |
 | `packages/zetaris` | `core` (tipe), HTTP client | `apps/*` |
 | `apps/runtime` | semua `packages/*`, API Node | logika bisnis duplikat |
-| `apps/cli` | `protocol`, client WebSocket | `core`, API Node langsung |
+| `apps/cli` | `protocol`, client WebSocket | `core` (lihat ADR-013 untuk pengecualian P1), API Node langsung |
 | `apps/web` | `protocol`, client WebSocket | `core`, API Node-only |
 
 **Pengecualian sementara untuk P1** (ADR-013): pada P1 saja, CLI boleh memanggil `packages/core`
@@ -247,17 +249,22 @@ Tiga jalur, dipilih user di settings:
 
 | Jalur | Key | Catatan |
 |---|---|---|
-| Free tier | Tidak perlu | Lewat `packages/gateway`, key NVIDIA NIM milik project, kuota per IP |
+| Free tier | Tidak perlu | Lewat `packages/gateway`, key NVIDIA NIM milik project, kuota per IP. **Belum dibangun — lihat catatan di bawah** |
 | BYOK | Key user | Disimpan lokal (env atau keychain), tidak pernah dikirim ke server kami |
 | Lokal | Tidak perlu | Ollama / LM Studio di mesin user |
 
 Katalog model (`packages/core/src/models/catalog.ts`) memuat daftar model beserta tier, konteks, dan
-label. Katalog berupa **modul TypeScript**, bukan file JSON terpisah — lihat ADR-004 yang direvisi oleh
-catatan ini. Katalog tidak memerlukan server.
+label. Katalog berupa **modul TypeScript** dengan data statis, bukan file JSON terpisah — lihat
+ADR-004. Katalog tidak memerlukan server.
 
-> **Koreksi:** ADR-004 menyebut "file JSON". Yang benar adalah modul TypeScript di
-> `packages/core/src/models/catalog.ts`, karena tipenya dipakai langsung oleh `core` dan harus ikut
-> `typecheck`. Isi datanya tetap statis.
+**Urutan pembangunan jalur model:**
+
+1. **BYOK + NIM langsung** — dibangun di P1. Cukup untuk demo.
+2. **Gateway kuota per IP** — dibangun **hanya jika** P1–P5 selesai dan tiga syarat di `AGENTS.md`
+   §8.1 terpenuhi. Jika tidak, tetap di backlog (ADR-004).
+
+Artinya saat submission, jalur "free tier tanpa setup" mungkin **belum ada**. README dan landing page
+wajib menyatakan itu apa adanya.
 
 ## 9. Yang belum diputuskan
 
@@ -267,7 +274,8 @@ Dicatat jujur supaya tidak jadi asumsi diam-diam:
 - Format audit log di dalamnya.
 - Apakah PWA menyimpan cache percakapan lokal untuk tampilan cepat (bukan sumber kebenaran).
 - Strategi sinkronisasi antar perangkat (di luar scope lomba).
-- Shell desktop (Electron) dan build Android (Capacitor): ditunda sampai setelah lomba, lihat ADR-010.
+- Shell desktop (Electron) dan build Android (Capacitor): bergantung pada P5, lihat ADR-010. Boleh
+  dimulai begitu dependensinya terpenuhi dan tiga syarat di `AGENTS.md` §8.1 terpenuhi.
 
 Yang sudah diputuskan dan tidak lagi terbuka: PWA tidak menyimpan state kanonik. Semua state ada di
 runtime (ADR-011).

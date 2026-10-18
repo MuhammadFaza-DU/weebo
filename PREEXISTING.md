@@ -34,7 +34,7 @@ tercantum.
 | 2 | `README.md` | `a8ba3dc` | 2026-10-18 | Dokumentasi publik |
 | 3 | `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `CODEOWNERS` | `a8ba3dc` | 2026-10-18 | Aturan kerja dan tata kelola |
 | 4 | `CHECKPOINT.md`, `PREEXISTING.md` | `a8ba3dc` | 2026-10-18 | Dokumen status dan eligibilitas |
-| 5 | `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` | `a8ba3dc` | 2026-10-18 | Arsitektur dan catatan keputusan (ADR-001…012) |
+| 5 | `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` | `a8ba3dc` | 2026-10-18 | Arsitektur dan catatan keputusan (ADR-001…ADR-013) |
 | 6 | `docs/SPONSORS.md`, `docs/SETUP-SPONSORS.md`, `docs/REFERENCES.md` | `a8ba3dc` | 2026-10-18 | Rencana integrasi sponsor dan referensi |
 | 7 | `docs/PHASES.md`, `docs/SUBMISSION.md`, `docs/phases/P1-walking-skeleton.md` | `a8ba3dc` | 2026-10-18 | Kerangka kerja dan checklist submission |
 | 8 | `.github/` (CI, template issue dan PR) | `a8ba3dc` | 2026-10-18 | Konfigurasi repositori |
@@ -77,7 +77,8 @@ Kalimat yang akan dipakai, menyesuaikan hasil akhir:
 > Before the build window we created only repository scaffolding: documentation, architecture notes,
 > decision records, and project governance files. All product code — the agent core, sponsor
 > integrations, application surface, and landing page — was written during the build window.
-> The Meterless H-MEM engine is a third-party Apache-2.0 dependency, declared in NOTICE, not our work.
+> The Meterless H-MEM engine is a third-party Apache-2.0 dependency (declared alongside its LICENSE
+> once vendored), not our work.
 > The full commit history is available in this repository.
 
 Perbarui kalimat ini jika kenyataannya berbeda. Jangan mengirim klaim yang tidak sesuai riwayat commit.

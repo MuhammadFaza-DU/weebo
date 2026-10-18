@@ -81,7 +81,7 @@ Vendoring **sudah selesai di P0 (T0.6)**. Task ini hanya membungkusnya.
 
 - [ ] `apps/cli` dengan dua perintah: `weebo` (chat) dan `weebo serve` (runtime)
 - [ ] Untuk P1, chat boleh memanggil core langsung di proses yang sama; pemisahan client–server
-      diselesaikan di P2 bersama `packages/protocol`
+      diselesaikan di P2 bersama `packages/protocol` (ADR-013)
 - [ ] Tampilkan jawaban + daftar sumber di terminal
 - [ ] Verifikasi: `npx weebo "pertanyaan"` mengembalikan jawaban dengan sumber
 

@@ -49,7 +49,8 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 
 **Rencana panggilan:**
 
-1. Engine di-*vendor* dari `engines/hmem/reference` lewat langkah setup yang tercatat di README.
+1. Engine di-*vendor* dari `engines/hmem/reference` lewat langkah setup yang tercatat di
+   `docs/SETUP-SPONSORS.md` §4 (perintah vendor akan ditambahkan ke README saat kode produk ada).
    `LICENSE` dan atribusi Apache-2.0 dipertahankan; `vendor/` tidak diedit.
 2. `packages/meterless/src` menyediakan adapter yang mengimplementasikan `MemoryPort` dari
    `packages/core`.
@@ -71,7 +72,8 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 
 **Catatan jujur untuk submission:** memory engine adalah dependensi Apache-2.0, bukan karya tim.
 Yang ditulis tim adalah adapter embedding, integrasi ke agent loop, dan seluruh harness di sekitarnya.
-Implementasi sendiri direncanakan pasca-lomba (ADR-012).
+Implementasi sendiri menjadi item backlog berprioritas 5, bergantung pada P3 selesai dan `MemoryPort`
+stabil (ADR-012).
 
 ---
 

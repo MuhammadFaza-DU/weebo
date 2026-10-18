@@ -22,14 +22,15 @@ filesystem, scheduler, secret, dan MCP. Semua surface adalah client yang bicara 
 |---|---|---|
 | `apps/cli` | `npx weebo`, `npx weebo serve` — untuk developer dan scripting | P1 |
 | `apps/web` | PWA, wajah produk untuk pengguna | P5 |
-| `apps/desktop` | Electron (bukan Tauri) | Setelah lomba |
+| `apps/desktop` | Electron (bukan Tauri) | Setelah P5 (UI ada) + P2 (protokol) |
 
 **Konsekuensi yang sering salah dipahami:**
 
 - **P1 memakai CLI, bukan UI.** Tujuannya membuktikan pipeline, bukan tampilan.
 - **PWA tidak punya mode standalone.** Selalu terhubung ke runtime. Kalau runtime mati, PWA mati.
 - **Demo lomba wajib menjalankan `npx weebo serve` lebih dulu.**
-- `packages/core` tidak dipanggil langsung oleh client mana pun.
+- `packages/core` tidak dipanggil langsung oleh client mana pun, **kecuali pengecualian sementara P1**
+  (ADR-013): di P1 saja CLI boleh memanggil core langsung; wajib ditutup di P2.
 - CLI diposisikan untuk developer; **wajah produk tetap PWA**.
 
 **Memori:** engine Meterless di-*vendor* (Apache-2.0) + adapter embedding sendiri lewat `MemoryPort`.
@@ -182,6 +183,7 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 | Hal | Aturan |
 |---|---|
 | Fase | Gate hasil, bukan durasi. Tanpa timebox |
+| **Penundaan** | **Berbasis dependensi, bukan tanggal.** Dilarang menulis "setelah lomba" sebagai alasan. Syarat mulai: dependensi + submission aman + izin user (AGENTS.md §8.1) |
 | Task | ≤ 2 jam, kriteria selesai objektif, dicatat di `docs/phases/` |
 | Keluar fase | 6 syarat: demo-able, CHECKPOINT, commit+tag, approval, laporan verifikasi, **log Cursor** |
 | Subagent | Default implementer + reviewer read-only; **tanya user dulu** native atau subagent |
@@ -199,6 +201,7 @@ Semua asumsi di bawah **wajib diuji di P0**, bukan ditebak. Lihat `docs/phases/P
 | Asumsi | Dijawab di | Status |
 |---|---|---|
 | Apakah Zetaris bisa dipanggil dari browser, atau wajib lewat server | P0 · T0.3 | belum diuji |
+| **Bagaimana ponsel/tablet mencapai runtime di `localhost`** | **Belum ditugaskan — wajib diputuskan sebelum P5** | belum |
 | Apakah conformance suite Meterless bisa jalan di lingkungan kita | P0 · T0.6 | belum diuji |
 | Rate limit NVIDIA NIM yang sebenarnya (~40 RPM masih dari dokumentasi) | P0 · T0.4 | belum diukur |
 | Apakah plan Cursor Free cukup untuk 6 hari kerja tim | P0 · T0.5 | belum diuji |
