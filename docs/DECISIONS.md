@@ -20,7 +20,7 @@ library TypeScript, sehingga memilih Flutter akan memutus akses langsung ke engi
 diintegrasikan.
 
 **Keputusan.** Monorepo TypeScript. Core agent isomorphic (Node + browser). UI React + Vite sebagai
-PWA. Native (Tauri/Capacitor) ditunda sampai setelah lomba.
+PWA untuk lomba. Target desktop jangka panjang: **Electron** (lihat ADR-010), mobile: Capacitor.
 
 **Konsekuensi.**
 
@@ -28,6 +28,7 @@ PWA. Native (Tauri/Capacitor) ditunda sampai setelah lomba.
 - Engine Meterless bisa dipakai langsung sebagai dependency, bukan di-porting.
 - PWA bisa di-install di Android dan desktop tanpa store.
 - Butuh disiplin menjaga `packages/core` bebas API Node-only.
+- Butuh adapter boundary eksplisit agar Electron bisa ditambahkan tanpa penulisan ulang.
 
 ---
 
@@ -197,19 +198,34 @@ ada anggaran. Setiap kemampuan diberi badge `live` atau `roadmap`.
 
 ---
 
-## ADR-010 — Native menyusul setelah lomba
+## ADR-010 — Native menyusul, dengan Electron sebagai target
 
 **Tanggal:** 2026-10-18
-**Status:** Diterima
+**Status:** Diterima (merevisi versi awal ADR ini)
 
-**Konteks.** Cakupan native penuh (PWA + desktop + APK) menarik tetapi berisiko menghabiskan waktu
-pada toolchain, bukan pada agent.
+**Konteks.** Harness agent modern yang diperiksa semuanya native atau Electron-based: Hermes memakai
+Electron (`apps/desktop/electron/`), Cursor memakai Electron, Grok Bot memakai aplikasi desktop native,
+Meterless mendistribusikan installer desktop. Alasannya struktural: agent butuh akses filesystem,
+spawn proses, eksekusi di background, keychain OS, dan auto-start — semuanya di luar jangkauan PWA.
+Awalnya Tauri dipertimbangkan, tetapi Tauri menuntut Rust + MSVC Build Tools yang tidak tersedia di
+mesin tim, sementara Electron hanya menuntut Node.
 
-**Keputusan.** Untuk lomba, kirim PWA. Migrasi bertahap ke Tauri (desktop) dan Capacitor (Android)
-di atas monorepo yang sama setelah submission.
+**Keputusan.**
+
+- Untuk lomba: kirim **PWA**. Video demo menampilkan PWA (installable, responsif di HP dan desktop).
+- Target desktop jangka panjang: **Electron**, bukan Tauri.
+- Mobile jangka panjang: **Capacitor**.
+- Tauri menjadi opsi yang dipertimbangkan hanya jika ukuran aplikasi menjadi masalah nyata.
+- `apps/runtime` dirancang sejak sekarang agar dapat berjalan sebagai proses Node mandiri **dan** di
+  dalam main process Electron.
 
 **Konsekuensi.**
 
-- Tidak ada instalasi Rust/Android SDK yang memblokir build window.
-- Klaim "tersedia di desktop dan Android" harus disampaikan sebagai PWA installable, bukan installer
-  native, sampai migrasi selesai.
+- Tidak ada instalasi Rust/MSVC yang memblokir build window.
+- Menambah Electron nanti adalah penambahan *shell* di atas UI yang sama, bukan penulisan ulang.
+- Ukuran aplikasi desktop akan lebih besar (Electron ±120–250 MB vs Tauri 5–15 MB). Diterima sebagai
+  pertukaran atas hilangnya risiko toolchain.
+- Adapter boundary harus ditegakkan sejak kode pertama; kalau dilanggar, Electron nanti menjadi
+  pekerjaan ulang.
+- Klaim "tersedia di desktop dan Android" sampai migrasi selesai harus disampaikan sebagai PWA
+  installable, bukan installer native.

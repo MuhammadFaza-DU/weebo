@@ -26,6 +26,7 @@ Status: **rencana**. Belum ada kode produk. Bagian yang belum diimplementasikan 
 apps/
   web/          React + Vite. PWA: installable, responsif, offline-tolerant.
   runtime/      Node host. Scheduler, stdio MCP server, channel bridge (Telegram dll).
+                Dirancang agar juga bisa berjalan di dalam main process Electron.
   landing/      Astro. Situs publik: narasi produk, fitur + badge status, CTA.
 packages/
   core/         Agent loop. Isomorphic. Tidak ada import Node-only.
@@ -33,6 +34,13 @@ packages/
   zetaris/      Client Zetaris: MCP + REST fallback, typed, dengan error mapping.
   connectors/   Registry connector MCP + definisi tool.
   gateway/      Cloudflare Worker: kuota gratis per IP, hanya model gratis.
+```
+
+Shell native (setelah submission, lihat ADR-010):
+
+```
+apps/desktop/   Electron: membungkus apps/web, menjalankan apps/runtime di main process
+apps/mobile/    Capacitor: membungkus apps/web
 ```
 
 ## 3. Alur satu permintaan
@@ -75,6 +83,21 @@ memori yang dipakai, dan langkah yang diambil.
 
 Kapabilitas platform masuk lewat interface adapter yang dideklarasikan di `core` dan diimplementasikan
 di `apps/*`.
+
+### 4.1 Adapter platform (wajib sejak kode pertama)
+
+`packages/core` tidak boleh menyentuh API platform. Setiap kapabilitas dideklarasikan sebagai
+interface dan diimplementasikan per runtime:
+
+| Interface | Browser (PWA) | Node (`apps/runtime`) | Electron (nanti) |
+|---|---|---|---|
+| `Storage` | IndexedDB / OPFS | SQLite atau JSONL | SQLite di userData |
+| `Secrets` | IndexedDB terenkripsi (terbatas) | env / file terproteksi | keychain OS |
+| `Scheduler` | saat tab terbuka | proses latar | main process, auto-start |
+| `Process` | tidak tersedia | `child_process` | `child_process` |
+
+Alasan aturan ini ketat: tanpa boundary ini, menambahkan Electron nanti berarti penulisan ulang,
+bukan penambahan shell. Lihat ADR-010.
 
 ## 5. Policy dan audit
 

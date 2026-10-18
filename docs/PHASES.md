@@ -54,10 +54,10 @@ Hal yang sengaja ditunda. Bukan dibuang.
 | Item | Alasan ditunda |
 |---|---|
 | Pindah repo ke GitHub Organization | Diperlukan jika ingin membatasi siapa yang boleh dismiss review (repo personal ditolak API 422). URL git tetap sama. Pindahkan hanya jika benar-benar butuh |
+| Desktop native — **Electron** | Tanpa Rust, shell atas UI yang sama. Fase pertama setelah submission (ADR-010) |
+| APK Android — Capacitor | Butuh Android SDK; setelah submission |
 | Gateway kuota gratis per IP | Stretch setelah spine; butuh Cloudflare Worker + pengujian kuota |
 | Live demo URL (PWA ter-deploy) | Opsional; dikerjakan hanya jika ada sisa waktu |
-| Desktop native (Tauri) | Butuh Rust + MSVC; setelah lomba |
-| APK Android (Capacitor) | Butuh Android SDK; setelah lomba |
 | Cloud sync penyimpanan | Di luar scope lomba |
 | Connector katalog luas | Setelah MCP + Zetaris stabil |
 | Auto-generate skills | Risiko kualitas; setelah lomba |

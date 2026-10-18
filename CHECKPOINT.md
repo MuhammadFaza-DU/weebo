@@ -41,7 +41,9 @@ bermakna.
 
 Lihat `docs/DECISIONS.md`. Ringkasnya:
 
-- Stack: monorepo TypeScript, core isomorphic, PWA dulu; native menyusul.
+- Stack: monorepo TypeScript, core isomorphic, PWA untuk lomba; **Electron** (bukan Tauri) sebagai
+  target desktop jangka panjang, Capacitor untuk mobile.
+- Connector: **MCP + OAuth 2.1** sebagai fondasi; Composio hanya acuan pola, bukan dependensi.
 - Free tier: katalog model + gateway Cloudflare Worker yang memegang key NVIDIA NIM, kuota per IP.
 - Merge: hanya `@MuhammadFaza-DU`.
 - Catatan belajar pribadi disimpan di luar repo dan tidak pernah di-commit.
@@ -70,7 +72,8 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 |---|---|---|
 | Pindah repo ke GitHub Organization | Hanya perlu jika ingin membatasi siapa yang boleh dismiss review. Repo personal ditolak API (422: *only organization repositories can have users and team restrictions*). URL git tetap sama | Jika kontrol akses dirasa kurang, atau setelah lomba |
 | Live demo URL (PWA ter-deploy) | Opsional; dikerjakan hanya jika spine selesai dan ada sisa waktu | Setelah P6 |
-| Desktop native (Tauri) & APK (Capacitor) | Butuh Rust/MSVC dan Android SDK | Setelah submission |
+| Desktop native — **Electron** (bukan Tauri) | Shell atas UI yang sama; tanpa Rust. Fase pertama setelah submission (ADR-010) | Setelah P8 |
+| APK Android — Capacitor | Butuh Android SDK | Setelah submission |
 | Gateway kuota gratis per IP | Stretch; butuh Cloudflare Worker + pengujian kuota | Setelah P1–P5 lulus |
 
 ## Next action
