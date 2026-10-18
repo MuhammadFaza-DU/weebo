@@ -37,6 +37,11 @@ Agent yang baru masuk **wajib** membaca berurutan sebelum mengubah apa pun:
 Tanpa ketujuhnya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
 batasan yang sudah dihitung.
 
+**Bahasa dokumen.** Dokumen internal (`AGENTS.md`, `CHECKPOINT.md`, `docs/*` dalam Bahasa Indonesia)
+adalah dokumen kerja. Materi submission **wajib Bahasa Inggris**: README, video, slide deck, dan
+penjelasan integrasi sponsor. Saat menyusun materi submission, terjemahkan — jangan menyalin dokumen
+internal apa adanya.
+
 ## 2. Konteks lomba (mengikat)
 
 Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
@@ -69,6 +74,14 @@ Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
 **Aturan eligibilitas:** pekerjaan yang di-commit sebelum build window dibuka tidak dihitung, kecuali
 komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib dicatat di
 `PREEXISTING.md` pada commit yang sama.
+
+**Larangan mutlak:** jangan men-commit kode produk (`apps/`, `packages/`, `vendor/`) sebelum
+**22 Okt 2026 00:00 UTC**. Ini satu-satunya gate tanggal yang sah (lihat §8.1). Konsekuensinya jika
+dilanggar: karya tidak dihitung, dan deklarasi di `PREEXISTING.md` menjadi tidak benar.
+
+> Catatan sumber: teks aturan lengkap berada di halaman resmi lomba yang dirender sebagai accordion.
+> **Simpan tangkapan layar §04–§07 ke `docs/` sebelum mengandalkan kutipan mana pun.** Jika sebuah
+> kutipan tidak bisa diverifikasi, tulis sebagai parafrase, bukan sebagai kutipan.
 
 ## 3. Kejujuran dan originalitas
 
@@ -182,6 +195,18 @@ penundaan.
 itu dan menghapus opsionalitas — pekerjaan yang sebenarnya bisa dimulai lebih awal menjadi tidak
 mungkin dimulai.
 
+#### Pengecualian tunggal: build window lomba
+
+Ada **satu** gate tanggal yang sah dan wajib dipatuhi, karena berasal dari aturan lomba, bukan dari
+kita: **tidak ada kode produk yang boleh di-commit sebelum 22 Okt 2026 00:00 UTC.**
+
+Pekerjaan yang boleh dilakukan sebelum window: dokumen, rencana, setup akun, uji kelayakan (P0), dan
+pembuktian integrasi yang **tidak di-commit** ke repo. Kode produk (`apps/`, `packages/`) masuk
+setelah window dibuka, atau tidak dihitung sebagai karya lomba.
+
+Pengecualian ini **bukan** preseden untuk gate tanggal lain. Semua penundaan lain tetap berbasis
+dependensi.
+
 **Cara yang benar:** setiap item yang ditunda wajib punya tiga hal:
 
 | Kolom | Isi |
@@ -230,6 +255,8 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 ## 10. Subagent
 
 - **Default:** satu implementer per fase, wajib diikuti reviewer read-only yang tidak mengedit file.
+  Reviewer dijalankan lewat `subagent` dengan agent `explore`, diberi daftar file yang berubah, dan
+  mengembalikan laporan temuan. Reviewer tidak menulis file.
 - Implementer bekerja di folder project yang sama, bukan worktree di luar project kecuali disetujui.
 - Implementer tidak boleh membuat subagent tambahan.
 - Jika kuota subagent habis, kerja boleh dilanjutkan di sesi utama, tetapi reviewer read-only tetap
@@ -249,6 +276,9 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 - **Paket review** yang diajukan sebelum HALT berisi: tangkapan layar setiap layar, daftar state yang
   tercakup, dan daftar token (warna, tipe, spacing) yang dipakai.
 - Setelah canvas selesai, ajukan paket review dan **berhenti total**.
+- **HALT** berarti: agent berhenti, tidak menulis kode UI, tidak melanjutkan ke task berikutnya, dan
+  menunggu kata kunci approval. Ini bukan jeda sementara — agent benar-benar berhenti sampai
+  dijawab.
 - Kode UI tidak boleh dimulai sampai user mengetik `APPROVE`, `SETUJU`, atau `LANJUT`.
 - "bagus", "ok", atau "lanjutkan saja" **bukan** approval.
 - Arah visual mengikuti keputusan user; jangan menetapkan sendiri tanpa persetujuan.

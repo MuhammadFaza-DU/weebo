@@ -79,14 +79,14 @@ Vendoring **sudah selesai di P0 (T0.6)**. Task ini hanya membungkusnya.
 
 ### T1.7 — CLI minimum
 
-- [ ] `apps/cli` dengan dua perintah: `weebo` (chat) dan `weebo serve` (runtime)
-- [ ] Untuk P1, chat boleh memanggil core langsung di proses yang sama; pemisahan client–server
-      diselesaikan di P2 bersama `packages/protocol` (ADR-013)
+- [ ] `apps/cli` dengan satu perintah: `weebo "<pertanyaan>"` (chat)
+- [ ] Untuk P1, chat memanggil core langsung di proses yang sama (ADR-013). Perintah `weebo serve`
+      **belum** dibuat di P1 — ia butuh `packages/protocol`, yang baru ada di P2.
 - [ ] Tampilkan jawaban + daftar sumber di terminal
 - [ ] Verifikasi: `npx weebo "pertanyaan"` mengembalikan jawaban dengan sumber
 
 > Catatan: P1 sengaja memakai CLI, bukan UI. Tujuannya membuktikan pipa, bukan tampilan. Pemisahan
-> client–server (ADR-011) baru diwajibkan di P2.
+> client–server (ADR-011) beserta perintah `serve` diwajibkan di P2 (ADR-013).
 
 ### T1.8 — Catat bukti
 

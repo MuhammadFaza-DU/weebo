@@ -289,17 +289,24 @@ client ke runtime yang sama.
 
 **Konteks.** Meterless H-MEM adalah syarat wajib lomba dan menjadi tulang punggung memori Weebo.
 Dua pendekatan dipertimbangkan: (a) memakai engine resmi sebagai dependensi, (b) menulis ulang
-implementasinya dari spesifikasi. Pengukuran langsung terhadap repo Meterless memberi data:
+implementasinya dari spesifikasi. Pengukuran terhadap repo Meterless (`github.com/Meterless/Meterless`,
+branch `main`, diakses 2026-10-18) memberi data:
 
 - Engine referensi `engines/hmem/reference/src/` berukuran **≈42,6 KB** (~1.200–1.500 baris TypeScript)
   dalam 10 file.
-- `package.json` menyatakan **zero runtime dependencies** (hanya `tsx` dan `vitest` sebagai devDeps).
-- README mereka menyatakan sendiri: *"What it is NOT: a production library. The embedder is a
-  deterministic hash mock, storage is a JSON file, and there is no network code. Your implementation
-  replaces every piece of this with your stack; the contracts stay the same."*
+- `engines/hmem/reference/package.json` menyatakan **zero runtime dependencies** (hanya `tsx` dan
+  `vitest` sebagai devDeps).
+- `engines/hmem/reference/README.md` menyatakan sendiri: *"What it is NOT: a production library. The
+  embedder is a deterministic hash mock, storage is a JSON file, and there is no network code. Your
+  implementation replaces every piece of this with your stack; the contracts stay the same."*
+  (Sitasi: file `README.md` di dalam folder `reference/`, bukan README utama repo.)
 - `embeddings.ts` memakai FNV-1a hash ke vektor 64 dimensi — **tidak punya makna semantik**.
-- Conformance suite (`conformance/runner.ts` + `vectors/`) memeriksa kontrak secara ketat dan
-  **sudah lulus terhadap engine referensi**.
+- Conformance suite berada di `engines/hmem/conformance/` (**saudara** `reference/`, bukan di dalamnya)
+  dan memeriksa kontrak secara ketat.
+
+> Catatan reproduksibilitas: angka di atas diukur pada commit `main` tanggal 2026-10-18 tanpa SHA
+> yang dipin. Saat vendoring di P0, **catat SHA commit Meterless** yang dipakai di `PREEXISTING.md`
+> agar angka ini bisa direproduksi.
 
 **Keputusan.**
 
@@ -357,5 +364,37 @@ ini berakhir di sana.
   (`AGENTS.md` §8, `docs/PHASES.md`). Jika tidak, ADR-011 kehilangan makna dan Electron nanti
   menjadi penulisan ulang.
 - Pengecualian ini tidak boleh diperluas ke `apps/web`.
+
+---
+
+---
+
+## ADR-014 — Cursor dipakai untuk review; hadiah Cursor tidak dikejar
+
+**Tanggal:** 2026-10-18
+**Status:** Diterima
+
+**Konteks.** Aturan lomba mewajibkan tim memakai Cursor selama pengembangan dan menjelaskan
+pemakaiannya di submission. Di sisi lain, tim memakai agent harness masing-masing untuk menulis kode,
+dan tidak ada anggota tim yang membangun di dalam Cursor. Lomba juga menawarkan hadiah in-kind
+"Best use of Cursor-built product" senilai $2.301.
+
+**Keputusan.**
+
+1. Cursor dipakai sebagai **permukaan review** — membaca, menelusuri, dan memeriksa perubahan. Bukan
+   untuk menulis kode. Aturan lengkap: `AGENTS.md` §20.
+2. Pemakaiannya dicatat per fase di `docs/CURSOR-LOG.md`, termasuk jika tidak ada review pada fase itu.
+3. Submission menjelaskan pemakaian Cursor **apa adanya**, termasuk bagian *"what needs work"*.
+4. Hadiah **"Best use of Cursor-built product" tidak dikejar**. Alasannya: hadiah itu mensyaratkan
+   produk dibangun dengan Cursor, dan tim tidak membangun dengan Cursor. Mengejarnya berarti membuat
+   klaim yang tidak benar.
+
+**Konsekuensi.**
+
+- Memenuhi syarat lomba tanpa kebohongan.
+- Hadiah $2.301 dilewati secara sadar, bukan karena terlewat.
+- Bagian Product Feedback tetap bisa diisi dengan pengalaman nyata (kuota Free, batasan plan), dan itu
+  punya nilai tersendiri di penilaian.
+- Jika di masa depan tim benar-benar membangun dengan Cursor, ADR ini perlu diganti.
 
 ---

@@ -24,8 +24,12 @@ jobs:
       # installs dependencies; until then it is skipped so CI stays honest
       # instead of reporting a green build for code that does not exist.
       - name: Install dependencies
-        if: hashFiles('package.json') != ''
+        if: hashFiles('package-lock.json') != ''
         run: npm ci
+
+      - name: Install dependencies (no lockfile yet)
+        if: hashFiles('package.json') != '' && hashFiles('package-lock.json') == ''
+        run: npm install --no-audit --no-fund
 
       - name: Lint
         if: hashFiles('package.json') != ''

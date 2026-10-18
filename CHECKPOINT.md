@@ -30,14 +30,17 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
   **CI `Lint, typecheck, test` wajib hijau**, stale review otomatis gugur, semua diskusi wajib
   resolved, force push ditolak, penghapusan branch ditolak.
   `enforce_admins=false` sehingga maintainer bisa bypass saat mendesak.
-- Batasi-dismiss-review **tidak bisa dipasang**: API menolak dengan 422 *"Only organization
-  repositories can have users and team restrictions"*. Perlu repo milik Organization.
+- Batasi-dismiss-review **per-user** tidak bisa dipasang: API menolak dengan 422 *"Only organization
+  repositories can have users and team restrictions"* — pesan itu merujuk pada `restrictions` (siapa
+  yang boleh push), yang memang hanya tersedia untuk repo Organization. Perlu repo milik Organization.
+  **Catatan koreksi:** `dismiss_stale_reviews` sendiri **aktif** (`true`); yang tidak bisa dipasang
+  adalah pembatasan siapa yang boleh melakukan dismiss.
 - Undangan kolaborator terkirim dengan izin **write**: `slamsmart`, `Manzera-Azb`
   (**status: menunggu diterima**, belum menjadi collaborator sampai mereka klik accept).
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
-- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-013), `CONTEXT.md`, `SPONSORS.md`,
+- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-014), `CONTEXT.md`, `SPONSORS.md`,
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
   lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`,
   `phases/P0-preflight.md`, `phases/P1-walking-skeleton.md`.
@@ -77,7 +80,7 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 - Kedua kolaborator belum menerima undangan (status pending di GitHub).
 - Pembagian pemilik lapisan — belum diputuskan (dipilih di awal P1).
 - **Bagaimana ponsel/tablet mencapai runtime di `localhost`** — belum diputuskan. Memblokir demo PWA
-  di ponsel (P5). Lihat `docs/ARCHITECTURE.md` §2.2.
+  di ponsel (P5). Dijawab di **P0 · T0.7**. Lihat `docs/ARCHITECTURE.md` §2.2.
 
 ## Risiko dan blocker
 

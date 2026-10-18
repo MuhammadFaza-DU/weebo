@@ -8,6 +8,14 @@ build/
 out/
 *.tsbuildinfo
 
+# Deliverables that must never enter git history
+*.mp4
+*.mov
+*.mkv
+*.pen
+*.zip
+*.7z
+
 # Environment and secrets
 .env
 .env.*

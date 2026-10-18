@@ -58,6 +58,16 @@ Impact atau Demo?"*
 Konsekuensi yang sudah dipakai: UI tidak dibangun sebelum pipeline terbukti; demo 30 detik menjadi
 syarat lulus setiap fase.
 
+### Hadiah in-kind (terpisah dari skor)
+
+| Hadiah | Nilai | Relevan untuk kita? |
+|---|---|---|
+| Best use of NVIDIA Nemotron | NVIDIA DGX Spark (Founder's Edition), $4.699 | **Ya** — embedding dan jalur model memakai Nemotron |
+| Best use of Cursor-built product | SpaceX Cursor API credits, $2.301 | **Tidak** — Cursor hanya dipakai untuk review, bukan membangun |
+
+**Keputusan sadar:** hadiah Cursor **tidak dikejar** — lihat `docs/DECISIONS.md` ADR-014. Hadiah NVIDIA
+tetap dalam jangkauan karena integrasinya sudah bagian dari rencana (embedding + jalur model gratis).
+
 ---
 
 ## 3. Batasan tim — paralelisasi tidak linear
@@ -110,13 +120,11 @@ raw = 0.35·semantic + 0.20·keyword + 0.10·tag + 0.10·domain
 ---
 
 ## 5. Provider model gratis (terverifikasi 2026-10-18)
-
 Angka berubah dari waktu ke waktu — **verifikasi ulang sebelum dipakai**.
 
 | Provider | Limit gratis | Kartu kredit | Catatan |
 |---|---|---|---|
-| **NVIDIA NIM** | ~40 RPM (dari dokumentasi, **belum diukur**) | Tidak (verifikasi telepon) | Sponsor lomba; 132 model; endpoint kompatibel Chat Completions |
-| Groq | 30 RPM / ~14.400 RPD | Tidak | Tercepat (LPU) |
+| **NVIDIA NIM** | ~40 RPM (dari dokumentasi, **belum diukur**) | Tidak (verifikasi telepon) | Sponsor lomba; 132 model; endpoint kompatibel Chat Completions || Groq | 30 RPM / ~14.400 RPD | Tidak | Tercepat (LPU) |
 | OpenRouter | 50–200 RPD (1.000 dengan top-up $10 sekali) | Tidak | 35+ model `:free` |
 | GitHub Models | 150–1.000/hari | Tidak | Cukup akun GitHub |
 | Google AI Studio | 5–15 RPM, 20–1.500 RPD | Tidak | Konteks 1 juta token |
@@ -201,7 +209,7 @@ Semua asumsi di bawah **wajib diuji di P0**, bukan ditebak. Lihat `docs/phases/P
 | Asumsi | Dijawab di | Status |
 |---|---|---|
 | Apakah Zetaris bisa dipanggil dari browser, atau wajib lewat server | P0 · T0.3 | belum diuji |
-| **Bagaimana ponsel/tablet mencapai runtime di `localhost`** | **Belum ditugaskan — wajib diputuskan sebelum P5** | belum |
+| **Bagaimana ponsel/tablet mencapai runtime di `localhost`** | **P0 · T0.7** | belum |
 | Apakah conformance suite Meterless bisa jalan di lingkungan kita | P0 · T0.6 | belum diuji |
 | Rate limit NVIDIA NIM yang sebenarnya (~40 RPM masih dari dokumentasi) | P0 · T0.4 | belum diukur |
 | Apakah plan Cursor Free cukup untuk 6 hari kerja tim | P0 · T0.5 | belum diuji |

@@ -68,11 +68,13 @@ Rencana: engine open source, di-*vendor* lewat `npx degit`.
 - [ ] Clone atau baca `github.com/Meterless/Meterless`
 - [ ] Jalankan demo cold-vs-warm (`npx tsx examples/memory-compounding-research/index.ts`)
 - [ ] Catat: demo berjalan / gagal (jika gagal, catat error)
-- [ ] Vendor `engines/hmem/reference` ke `vendor/`, pertahankan `LICENSE`
-- [ ] Jalankan `npm install && npm test` di folder vendor
-- [ ] Jalankan conformance suite: `HMEM_IMPL=... npx tsx conformance/runner.ts`
+- [ ] Vendor `engines/hmem/reference` **dan** `engines/hmem/conformance` (dua folder bersaudara)
+- [ ] `npm install && npm test` di dalam `vendor/hmem/reference`
+- [ ] Jalankan conformance dari `vendor/hmem/conformance`:
+      `HMEM_IMPL=<abs>/vendor/hmem/reference/src/index.ts npx tsx runner.ts`
 - [ ] Catat scorecard: lulus / gagal (lampirkan output)
 - [ ] Catat ukuran engine: ____ file, ____ KB
+- [ ] Perbarui `PREEXISTING.md` pada commit yang sama (vendor adalah komponen pihak ketiga)
 
 **Yang harus dibuktikan:** demo memory jalan lokal tanpa API key, dan conformance suite hijau.
 

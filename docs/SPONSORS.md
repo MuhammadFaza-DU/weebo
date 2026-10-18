@@ -64,7 +64,7 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 **Bukti yang akan dikumpulkan:**
 
 - Perintah setup vendor yang benar-benar dijalankan.
-- **Scorecard conformance suite Meterless** (`HMEM_IMPL=... npx tsx conformance/runner.ts`) — bukti
+- **Scorecard conformance suite Meterless** (dijalankan dari `vendor/hmem/conformance`) — bukti
   objektif kepatuhan kontrak.
 - Test yang menunjukkan memori bertahan lintas sesi.
 - Transkrip `audit` sebuah memori.

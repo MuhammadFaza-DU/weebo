@@ -17,14 +17,14 @@ Weebo is a self-hosted agent harness. You bring a model — or use the free tier
 that remembers your context, runs work on a schedule, reaches your tools through MCP connectors,
 and follows you from desktop to tablet to phone.
 
-Two layers make that possible:
+Weebo is designed around two layers:
 
-- **A context layer.** Weebo integrates [Meterless](https://github.com/Meterless/Meterless) engines —
-  hierarchical memory (H-MEM), world modelling, reasoning compression, and intent detection — so the
-  agent carries durable context instead of re-deriving it every turn.
-- **A data layer.** Weebo integrates [Zetaris](https://www.zetaris.com/) as a data harness, so the
-  agent can query live, governed data across sources without those sources being copied or
-  centralized first.
+- **A context layer.** [Meterless](https://github.com/Meterless/Meterless) engines — hierarchical
+  memory (H-MEM) — so the agent carries durable context instead of re-deriving it every turn.
+- **A data layer.** [Zetaris](https://www.zetaris.com/) as a data harness, so the agent can query
+  live, governed data across sources without those sources being copied or centralized first.
+
+Both integrations are **planned and not yet implemented** — see [Project status](#project-status).
 
 Weebo is the harness that binds the two: the agent loop, the tool policy, the scheduler, and the
 surface you actually talk to.
@@ -38,15 +38,18 @@ parquet file there, a partner API nobody documented. An agent that can chat but 
 data is a clever toy. Weebo closes that gap by treating **data access as a first-class connector**
 rather than an afterthought.
 
-| Capability | Chat assistants | Personal agent apps | Weebo |
+| Capability | Chat assistants | Personal agent apps | Weebo (target) |
 |---|---|---|---|
 | Multi-channel reach (chat apps, CLI, web) | Partial | Yes | Planned |
-| Persistent memory across sessions | Partial | Yes | Yes — via Meterless H-MEM |
+| Persistent memory across sessions | Partial | Yes | Planned — via Meterless H-MEM |
 | Scheduled, unattended work | No | Yes | Planned |
-| Bring your own key (BYOK) | Rare | Rare | Yes |
-| Governed access to scattered enterprise data | No | No | Yes — via Zetaris |
+| Bring your own key (BYOK) | Rare | Rare | Planned |
+| Governed access to scattered enterprise data | No | No | Planned — via Zetaris |
 | Runs on desktop, tablet, and phone from one codebase | Rare | Rare | Planned (PWA first) |
 | Self-hostable, open source | Rare | Rare | Yes — MIT |
+
+This table describes the target product, not what is built. For what exists today, see
+[Project status](#project-status).
 
 ## How it fits together
 
@@ -158,8 +161,8 @@ The authoritative list, with start conditions, is in [`docs/PHASES.md`](docs/PHA
 | 7 | Connector catalogue beyond MCP basics | MCP and Zetaris stable |
 | 8 | Auto-generated skills | P3 complete, quality evaluation done |
 | 9 | Cloud sync for user-chosen storage | P5 complete, runtime storage stable |
-| 10 | Move the repository to a GitHub Organization | P8 complete | Only if access control feels insufficient |
-| 11 | Custom domain for the landing page | P8 complete | Needs a budget decision |
+| 10 | Move the repository to a GitHub Organization | P8 complete — only if access control feels insufficient |
+| 11 | Custom domain for the landing page | P8 complete — needs a budget decision |
 
 ## Contributing
 

@@ -118,13 +118,21 @@ Free **belum terverifikasi** — jangan dijadikan patokan.
 
 ### T0.6 — Vendor Meterless + uji conformance (validasi awal)
 
-- [ ] Vendor `engines/hmem/reference` ke `vendor/hmem`, pertahankan `LICENSE` (Apache-2.0)
-- [ ] `npm install && npm test` di dalam `vendor/hmem`
-- [ ] Jalankan conformance: `HMEM_IMPL=... npx tsx conformance/runner.ts`
-- [ ] Catat scorecard: lulus / gagal, lampirkan output
-- [ ] Catat apakah suite bisa jalan tanpa Node penuh (relevan untuk CI)
+**Struktur penting:** conformance suite berada di `engines/hmem/conformance/` — **saudara** dari
+`reference/`, bukan di dalamnya. Jadi vendoring harus mengambil **dua** folder.
 
-**Kriteria selesai:** scorecard conformance ditempel di `docs/SPONSORS.md`.
+- [ ] Vendor `engines/hmem/reference` ke `vendor/hmem/reference`, pertahankan `LICENSE` (Apache-2.0)
+- [ ] Vendor `engines/hmem/conformance` ke `vendor/hmem/conformance`
+- [ ] `npm install && npm test` di dalam `vendor/hmem/reference`
+- [ ] Jalankan dari `vendor/hmem/conformance`:
+      `HMEM_IMPL=<abs>/vendor/hmem/reference/src/index.ts npx tsx runner.ts`
+- [ ] Catat scorecard: lulus / gagal, lampirkan output apa adanya
+- [ ] Catat apakah suite bisa jalan tanpa Node penuh (relevan untuk CI)
+- [ ] **Perbarui `PREEXISTING.md` pada commit yang sama** — `vendor/hmem` adalah komponen pihak ketiga
+      yang masuk sebelum window, jadi wajib dideklarasikan
+
+**Kriteria selesai:** scorecard conformance ditempel di `docs/SPONSORS.md`, dan `PREEXISTING.md`
+mencatat `vendor/hmem` pada commit yang sama.
 
 **Kenapa di P0, bukan P3:** kalau engine tidak bisa jalan di lingkungan kita, seluruh rencana memori
 berubah — dan itu harus diketahui sebelum P1, bukan setelah.
@@ -134,7 +142,28 @@ berubah — dan itu harus diketahui sebelum P1, bukan setelah.
 
 ---
 
-### T0.7 — Ringkasan status akses
+### T0.7 — Putuskan bagaimana ponsel/tablet mencapai runtime
+
+**Ini blocker P5.** Runtime mendengarkan di `localhost`; `localhost` di ponsel menunjuk ke ponsel itu
+sendiri, bukan ke laptop. Tanpa keputusan ini, syarat lulus P5 ("jalan di layar HP") tidak bisa
+dipenuhi dan demo video kehilangan bagian penutupnya.
+
+- [ ] Baca `docs/ARCHITECTURE.md` §2.2 (empat opsi: LAN bind, tunnel, pairing+token, Electron-only)
+- [ ] Pilih satu opsi, tulis alasannya
+- [ ] Tulis keputusan sebagai ADR baru di `docs/DECISIONS.md`
+- [ ] Tetapkan model autentikasi (token/pairing) — runtime tanpa token berarti proses lokal mana pun
+      bisa mengendalikan agent
+- [ ] Catat di `docs/CONTEXT.md` §10 sebagai terjawab
+
+**Kriteria selesai:** ADR tertulis, opsi terpilih, model auth disebut. Tidak perlu implementasi —
+hanya keputusan.
+
+**Kenapa di P0:** keputusan ini memengaruhi desain `apps/runtime` (bind address, auth) dan PWA (cara
+menyimpan endpoint). Menemukannya di P5 berarti menulis ulang keduanya.
+
+---
+
+### T0.8 — Ringkasan status akses
 
 - [ ] Isi tabel verifikasi di `docs/SETUP-SPONSORS.md` §7
 - [ ] Perbarui `docs/CONTEXT.md` §10 (asumsi yang sudah terjawab)

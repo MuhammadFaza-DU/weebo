@@ -10,12 +10,16 @@ Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 
 | # | Item | Status | Pemilik | Catatan |
 |---|---|---|---|---|
-| 1 | Repo GitHub publik + README (setup, usage, dependencies) | | | Harus bisa dijalankan dari clone bersih |
-| 2 | Video demo 1–4 menit (YouTube/Vimeo, publik) | | | Menunjukkan workflow utama + integrasi sponsor |
-| 3 | Slide deck | | | Masalah, user, solusi, arsitektur, stack, sponsor, visual, future |
-| 4 | Penjelasan integrasi Zetaris + Meterless + Cursor + NVIDIA | | | Ada di `docs/SPONSORS.md`, diringkas di submission. Untuk Cursor: pakai isi `docs/CURSOR-LOG.md` |
-| 5 | Pemilihan track (Track 03 — Reasoning Architecture) | | | |
-| 6 | Deklarasi pre-existing component | | | Lihat `PREEXISTING.md` |
+| 1 | Repo GitHub publik + README (setup, usage, dependencies) | | **belum ditetapkan** | Harus bisa dijalankan dari clone bersih |
+| 2 | Video demo 1–4 menit (YouTube/Vimeo, publik) | | **belum ditetapkan** | Menunjukkan workflow utama + integrasi sponsor |
+| 3 | Slide deck | | **belum ditetapkan** | Masalah, user, solusi, arsitektur, stack, sponsor, visual, future |
+| 4 | Penjelasan Zetaris + Meterless + Cursor + NVIDIA | | **belum ditetapkan** | Ada di `docs/SPONSORS.md`, diringkas di submission. **Cursor: jelaskan sebagai alat review, bukan integrasi produk** — sumbernya `docs/CURSOR-LOG.md` |
+| 5 | Pemilihan track (Track 03 — Reasoning Architecture) | | **belum ditetapkan** | |
+| 6 | Deklarasi pre-existing component | | **belum ditetapkan** | Lihat `PREEXISTING.md` |
+
+> **Pemilik wajib ditetapkan sebelum P8.** Semua kolom pemilik masih kosong. Tanpa penanggung jawab,
+> video dan slide deck — dua deliverable dengan bobot skor terbesar setelah produk — berisiko tidak
+> dikerjakan. Tetapkan bersamaan dengan pembagian lapisan di awal P1 (`docs/PHASES.md`).
 
 ---
 
@@ -23,6 +27,11 @@ Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 
 Aturan lomba: harus menunjukkan **main workflow**, bagaimana agent menyelesaikan challenge, fitur
 kunci, dan bagaimana Zetaris + Meterless diintegrasikan.
+
+> **Catatan sumber:** teks aturan resmi berada di halaman event yang dirender sebagai accordion
+> (§06 Submission requirements) dan tidak terbaca oleh fetch teks. Struktur di bawah adalah rencana
+> tim, bukan kutipan aturan. **Simpan tangkapan layar §04–§07 ke `docs/rules/` sebelum submission**,
+> lalu cocokkan struktur ini dengan teks aslinya.
 
 Struktur yang diusulkan:
 
