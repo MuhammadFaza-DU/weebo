@@ -1,0 +1,12 @@
+# CODEOWNERS — Weebo
+#
+# Merge authority lives with the maintainer only (see AGENTS.md §12).
+# Contributors are welcome to open pull requests; they do not merge them.
+
+*                       @MuhammadFaza-DU
+
+# Documentation and project governance
+/docs/                  @MuhammadFaza-DU
+/AGENTS.md              @MuhammadFaza-DU
+/CHECKPOINT.md          @MuhammadFaza-DU
+/PREEXISTING.md         @MuhammadFaza-DU

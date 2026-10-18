@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint, typecheck, test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # The project has no package.json yet. Once the workspace lands, this step
+      # installs dependencies; until then it is skipped so CI stays honest
+      # instead of reporting a green build for code that does not exist.
+      - name: Install dependencies
+        if: hashFiles('package.json') != ''
+        run: npm ci
+
+      - name: Lint
+        if: hashFiles('package.json') != ''
+        run: npm run lint --if-present
+
+      - name: Typecheck
+        if: hashFiles('package.json') != ''
+        run: npm run typecheck --if-present
+
+      - name: Test
+        if: hashFiles('package.json') != ''
+        run: npm test --if-present
