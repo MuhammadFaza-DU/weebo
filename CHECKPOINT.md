@@ -3,7 +3,7 @@
 Sumber kebenaran status kerja. Wajib dibaca di awal setiap sesi dan diperbarui setiap ada perubahan
 bermakna.
 
-**Terakhir diperbarui:** 2026-10-18
+**Terakhir diperbarui:** 2026-10-19
 
 ---
 
@@ -35,8 +35,10 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
   yang boleh push), yang memang hanya tersedia untuk repo Organization. Perlu repo milik Organization.
   **Catatan koreksi:** `dismiss_stale_reviews` sendiri **aktif** (`true`); yang tidak bisa dipasang
   adalah pembatasan siapa yang boleh melakukan dismiss.
-- Undangan kolaborator terkirim dengan izin **write**: `slamsmart`, `Manzera-Azb`
-  (**status: menunggu diterima**, belum menjadi collaborator sampai mereka klik accept).
+- **Kolaborator aktif (terverifikasi 2026-10-19):** `slamsmart` dan `Manzera-Azb` sudah **menerima
+  undangan** dengan izin **write**. Dua bukti yang saling mendukung: `GET /repos/.../collaborators`
+  mengembalikan keduanya dengan `role: write` (plus `MuhammadFaza-DU` sebagai `admin`), dan
+  `GET /repos/.../invitations` mengembalikan daftar **kosong** (tidak ada undangan pending).
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
@@ -137,7 +139,6 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 - Cursor: plan Free terverifikasi ada, tapi cukup atau tidak untuk 6 hari **belum diuji**. → T0.5
 - Meterless: conformance suite belum dijalankan di lingkungan kita. → T0.6
 - Registrasi lomba: akun platform ada, **tim belum dibentuk di platform**. → T0.1
-- Kedua kolaborator belum menerima undangan (status pending di GitHub).
 - Pembagian pemilik lapisan — belum diputuskan (dipilih di awal P1).
 - **Bagaimana ponsel/tablet mencapai runtime di `localhost`** — belum diputuskan. Memblokir demo PWA
   di ponsel (P5). Dijawab di **P0 · T0.7**. Lihat `docs/ARCHITECTURE.md` §2.2.
@@ -201,3 +202,4 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 | Tanggal | Peristiwa |
 |---|---|
 | 2026-10-18 | Repo dibuat, scaffolding dokumentasi masuk, keputusan produk dicatat |
+| 2026-10-19 | Kolaborator `slamsmart` + `Manzera-Azb` terverifikasi **sudah menerima undangan** (izin write); tidak ada undangan pending. Bukan lagi blocker. |
