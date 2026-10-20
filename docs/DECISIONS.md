@@ -402,7 +402,8 @@ dan tidak ada anggota tim yang membangun di dalam Cursor. Lomba juga menawarkan 
 ## ADR-015 — Protokol evaluasi, dataset demo, dan penilaian K1/K2
 
 **Tanggal:** 2026-10-20
-**Status:** Diterima — menutup P0 T0.8
+**Status:** Diterima — menutup P0 T0.8. **§1 (dataset) dan §2 (kategori golden set) DIGANTIKAN oleh
+ADR-019** setelah produk digeser ke bentuk keputusan (ADR-018). Sisa isinya tetap berlaku.
 
 **Konteks.** `docs/PRD.md` §3.2 menetapkan kerangka evaluasi (dataset, golden set, rubrik, runner,
 batas), tetapi masih menyisakan pilihan konkret yang harus diputuskan sebelum task T1.8 bisa
@@ -565,3 +566,165 @@ dengan Track 03.
 - Angka 3 iterasi dan 5 tool/iterasi **belum diukur**; keduanya dapat dikalibrasi tanpa mengubah bentuk
   loop, dengan alasan tertulis.
 - Fan-out tidak dikerjakan sekarang; jika dikerjakan, ia menambah 1–2 hari dan berisiko 429 saat demo.
+
+---
+
+## ADR-018 — Produk menghasilkan KEPUTUSAN, bukan jawaban; policy menentukan, memory membandingkan
+
+**Tanggal:** 2026-10-20
+**Status:** Diterima — **merevisi sebagian ADR-015** (dataset dan kategori golden set)
+
+**Konteks.** `docs/PRD.md` v2 dirancang sebagai agent yang **menjawab pertanyaan dengan sitasi**. Setelah
+membaca panduan resmi `How to APPROACH Solutioning` §6, ternyata bentuk itu adalah **contoh Track 02**
+(*"producing a cited recommendation that shows the evidence behind each conclusion"*), bukan Track 03.
+
+Track 03 menuntut tiga hal yang tidak kita punya:
+
+| Yang diminta Track 03 | Keadaan sebelum ADR ini |
+|---|---|
+| Data: *"operational records, **rules or policies**, and the state or **memory of prior decisions**"* | Hanya operational records; tanpa policy, tanpa riwayat keputusan |
+| Output: *"reliable **decisions and actions**"* (contoh resmi: *"prioritised booking list with the reasoning for each decision"*) | Jawaban + sitasi |
+| Bentuk: *"Define the **decision and the action first**, then the data, knowledge, and memory"* | Dimulai dari pertanyaan, bukan dari keputusan |
+
+Impact bernilai **30 poin** dengan kriteria *"Consistency with the challenge statements"*. Membiarkan
+bentuk lama berarti mempertaruhkan kriteria terbesar pada ketidakcocokan track.
+
+**Keputusan.**
+
+1. **Output produk adalah keputusan, bukan jawaban.** Satu jenis keputusan: **"merchant mana yang harus
+   masuk review compliance periode ini, dan apa tindakannya"**. Ini menyempitkan produk, dan penyempitan
+   itu disengaja — panduan resmi §8 mencontohkannya: *"Memory of everything, forever → One decision type,
+   with memory of prior decisions."*
+
+2. **Policy adalah penentu keputusan, dan bersifat deterministik.** Tidak ada asumsi di jalur penentuan.
+   Policy dinyatakan sebagai aturan eksplisit dengan ambang angka (lihat ADR-019).
+
+3. **Memory wajib dibandingkan dan wajib ditampilkan — tetapi tidak boleh membatalkan policy.**
+   Alasannya, dan ini alasan user secara eksplisit: *"kalo memory, agent/AI itu sering membuat asumsi."*
+   Memory yang membatalkan policy berarti agent menyimpulkan *"kali ini kasusnya sama seperti dulu"* —
+   itu asumsi, dan asumsi dilarang.
+
+4. **Konflik policy vs memory tidak diselesaikan agent.** Bila policy masih terpicu sementara memory
+   memuat keputusan lalu yang menyatakan merchant itu sudah aman, agent **menandai konflik**, menaikkan
+   prioritas, dan **meminta konfirmasi manusia**. Agent tidak memilih salah satu. Ini penerapan aturan
+   *"dilarang asumsi, kalau rancu wajib bertanya"* (ADR-017 §8).
+
+5. **Memory dipakai untuk tiga hal, semuanya tanpa asumsi:**
+   - **Mencegah pengulangan buta** — menandai merchant yang sudah di-review pada periode yang sama;
+   - **Mendeteksi bahwa review sebelumnya gagal** — policy masih terpicu setelah di-review berarti
+     masalahnya belum selesai, dan itu justru alasan **eskalasi**;
+   - **Menyediakan preseden** — ditampilkan ke manusia, bukan dipakai agent untuk membatalkan policy.
+
+6. **Setiap keputusan wajib bisa ditelusuri ke tiga sumber:** policy mana yang terpicu, data mana yang
+   mendukung, dan memori mana yang relevan. Keputusan tanpa ketiganya ditolak sebelum keluar.
+
+7. **Dataset direvisi** (menggantikan daftar tabel di ADR-015 §1): `merchants`, `transactions`,
+   `settlement_breaks` **tetap**, ditambah `policies` dan `decisions`. Rincian di ADR-019.
+
+8. **Kategori golden set direvisi** (menggantikan ADR-015 §2): dari berbasis pertanyaan menjadi berbasis
+   keputusan. Rincian di ADR-019.
+
+**Konsekuensi.**
+
+- **Meterless menjadi load-bearing, bukan hiasan.** Tanpa memory, agent akan mengulang review yang sudah
+  dilakukan dan tidak bisa mendeteksi review yang gagal. Ini membuat Sponsor Tech (10 poin) nyata.
+- **Evaluator menjadi bermakna.** Ia menilai *"apakah keputusan ini didukung policy + data + memori"*,
+  bukan sekadar *"apakah jawaban ini cukup"*. Verdict ADR-017 tetap dipakai, dengan `sufficient` berarti
+  "keputusan lengkap dengan tiga sumber".
+- **K1 berubah makna.** Akurasi sitasi kini berarti: policy yang dikutip benar-benar ada dan benar-benar
+  terpicu oleh data yang dikutip. Bukan sekadar "sumber ada".
+- **K2 tetap 0.** Policy deterministik justru membuat abstention lebih mudah dipertahankan: kalau data
+  tidak cukup untuk mengevaluasi policy, agent tidak boleh menyimpulkan apa pun.
+- **User primer tidak berubah** (`docs/PRD.md` §2.1), tetapi permintaannya berubah dari "jawab pertanyaan
+  ini" menjadi "putuskan ini".
+- **Risiko baru:** policy yang terlalu sederhana membuat keputusan terasa mekanis. Mitigasi: konflik
+  policy-vs-memory dan kasus data-kurang sengaja dimasukkan ke golden set.
+
+---
+
+## ADR-019 — Skema dataset keputusan dan golden set berbasis keputusan
+
+**Tanggal:** 2026-10-20
+**Status:** Diterima — **menggantikan ADR-015 §1 dan §2**
+
+**Konteks.** ADR-018 mengubah output produk dari jawaban menjadi keputusan. Dataset dan golden set di
+ADR-015 dirancang untuk pertanyaan lookup/agregasi, sehingga tidak bisa menguji keputusan.
+
+**Keputusan.**
+
+### 1. Dataset — 5 tabel, total ~240 baris, sintetis
+
+| Tabel | Baris | Kolom | Peran |
+|---|---|---|---|
+| `merchants` | 40 | `merchant_key`, `trading_name`, `mcc`, `channel`, `risk_tier`, `status`, `group_key`, `onboarded_date` | Data operasional |
+| `transactions` | 120 | `txn_id`, `merchant_key`, `occurred_at`, `amount`, `currency`, `status`, `payment_method`, `channel` | Data operasional |
+| `settlement_breaks` | 40 | `break_id`, `merchant_key`, `reporting_month`, `break_type`, `amount`, `resolved` | Data operasional |
+| **`policies`** | **10** | `policy_id`, `nama`, `kondisi`, `ambang`, `periode_evaluasi`, `aksi`, `prioritas`, `berlaku_sejak` | **Aturan penentu** |
+| **`decisions`** | **30** | `decision_id`, `merchant_key`, `tanggal`, `periode`, `policy_dipakai[]`, `keputusan`, `alasan`, `oleh` | **Memori keputusan lalu** |
+
+Contoh isi `policies`:
+
+```text
+CB-001  chargeback_ratio > 1.5% dalam 1 bulan             -> PANTAU        prioritas 3
+CB-002  chargeback_ratio > 2.0% selama 2 bulan berturut  -> REVIEW        prioritas 1
+SB-001  settlement break unresolved > 30 hari            -> ESKALASI      prioritas 1
+SB-002  settlement break unresolved 3 bulan berturut     -> ESKALASI      prioritas 1
+KYB-001 merchant tanpa dokumen KYB lengkap               -> REVIEW        prioritas 2
+VOL-001 volume turun > 60% dibanding rata-rata 3 bulan   -> PANTAU        prioritas 4
+...
+```
+
+Contoh isi `decisions`:
+
+```text
+D-014  M-023  2026-09-12  periode 2026-08  policy [CB-002]
+       keputusan REVIEW_SELESAI  alasan "lonjakan dari satu insiden fraud terisolasi, sudah ditangani"
+       oleh analyst:1
+```
+
+### 2. Tingkat keputusan
+
+Setiap merchant dievaluasi menghasilkan tepat satu:
+
+| Tingkat | Arti |
+|---|---|
+| **ESKALASI** | Policy prioritas 1 terpicu, atau policy masih terpicu setelah pernah di-review |
+| **REVIEW** | Policy prioritas 1–2 terpicu, belum pernah di-review pada periode ini |
+| **PANTAU** | Policy prioritas 3–4 terpicu saja |
+| **LEWATI** | Tidak ada policy terpicu |
+| **KONFLIK** | Policy terpicu, tetapi memory memuat keputusan lalu yang menyatakan aman → **minta konfirmasi manusia**, agent tidak memutuskan |
+| **DATA_KURANG** | Data tidak cukup untuk mengevaluasi policy → agent tidak menyimpulkan apa pun |
+
+`KONFLIK` dan `DATA_KURANG` bukan kegagalan — keduanya adalah hasil yang sah, dan keduanya mencegah
+fabrikasi.
+
+### 3. Golden set — 30 entri berbasis keputusan
+
+| Kategori | Jumlah | Isi |
+|---|---|---|
+| Keputusan satu policy | 5 | Satu policy terpicu, hasil jelas |
+| Keputusan multi-policy | 5 | Dua policy atau lebih terpicu; prioritas menentukan tingkat akhir |
+| Keputusan butuh memory | 4 | Hasil benar hanya jika riwayat keputusan diperhitungkan |
+| Kasus konflik (policy vs memory) | 3 | Harus menghasilkan `KONFLIK`, **bukan** keputusan sendiri |
+| Kasus harus dilewati (false positive) | 3 | Terlihat mencurigakan tetapi tidak ada policy yang terpicu → `LEWATI` |
+| **Data kurang** | **0** | *dipindah ke kategori di bawah* |
+| **Tidak bisa diputuskan** | **10** | Data tidak ada / tabel tidak ada / periode kosong → `DATA_KURANG`, tanpa angka, tanpa sitasi |
+
+Total: 5+5+4+3+3+10 = **30**.
+
+**Kenapa 10 entri "tidak bisa diputuskan" tetap 10.** Ini yang menopang K2. Tanpa kasus yang memang
+tidak punya jawaban, "fabrikasi = 0" tidak bisa dibuktikan — hanya diasumsikan.
+
+### 4. Yang tidak berubah dari ADR-015
+
+Field wajib file hasil, aturan kalibrasi target, bentuk run baseline, pembagian penulisan (3 orang ×
+10 entri), penilaian dua non-penulis per entri, dan larangan menyebut hasil ini *benchmark* — semuanya
+tetap berlaku. Ditambah satu field dari ADR-017: `level_breakdown`.
+
+**Konsekuensi.**
+
+- Dataset bertambah dari ~200 menjadi ~240 baris; tetap kecil dan bisa diperiksa tangan.
+- `policies` sengaja hanya 10 baris supaya setiap aturan bisa dibaca manusia dan diverifikasi di demo.
+- Golden set wajib dibekukan sebelum P3 (tidak berubah dari ADR-015).
+- Enam tingkat keputusan harus muncul di `level_breakdown`, sehingga pembaca bisa melihat berapa banyak
+  keputusan yang benar-benar diambil vs yang dieskalasi ke manusia.

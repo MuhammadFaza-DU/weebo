@@ -75,9 +75,10 @@ Vendoring **sudah selesai di P0 (T0.6)**. Task ini hanya membungkusnya.
 
 ### T1.6 — Alur tipis di core
 
-- [ ] `runTurn(input)` yang memanggil: intent → memory recall → model → tool Zetaris → compose
+- [ ] `runTurn(input)` yang memanggil: intent → memory recall → **policy.evaluate** → model → tool Zetaris → compose **keputusan**
 - [ ] Tidak perlu policy layer lengkap; cukup jalur lurus
-- [ ] Verifikasi: satu pemanggilan menghasilkan jawaban yang menyebut sumber data
+- [ ] **Pemisahan wajib:** `policy.evaluate` deterministik menentukan tingkat keputusan; model hanya menyusun alasan (ADR-018)
+- [ ] Verifikasi: satu pemanggilan menghasilkan keputusan yang menyebut policy terpicu + data pendukung
 
 ### T1.7 — CLI minimum
 
@@ -94,9 +95,9 @@ Vendoring **sudah selesai di P0 (T0.6)**. Task ini hanya membungkusnya.
 
 Bentuk dataset dan rubrik sudah ditetapkan di **P0 T0.8**. Task ini mewujudkannya.
 
-- [ ] Buat dataset sintetis di `eval/dataset/` sesuai bentuk yang diputuskan di T0.8 (~3 tabel, ~200 baris)
-- [ ] Tulis `eval/golden/` berisi **30 entri**: 20 bisa dijawab (5 lookup, 5 lintas tabel, 5 agregasi, 3 rentang waktu, 2 butuh memori) + 10 tidak bisa dijawab
-- [ ] Setiap entri memuat: pertanyaan, jawaban harapan, sumber harapan, kategori, penanda butuh-memori
+- [ ] Buat dataset sintetis di `eval/dataset/` sesuai bentuk yang diputuskan di **ADR-019**: 5 tabel / ~240 baris (`merchants`, `transactions`, `settlement_breaks`, `policies`, `decisions`)
+- [ ] Tulis `eval/golden/` berisi **30 entri berbasis keputusan**: 5 satu-policy, 5 multi-policy, 4 butuh memory, 3 kasus konflik, 3 harus-dilewati, 10 tidak bisa diputuskan
+- [ ] Setiap entri memuat: permintaan keputusan, tingkat yang diharapkan, policy yang diharapkan terpicu, data pendukung, memori relevan, kategori
 - [ ] Buat `npm run eval` yang menjalankan golden set lewat **jalur yang sama dengan CLI**, bukan jalur khusus
 - [ ] Hasil ditulis ke `eval/results/<tanggal>-p1.json` dengan field wajib termasuk nama dan versi model
 - [ ] Suhu 0

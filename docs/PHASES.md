@@ -13,9 +13,9 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 | Fase | Deliverable | Syarat lulus | Bergantung pada | Story PRD |
 |---|---|---|---|---|
 | **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab + protokol evaluasi ditetapkan | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — | — (pendukung) |
-| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** + dataset demo, golden set, dan runner eval; **pemisahan L1 vs L4(a)** agar K2 terukur | Bisa didemokan 30 detik di terminal; smoke eval 5 pertanyaan dijalankan | P0 | US-01, US-02, US-09, US-14 |
+| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** + dataset demo, golden set, dan runner eval; **pemisahan L1 vs L4(a)** agar K2 terukur | Bisa didemokan 30 detik di terminal; smoke eval 5 pertanyaan dijalankan | P0 | US-01, US-02, US-09, US-14, US-17 |
 | P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai**; **loop penalaran berbatas + tangga L0–L4 + trace terstruktur** (ADR-017) | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung; **Evaluator mengembalikan Verdict tertutup dan trace menampilkan iterasi** | P1 | US-03, US-04, US-05, US-10 |
-| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber; **eval 30 penuh pertama + baseline; kalibrasi target KPI** | P1 | US-06, US-07, US-08, US-09 |
+| P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber; **eval 30 penuh pertama + baseline; kalibrasi target KPI** | P1 | US-06, US-07, US-08, US-09, US-18 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) | — (pendukung) |
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop; **eval 30 penuh lewat PWA (paritas dengan CLI)** | P4, P2, P3 | US-11, US-12 |
 | P6 Autonomy | Scheduler headless, channel, jalur model | Tugas berjalan tanpa client terhubung | P2, P3 | US-13 |
@@ -25,6 +25,35 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 Story berprioritas **Could** dan belum punya fase: US-15 (aplikasi desktop) — masuk backlog.
 
 P4 dan P7 boleh berjalan paralel oleh orang berbeda dan tidak memblokir spine.
+
+> **Batas nyata yang harus diingat — bukan gate tanggal.** Participant Journey Map §5.4 (HackOS)
+> mengalokasikan hari secara eksplisit: 22 Okt untuk Zetaris+Meterless+loop dasar, 23–24 untuk
+> evaluator/retry/memory/log, 25 untuk dataset/tool/retrieval, **26 untuk README+slide+rekam video**,
+> 27 untuk final check dan submit. Dari tabel di atas, **P4, P5, P6, dan P7 tidak mendapat hari**.
+> Ini bukan alasan membuang fase — P4 dan P7 memang paralel — tetapi rencana harus ditinjau sebelum
+> 22 Okt, bukan ditemukan gagal di hari kelima. Aturan penundaan tetap `AGENTS.md` §8.1.
+
+### Timeline hari-per-hari — versi paling rinci (Event Calendar §6)
+
+Event Calendar memberi versi yang lebih tajam dari Journey Map. Dipakai sebagai acuan perencanaan:
+
+| Tanggal | Prioritas resmi | Fase kita |
+|---|---|---|
+| 22 Okt | Build window buka 00:00. **Kunci arsitektur, peran agent, pendekatan data**, integrasikan Zetaris + Meterless | P1 |
+| 23 Okt | **Bangun loop minimal yang jalan** | P1 → P2 |
+| 24–25 Okt | **Perdalam perilaku agent**: retry, fallback, logging, uji dengan input realistis | P2 + P3 |
+| 26 Okt | **Freeze fitur**, hardening, rekam video, selesaikan slide, kemas submission | P8 |
+| 27 Okt | Submit sebelum 23:45 UTC | P8 |
+
+**Checkpoint tengah resmi — 24 Okt.** Yang seharusnya sudah ada: track + use case terkonfirmasi;
+peran agent dan alur interaksi terdefinisi; **versi end-to-end minimal yang jalan**; **Zetaris dan
+Meterless terhubung dan teruji**; aktivitas agent tercatat di log; contoh input dan output awal.
+
+Pertanyaan resmi yang dianjurkan: *"If the submission deadline were tomorrow, what would fail?"*
+
+**Yang harus disadari dari tabel ini:** P4 (design system), P5 (PWA), P6 (autonomy), dan P7 (landing)
+**tidak muncul di satu hari pun**. Bukan berarti harus dibuang — tetapi keputusan "dikerjakan atau
+dipindah ke backlog" harus diambil sebelum 22 Okt.
 
 ---
 

@@ -215,6 +215,10 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 | Desain | Canvas penuh + HALT sebelum kode UI |
 | Bahasa | Dokumen internal Indonesia, materi publik Inggris |
 | Cursor | Dipakai untuk **review**, bukan menulis kode. Log diisi agent setiap fase |
+| **Bukti "bukan single-agent"** | Juri menghindari *"single-agent systems presented as agent systems"* dan menuntut *"agents interact more than once"* (Hackathon Overview §14, §16). ADR-017 memakai single loop, jadi perbedaan harus **terlihat**: minimal satu skenario demo wajib memaksa **≥2 iterasi** sehingga Planner↔Executor↔Evaluator benar-benar berinteraksi lebih dari sekali, dan terlihat di trace |
+| **Eval tidak boleh hardcoded** | *"Hardcoded demo paths"* ada di daftar yang dihindari juri (Hackathon Overview §14). Runner eval wajib menjalankan jalur yang sama dengan CLI, bukan jalur khusus — sudah diwajibkan `docs/PRD.md` §3.2, sekarang diperkuat |
+| **Track 03 = keputusan, bukan jawaban** | APPROACH §6: data Track 03 adalah *"operational records, rules or policies, and the state or memory of prior decisions"*, dan output-nya keputusan + aksi. Kalau produk hanya menjawab pertanyaan dengan sitasi, itu bentuk **Track 02**. Lihat risiko terbuka di `CHECKPOINT.md` — **belum diputuskan user** |
+| **`SAMPLE_MODE=true` wajib ada** | APPROACH §5, §7, §11. Red flag §18: *"system cannot run without internet"* dan *"fails if an external API is unavailable"*. Fallback deterministik dari sampel lokal saat Zetaris/NIM mati |
 | **Etos kerja agent** | **Maksimal, tapi tidak memaksa.** Cari sampai habis sebelum menyerah. Kalau sudah maksimal dan tetap tidak ketemu: katakan jujur, lalu ganti dengan analisis mendalam sendiri yang **diberi label sebagai analisis**, bukan data. Berlaku untuk kerja agent di repo ini maupun untuk perilaku produk (rancangan: `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`). Sejalan dengan `AGENTS.md` global §1.1c |
 
 ---

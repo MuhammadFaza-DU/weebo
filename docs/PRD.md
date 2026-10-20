@@ -41,16 +41,28 @@ P8. Di luar itu, tabel KPI di §1.3 sudah cukup.
 
 ### 1.1 Problem Statement
 
-Pertanyaan kerja tersebar di banyak sistem — database, spreadsheet, API partner — sehingga
-seseorang harus menunggu tim data untuk mendapat jawaban, dan jawaban yang datang tidak bisa ia
-periksa sendiri. Agent percakapan tidak menutup celah ini: ia tidak mencapai data itu, tidak
-mengingat konteks antar sesi, dan tidak menjelaskan dari mana jawabannya berasal.
+Pertanyaan kerja tersebar di banyak sistem — database, spreadsheet, API partner — sehingga seseorang
+harus menunggu tim data untuk mendapat jawaban, dan jawaban yang datang tidak bisa ia periksa sendiri.
+Agent percakapan tidak menutup celah ini: ia tidak mencapai data itu, tidak mengingat konteks antar
+sesi, dan tidak menjelaskan dari mana jawabannya berasal.
+
+**Dan jawaban saja belum cukup.** Orang yang bekerja dengan aturan — tim compliance, operations, risk —
+tidak butuh angka; ia butuh **keputusan**: merchant mana yang harus di-review minggu ini, mana yang
+harus dieskalasi, dan mana yang aman dilewati. Keputusan itu harus mengikuti **policy tertulis**,
+memperhitungkan **apa yang sudah diputuskan sebelumnya**, dan bisa ditelusuri alasannya.
 
 ### 1.2 Proposed Solution
 
-Weebo adalah agent harness open source self-hosted yang menyatukan tiga hal: **mencapai** data
-tersebar lewat Zetaris, **mengingat** konteks kerja lewat Meterless H-MEM, dan **menjelaskan** alasan
-di balik setiap jawaban beserta sumbernya. Satu runtime, banyak client, BYOK, tanpa layanan hosted.
+Weebo adalah agent harness open source self-hosted yang menyatukan tiga hal: **mencapai** data tersebar
+lewat Zetaris, **mengingat** konteks dan keputusan sebelumnya lewat Meterless H-MEM, dan **menjelaskan**
+alasan di balik setiap keputusan beserta sumbernya. Satu runtime, banyak client, BYOK, tanpa layanan
+hosted.
+
+**Yang dihasilkan Weebo adalah keputusan, bukan jawaban.** Satu jenis keputusan: *merchant mana yang
+harus masuk review compliance periode ini, dan apa tindakannya.* Policy menentukan keputusan secara
+deterministik; memory selalu dibandingkan dan ditampilkan, tetapi tidak membatalkan policy; kalau
+keduanya bertentangan, Weebo tidak memilih sendiri — ia menandai konflik dan meminta konfirmasi manusia.
+Alasan lengkap: `docs/DECISIONS.md` ADR-018.
 
 ### 1.3 Success Criteria
 
@@ -58,11 +70,11 @@ Target, **bukan** hasil pengukuran. Belum satu pun diukur. Cara ukurnya ada di �
 
 | # | KPI | Definisi | Target | Kapan diukur |
 |---|---|---|---|---|
-| **K1** | Akurasi sitasi | Dari jawaban yang menyebut sumber, persentase di mana sumber itu **ada** dan **benar-benar memuat** fakta yang diklaim | **≥ 90%** | P1 (smoke), P3, P5, P8 |
-| **K2** | Tingkat fabrikasi | Dari pertanyaan yang datanya **tidak ada**, jumlah jawaban yang mengarang sumber atau angka | **0** | P1, P3, P5, P8 |
-| **K3** | Kelengkapan jejak | Persentase jawaban dengan jejak penuh: tool, argumen, ringkasan hasil | **100%** | P2, P3, P5 |
+| **K1** | Akurasi dasar keputusan | Dari keputusan yang menyebut policy, persentase di mana policy itu **ada**, **benar-benar terpicu** oleh data yang dikutip, dan nilai aktualnya cocok dengan ambang | **≥ 90%** | P1 (smoke), P3, P5, P8 |
+| **K2** | Tingkat fabrikasi | Dari kasus yang datanya **tidak cukup**, jumlah keputusan yang mengarang policy, angka, atau keputusan | **0** | P1, P3, P5, P8 |
+| **K3** | Kelengkapan jejak | Persentase keputusan dengan jejak penuh: tool, argumen, ringkasan hasil, policy, memori | **100%** | P2, P3, P5 |
 | **K4** | Penegakan policy | Persentase tool terlarang yang ditolak **sebelum** dieksekusi | **100%** | P2 |
-| **K5** | Recall memori | Dari 10 fakta yang disemai, persentase terpanggil benar di sesi berbeda | **≥ 80%** | P3, P5 |
+| **K5** | Recall memori keputusan | Dari 10 keputusan lalu yang disemai, persentase yang terpanggil benar saat dibutuhkan untuk keputusan baru | **≥ 80%** | P3, P5 |
 
 **Kenapa lima ini, bukan "pengguna aktif" atau "waktu hemat".** Dalam build window tidak akan ada
 pemakaian nyata, jadi metrik adopsi tidak bisa diklaim tanpa berbohong. Lima KPI di atas adalah
@@ -106,10 +118,13 @@ temuan, bukan alasan menghapus KPI-nya.
 **Siapa:** analis, operations, atau product manager di tim 3–30 orang. Tidak menulis kode. Sudah
 terbiasa dengan spreadsheet dan dashboard, tetapi tidak punya akses langsung ke database.
 
-**Yang ia kerjakan:** menjawab pertanyaan operasional yang butuh data dari lebih dari satu sistem.
+**Yang ia kerjakan:** memutuskan merchant mana yang harus masuk review compliance, mana yang dieskalasi,
+dan mana yang aman dilewati — dengan mengikuti policy tertulis dan memperhitungkan keputusan yang sudah
+pernah diambil.
 
 **Rasa sakitnya:** bergantung pada antrean tim data untuk pertanyaan yang seharusnya selesai dalam
-hitungan menit. Dan ketika jawaban datang, ia tidak bisa memeriksa dari mana asalnya.
+hitungan menit. Dan ketika jawaban datang, ia tidak bisa memeriksa dari mana asalnya — sehingga ia
+mengulang review yang sudah dilakukan, atau melewatkan yang seharusnya dieskalasi.
 
 **Kenapa ia yang primer:** ia penerima manfaat sebenarnya, kerugiannya terukur, dan ia yang paling
 membutuhkan penjelasan *"kenapa"* — sehingga selaras dengan track yang dipilih (Reasoning
@@ -144,19 +159,22 @@ Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diin
 
 | ID | Story | Prioritas | Fase |
 |---|---|---|---|
-| US-01 | Sebagai user primer, aku bertanya dalam bahasa natural dan mendapat jawaban yang menyebut sumber datanya | Must | P1 |
-| US-02 | Sebagai user primer, aku bisa melihat langkah yang diambil agent sebelum menjawab | Must | P1, P2 |
+| US-01 | Sebagai user primer, aku meminta keputusan review compliance dan mendapat daftar merchant berperingkat, masing-masing dengan policy yang terpicu, data pendukung, memori keputusan lalu, dan aksi yang disarankan | Must | P1 |
+| US-02 | Sebagai user primer, aku bisa melihat langkah yang diambil agent sebelum memutuskan | Must | P1, P2 |
 | US-03 | Sebagai adopter, aku bisa membatasi tool apa yang boleh dipanggil agent | Must | P2 |
 | US-04 | Sebagai adopter, aku bisa meninjau catatan setiap tool call yang terjadi | Must | P2 |
 | US-05 | Sebagai user primer, aku bisa menghubungkan sumber data baru tanpa mengubah kode | Should | P2 |
+| US-17 | Sebagai user primer, aku bisa melihat **policy mana** yang terpicu untuk setiap keputusan, beserta nilai aktual dan ambangnya | Must | P1 |
+| US-18 | Sebagai user primer, ketika policy dan memori keputusan lalu bertentangan, agent **menandai konflik dan meminta konfirmasiku**, bukan memilih sendiri | Must | P3 |
 
 **AC US-01**
-- Jawaban mengutip minimal satu sumber nyata (nama tabel, file, atau endpoint).
-- Jika sumber tidak dapat diakses, agent menyatakan tidak tahu. Tidak mengarang.
-- Waktu jawab di bawah 30 detik pada dataset demo.
+- Setiap keputusan menyebut: nama merchant, tingkat (ESKALASI/REVIEW/PANTAU/LEWATI), policy yang terpicu,
+  data pendukung, dan aksi yang disarankan.
+- Jika data tidak cukup untuk mengevaluasi policy, agent menyatakan tidak bisa memutuskan. Tidak mengarang.
+- Waktu proses di bawah 60 detik pada dataset demo.
 
 **AC US-02**
-- Setiap jawaban menyertakan jejak: tool apa dipanggil, argumen apa, ringkasan hasil.
+- Setiap keputusan menyertakan jejak: tool apa dipanggil, argumen apa, ringkasan hasil.
 - Jejak dapat dibuka dan ditutup di PWA.
 - Jejak tersimpan di audit log, bukan hanya ditampilkan lalu hilang.
 
@@ -172,6 +190,17 @@ Prioritas: **Must** = submission tidak jujur tanpa ini. **Should** = sangat diin
 **AC US-05**
 - Connector baru dapat didaftarkan lewat konfigurasi, tanpa perubahan kode inti.
 - Connector yang gagal terhubung melaporkan penyebabnya, bukan gagal diam-diam.
+
+**AC US-17**
+- Setiap keputusan menyebut `policy_id`, kondisi, ambang, dan nilai aktual yang memicunya.
+- Policy yang dikutip benar-benar ada di tabel `policies` dan benar-benar terpicu oleh data yang dikutip.
+- Keputusan tanpa policy yang valid ditolak sebelum ditampilkan.
+
+**AC US-18**
+- Bila policy masih terpicu sementara memori memuat keputusan lalu yang menyatakan aman, hasilnya
+  `KONFLIK` — bukan keputusan otomatis.
+- Agent menampilkan kedua sisi (policy dan memori) beserta apa yang perlu diputuskan manusia.
+- Agent tidak pernah menyimpulkan "kemungkinan kasusnya sama seperti dulu".
 
 #### Mengingat (pilar *memory*)
 
@@ -259,10 +288,15 @@ Dinyatakan tegas supaya tidak menjadi perdebatan di tengah fase.
 |---|---|---|---|
 | `zetaris.query` | Menjalankan query baca ke sumber data terhubung | Zetaris (MCP atau REST, diputuskan P0 T0.3) | **Read-only.** Tidak ada operasi tulis di build window. Hasil membawa metadata sumber untuk sitasi (L1) |
 | `zetaris.schema` | Membaca daftar tabel dan kolom yang tersedia | Zetaris | Read-only. Juga dipakai mendeteksi L2 (tabel ada, akses kurang) |
-| `memory.store` | Menyimpan fakta dan konteks sesi | Meterless H-MEM via `MemoryPort` | Tidak boleh menyimpan secret |
-| `memory.recall` | Mengambil memori relevan untuk sebuah giliran | Meterless H-MEM via `MemoryPort` | Hasil selalu disertai id entri |
-| `model.chat` | Menghasilkan jawaban dan rencana tool | NVIDIA NIM | Kena rate limit; perlu fallback model kedua |
+| `policy.evaluate` | Mengevaluasi data terhadap `policies`, mengembalikan policy terpicu + nilai aktual vs ambang | `packages/core` (deterministik, **tanpa model**) | Penentuan keputusan harus bisa diulang persis (ADR-018) |
+| `memory.store` | Menyimpan keputusan dan konteks sesi | Meterless H-MEM via `MemoryPort` | Tidak boleh menyimpan secret |
+| `memory.recall` | Mengambil keputusan lalu yang relevan untuk merchant + periode | Meterless H-MEM via `MemoryPort` | Hasil selalu disertai id entri. **Tidak boleh membatalkan policy** (ADR-018) |
+| `model.chat` | Menyusun alasan dan bahasa keputusan; **bukan** penentu keputusan | NVIDIA NIM | Kena rate limit; perlu fallback model kedua |
 | `model.embed` | Embedding untuk memori | NVIDIA `nemotron-3-embed-1b` | 2048 dimensi; kuota gratis terbatas |
+
+**Pemisahan yang wajib dijaga:** `policy.evaluate` menentukan **apa** keputusannya, dan itu deterministik.
+`model.chat` hanya menyusun **bagaimana** keputusan itu dijelaskan. Model tidak boleh mengubah tingkat
+keputusan. Tanpa pemisahan ini, keputusan menjadi tidak bisa diulang dan K1 kehilangan makna.
 
 Setiap giliran berakhir di tepat satu tingkat pengetahuan (L0–L4) sesuai ADR-017, dan tingkat itu
 tercatat di trace. Semua tool melewati **policy layer** (`packages/core`). Tidak ada jalur yang
@@ -284,19 +318,20 @@ hanya klaim pemasaran.
 
 #### Golden set
 
-Tersimpan di `eval/golden/`, satu file per kategori. Total **30 entri**.
+Tersimpan di `eval/golden/`, satu file per kategori. Total **30 entri**, berbasis **keputusan**
+(skema lengkap: `docs/DECISIONS.md` ADR-019 §3).
 
 | Kategori | Jumlah | Isi |
 |---|---|---|
-| Lookup satu tabel | 5 | Jawaban ada di satu tabel, satu filter |
-| Lintas tabel | 5 | Butuh join atau korelasi dua tabel |
-| Agregasi | 5 | Hitung, rata-rata, atau tren |
-| Rentang waktu | 3 | Filter berdasarkan periode |
-| Butuh memori | 2 | Hanya bisa dijawab jika konteks sesi sebelumnya diingat |
-| **Tidak bisa dijawab** | **10** | Data tidak ada, tabel tidak ada, atau periode kosong |
+| Keputusan satu policy | 5 | Satu policy terpicu, hasil jelas |
+| Keputusan multi-policy | 5 | Dua policy atau lebih; prioritas menentukan tingkat akhir |
+| Keputusan butuh memory | 4 | Hasil benar hanya jika riwayat keputusan diperhitungkan |
+| Kasus konflik (policy vs memory) | 3 | Harus menghasilkan `KONFLIK`, bukan keputusan sendiri |
+| Kasus harus dilewati (false positive) | 3 | Terlihat mencurigakan tetapi tidak ada policy terpicu → `LEWATI` |
+| **Tidak bisa diputuskan** | **10** | Data tidak ada / tabel tidak ada / periode kosong → `DATA_KURANG` |
 
-Setiap entri memuat: pertanyaan, jawaban yang diharapkan (ditulis manusia), sumber yang diharapkan,
-kategori, dan penanda apakah butuh memori.
+Setiap entri memuat: permintaan keputusan, tingkat yang diharapkan, policy yang diharapkan terpicu,
+data pendukung yang diharapkan, memori relevan yang diharapkan, dan kategori.
 
 **Bekukan sebelum P3.** Setelah dibekukan, perubahan hanya boleh terjadi dengan alasan tertulis di
 `eval/CHANGELOG.md`. Tanpa aturan ini, golden set akan diam-diam disesuaikan dengan implementasi — dan
@@ -304,17 +339,20 @@ eval kehilangan seluruh maknanya.
 
 #### Rubrik penilaian
 
-**K1 — akurasi sitasi.** Tiga pemeriksaan, semuanya harus lulus. Tidak ada nilai sebagian.
+**K1 — akurasi dasar keputusan.** Empat pemeriksaan, semuanya harus lulus. Tidak ada nilai sebagian.
 
-1. Sumber yang dikutip benar-benar ada di dataset?
-2. Sumber itu benar-benar memuat nilai atau fakta yang diklaim?
-3. Angka atau pernyataan di jawaban cocok dengan isi sumber?
+1. Policy yang dikutip benar-benar ada di tabel `policies`?
+2. Policy itu benar-benar terpicu oleh data yang dikutip — nilai aktual melewati ambangnya?
+3. Data pendukung yang dikutip benar-benar memuat nilai yang diklaim?
+4. Memori yang dikutip (jika ada) benar-benar ada dan relevan dengan merchant serta periode itu?
 
 **K2 — abstention.** Hanya ada lulus atau gagal.
 
-- **Lulus:** menyatakan tidak punya datanya, dan **tidak** mengutip sumber apa pun.
-- **Gagal:** mengutip sumber, atau menyatakan angka sebagai fakta.
-- **Gagal berat:** mengutip sumber nyata tetapi menempelkan fakta yang tidak ada di dalamnya.
+- **Lulus:** menyatakan data tidak cukup untuk memutuskan, dan **tidak** mengutip policy, tidak
+  menyebut angka sebagai fakta.
+- **Lulus:** menghasilkan `KONFLIK` ketika policy dan memori bertentangan, tanpa memilih sendiri.
+- **Gagal:** mengutip policy atau menyatakan angka sebagai fakta padahal data tidak cukup.
+- **Gagal berat:** mengutip policy nyata tetapi menempelkan nilai yang tidak memicunya.
 
 **K3 — kelengkapan jejak.** Diperiksa otomatis: ada tool, ada argumen, ada ringkasan hasil. Tidak ada
 penilaian manusia.
@@ -329,6 +367,7 @@ terpanggil benar.
 
 - `npm run eval` menjalankan golden set lewat **jalur yang sama dengan CLI** — bukan jalur khusus
   eval, karena jalur khusus akan mengukur hal yang berbeda dari yang dipakai user.
+  Ini juga wajib karena juri menghindari *"hardcoded demo paths"* (Hackathon Overview §14).
 - Hasil ditulis ke `eval/results/<tanggal>-<fase>.json` plus ringkasan yang bisa dibaca manusia.
 - Model yang dipakai **dicatat di hasil** (nama dan versi). Mengganti model membuat hasil lama tidak
   bisa dibandingkan.
@@ -437,17 +476,21 @@ packages/zetaris   Client Zetaris (MCP/REST, typed)
 ```
 
 Detail alur data dan batas modul: `docs/ARCHITECTURE.md`. Alasan pilihan: `docs/DECISIONS.md`
-(ADR-001 … ADR-017). PRD tidak mengulang keduanya.
+(ADR-001 … ADR-019). PRD tidak mengulang keduanya.
 
 ### 4.2 Integration points
 
 | Titik integrasi | Bentuk | Auth | Status |
 |---|---|---|---|
-| Zetaris | MCP atau REST (diputuskan P0 T0.3) | API key per organisasi | belum terverifikasi |
+| Zetaris | MCP atau REST (diputuskan P0 T0.3) | API key per organisasi | belum terverifikasi — **cara akses: folder sponsor di Resources HackOS (FAQ §5)** |
 | NVIDIA NIM | Chat Completions + embeddings, `https://integrate.api.nvidia.com/v1` | `nvapi-...` | belum terverifikasi |
-| Meterless H-MEM | Pustaka TypeScript, di-vendor | — | belum di-vendor (P0 T0.6) |
+| Meterless H-MEM | Pustaka TypeScript, di-vendor | — | **ter-vendor + conformance 13/13 lulus** (P0 T0.6) |
 | Connector MCP | MCP + OAuth 2.1 | OAuth 2.1 | direncanakan, P2 |
 | Keychain OS | Penyimpanan secret | — | direncanakan, P5 |
+
+**Fallback wajib.** `SAMPLE_MODE=true` membaca dataset dari `eval/dataset/` alih-alih memanggil Zetaris,
+lewat jalur kode yang sama. Diwajibkan panduan resmi (FAQ §5) dan ditegakkan di
+`docs/ARCHITECTURE.md` §7.1. Tanpa ini, submission berisiko tidak bisa dijalankan juri.
 
 ### 4.3 Security and privacy
 
@@ -520,7 +563,7 @@ sebelum terbukti.
 ## 6. Rujukan
 
 - Kewajiban lomba: `docs/RULES.md` §5.1 (Zetaris, Meterless, Cursor), §6.1–§6.4 (deliverable).
-- Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-017.
+- Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-019.
 - Arsitektur: `docs/ARCHITECTURE.md`.
 - Urutan pengerjaan: `docs/PHASES.md` dan file fase di `docs/phases/`.
 - Batasan tim dan bobot penilaian: `docs/CONTEXT.md`.

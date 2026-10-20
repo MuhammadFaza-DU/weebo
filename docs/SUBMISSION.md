@@ -37,6 +37,8 @@ mengiranya hasil. Jika target ditampilkan, ia harus berdampingan dengan hasil da
 | 4 | Penjelasan Zetaris + Meterless + Cursor + NVIDIA | | **belum ditetapkan** | Ada di `docs/SPONSORS.md`, diringkas di submission. **Cursor: jelaskan sebagai alat review, bukan integrasi produk** — sumbernya `docs/CURSOR-LOG.md` |
 | 5 | Pemilihan track (Track 03 — Reasoning Architecture) | | **belum ditetapkan** | |
 | 6 | Deklarasi pre-existing component | | **belum ditetapkan** | Lihat `PREEXISTING.md` |
+| 7 | **Contoh input + output lebih dari satu kasus** | | **belum ditetapkan** | Hackathon Overview §12: *"Sample inputs and outputs — enough to show the system works on more than one case"*. Menopang Technical (20) dan Demo (15) |
+| 8 | **Trace yang bisa dibaca juri** | | **belum ditetapkan** | Hackathon Overview §12: *"Logs or traces — evidence of how the agent reached its output"*. Dihasilkan ADR-017 §9 |
 
 > **Pemilik wajib ditetapkan sebelum P8.** Semua kolom pemilik masih kosong. Tanpa penanggung jawab,
 > video dan slide deck — dua deliverable dengan bobot skor terbesar setelah produk — berisiko tidak
@@ -113,6 +115,9 @@ Slide yang tidak ada lebih baik daripada slide yang menampilkan janji sebagai ha
 - [ ] **Tidak ada angka target yang ditampilkan tanpa pasangan hasilnya** (lihat "Aturan angka di
       materi submission" di atas)
 - [ ] **Eval tidak disebut "benchmark"** — N=30 dan dataset sintetis tidak mendukung klaim itu
+- [ ] **`SAMPLE_MODE=true` diuji**: repo dijalankan tanpa akses Zetaris, tetap menghasilkan keputusan
+      (FAQ §5: *"include a fallback mode so your solution still runs if an external API is unavailable"*)
+- [ ] **Uji clean setup dari nol** — FAQ §7: *"A submission a judge cannot run cannot be scored properly"*
 - [ ] **Baseline vs penuh dibandingkan** dan hasilnya disebut, termasuk jika memori tidak menaikkan K1/K5
 - [ ] Dataset demo dinyatakan **sintetis** di README dan submission
 - [ ] Track dipilih di platform

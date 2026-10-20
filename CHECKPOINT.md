@@ -42,7 +42,7 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
-- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-017), `CONTEXT.md`, `SPONSORS.md`,
+- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-019), `CONTEXT.md`, `SPONSORS.md`,
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
   lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`, **`RULES.md`**
   (transkripsi terverifikasi §01–§10 aturan lomba), **`PRD.md`** (problem, user primer/adopter,
@@ -82,6 +82,12 @@ Dicatat di `docs/PRD.md`, ringkasnya:
 - **User primer: knowledge worker di tim kecil** (analis/operations/PM, 3–30 orang, tidak menulis
   kode). Ia penerima manfaat sebenarnya dan paling membutuhkan penjelasan "kenapa" — selaras dengan
   Track 03.
+- **Output produk adalah KEPUTUSAN, bukan jawaban** (ADR-018): satu jenis keputusan — merchant mana yang
+  harus masuk review compliance periode ini, dan apa tindakannya. **Policy menentukan secara
+  deterministik; memory selalu dibandingkan dan ditampilkan tetapi tidak membatalkan policy; konflik
+  policy-vs-memory diminta konfirmasi ke manusia, tidak diputuskan agent.**
+- **Dataset 5 tabel / ~240 baris** (ADR-019): `merchants`, `transactions`, `settlement_breaks`,
+  `policies` (10 aturan), `decisions` (30 riwayat keputusan). Golden set 30 entri berbasis keputusan.
 - **Adopter: developer/IT di tim yang sama.** Ia yang memasang dan merawat, bukan yang mendapat
   manfaat dari jawaban agent. Dipisah supaya narasi Impact tidak jatuh menjadi "alat untuk developer".
 - **Bukan user:** tim enterprise dengan tata kelola formal, pengguna layanan hosted, non-teknis tanpa
@@ -140,10 +146,12 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
   dan **tidak menampilkan trial 30 hari** seperti yang diasumsikan `docs/SETUP-SPONSORS.md` §2. Jalur
   gratis bisa berarti akun cloud sendiri + compute berbayar. **Belum terverifikasi** — periksa
   instruksi peserta di platform lomba lebih dulu (T0.1).
-  **Jalur akses yang benar sudah ditemukan (Welcome Guide HackOS, 2026-10-20):** HackOS →
-  Resources → folder sponsor **Zetaris**, lalu channel **`Help Zetaris`**; plus rekaman workshop
-  **Data Day (12 Okt) "Zetaris: serving internal data"**. Discord **bukan** kanal support — semua
-  support di HackOS. Detail: `docs/SETUP-SPONSORS.md` §2.
+  **Cara akses SUDAH TERJAWAB (FAQ §5, 2026-10-20):** *"Access instructions and setup steps are in each
+  sponsor's folder in Resources on HackOS."* Jadi **bukan** lewat trial di situs Zetaris — jalur peserta
+  berbeda. Langkah: buka **Resources → folder Zetaris**, lalu `Help Zetaris` bila perlu, lalu mentor
+  office hours. Discord **bukan** kanal support. Detail: `docs/SETUP-SPONSORS.md` §2.
+  **Yang masih terbuka:** apakah folder itu memberi akses **tanpa akun cloud sendiri**. Status T0.2
+  tetap `belum` sampai ada bukti query nyata.
 - Apakah Zetaris bisa dipanggil dari browser — belum diuji. → T0.3
 - Akses NVIDIA NIM + rate limit sebenarnya — belum didaftarkan/diukur. → T0.4
 - Cursor: plan Free terverifikasi ada, tapi cukup atau tidak untuk 6 hari **belum diuji**. → T0.5
@@ -181,6 +189,12 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 | Zetaris hanya terjangkau lewat BYOC (compute dibayar di akun cloud sendiri) | Jalur gratis hilang; klaim "governed" melemah | Periksa credits peserta di platform lomba (T0.1); jika tidak ada, turunkan klaim ke "akses data tersebar" (`docs/PRD.md` §5.3) |
 | Sponsor access belum ada semua | P1 terblokir | Selesaikan `docs/SETUP-SPONSORS.md` sebelum 22 Okt |
 | Scope melebar (connector, gateway, landing) | Spine tidak selesai | Gateway = stretch; landing punya track paralel |
+| **Ritme build resmi hanya 6 hari dan tidak mengalokasikan hari untuk P4/P5/P6/P7** | Empat fase berisiko tidak selesai atau dikerjakan terburu-buru | **Tinjau rencana fase sebelum 22 Okt.** Ritme resmi (Participant Journey Map §5.4): 22 = Zetaris+Meterless+loop dasar; 23–24 = evaluator/retry/memory/log; 25 = dataset+tool+retrieval; **26 = README+slide+rekam video**; 27 = final check+submit. P4 dan P7 boleh paralel, tetapi P5 (PWA) dan P6 (autonomy) harus diputuskan: dikerjakan atau dipindah ke backlog |
+| **Juri menghindari "single-agent systems presented as agent systems"** (Hackathon Overview §14) | ADR-017 memakai single loop — berisiko dibaca sebagai single-agent | Bedanya harus **terlihat di demo**: minimal satu skenario wajib memaksa ≥2 iterasi, sehingga interaksi Planner↔Executor↔Evaluator terbukti terjadi lebih dari sekali. Satu iterasi saja = terbaca sebagai pipeline |
+| **Track 03 butuh rules/policies + memory of prior decisions + output KEPUTUSAN; kita punya data lookup + output jawaban** (APPROACH §6) | Impact (30 poin) menilai *"consistency with the challenge statements"* — risiko dinilai sebagai track yang salah | **SUDAH DIPUTUSKAN 2026-10-20 → ADR-018/ADR-019:** produk digeser ke bentuk keputusan, tetap Track 03. Dataset jadi 5 tabel (+`policies`, +`decisions`) |
+| **P5 (PWA) opsional menurut FAQ §5** | *"Should I build a user interface? Only if it makes the output usable."* Product & UX 10 poin tetap menilai kegunaan | **Menunggu keputusan user.** Ritme resmi tidak mengalokasikan hari untuk P5. Pilihan: (a) PWA minimal di P5, (b) CLI + output tabel saja, PWA ke backlog |
+| **AC US-01 "<30 detik" lebih ketat dari budget resmi** (APPROACH §11: total 5–10 menit, refinement loop 1–3 menit) | Batas sendiri bisa memotong loop yang justru dinilai | Tinjau AC US-01 sebelum P1; angka 30 detik belum punya dasar |
+| **`SAMPLE_MODE=true` belum ada** (APPROACH §5, §7, §11) | Red flag §18 *"system cannot run without internet"* / *"fails if an external API is unavailable"* | Tambah ke rencana P2: fallback deterministik saat Zetaris/NIM tidak tersedia |
 
 ## Belum dikerjakan — berbasis dependensi, bukan tanggal
 
@@ -203,15 +217,48 @@ terpenuhi · deliverable wajib lomba aman · user setuju.
 
 Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 
+## Self-scoring use case — alat resmi, dijalankan 2026-10-20
+
+Hackathon Overview §13 menyediakan worksheet 10 pertanyaan (0–2, total 16–20 = kandidat kuat).
+Ini penilaian jujur atas keadaan **hari ini**, bukan setelah dibangun:
+
+| # | Pertanyaan | Skor | Alasan |
+|---|---|---|---|
+| 1 | Bisa jelaskan masalah dalam 30 detik? | 2 | `docs/PRD.md` §1.1 jelas |
+| 2 | Tahu siapa usernya? | 2 | §2.1 dan §2.2 dipisah tegas |
+| 3 | **Data bisa diakses?** | **0** | **Zetaris belum terdaftar (T0.2 terblokir)** |
+| 4 | Bisa dibangun dalam 144 jam? | 1 | 8 fase, ritme resmi tidak mengalokasikan hari untuk P4–P7 |
+| 5 | Jalan cepat dan terprediksi? | 1 | belum ada kode |
+| 6 | Zetaris & Meterless berperan nyata? | 2 | jalur kritis P1, bukan tempelan |
+| 7 | Agent berinteraksi lebih dari sekali? | 2 | loop ADR-017 dengan `retry` |
+| 8 | Ada critique/validasi/retry? | 2 | Evaluator + `Verdict` |
+| 9 | Bisa tunjukkan output berguna dalam 1–4 menit? | 2 | ya, dengan CLI lalu PWA |
+| 10 | Bisa dokumentasikan batasan? | 2 | dokumentasi kita paling kuat di sini |
+| | **Total** | **16 / 20** | "kandidat kuat" — **tetapi** |
+
+**Yang harus dibaca dari angka ini:** 16 hanya tercapai karena enam pertanyaan dinilai atas **rencana**,
+bukan hasil. Satu-satunya yang dinilai **0** adalah pertanyaan yang paling menentukan: **akses data**.
+Dokumen resmi menutup dengan aturan: *"If any answer is 'no,' reduce scope before you build."*
+
+Artinya: skor ini **belum boleh dipakai sebagai bukti kelayakan** sampai T0.2 selesai. Setelah Zetaris
+terverifikasi, pertanyaan #3 berubah menjadi 2 dan total menjadi 18 — baru saat itu angka ini bermakna.
+
 ## Next action
 
 0. **HADIRI participant onboarding 21 Okt 2026, 12:00–13:30 UTC (besok).** Segmen "Sponsor technology"
    dan Q&A adalah kesempatan terbaik menanyakan akses Zetaris sebelum build window dibuka. Datang
    dengan daftar pertanyaan tertulis. Sumber jadwal: Welcome Guide HackOS (`.cache/platform-notes/`).
+   **Checklist resmi onboarding memuat "Verify your access to Zetaris, Meterless and Cursor"** — jadi
+   verifikasi akses memang dijadwalkan di sesi itu, bukan seharusnya sudah beres sebelumnya.
+0b. **Periksa Announcements di HackOS hari ini dan setiap hari.** Event Calendar §9 menetapkan
+   Announcements sebagai **sumber resmi** untuk tanggal workshop, jadwal mentor office hours, dan
+   ketersediaan submission form. Lima dokumen yang sudah dibaca tidak satu pun menyebut cara
+   memperoleh akses Zetaris — jawabannya ada di Announcements, folder sponsor di Resources, atau
+   channel `Help Zetaris`, bukan di dokumen teks.
 1. **Jalankan P0** — mulai dari T0.1 (bentuk tim di platform) karena itu blocker paling keras.
 2. Selesaikan T0.2–T0.6 (akses sponsor + uji asumsi), catat bukti di `docs/SETUP-SPONSORS.md` §7.
-3. Selesaikan T0.8 (protokol evaluasi + bentuk dataset demo) — tanpa ini, K1–K5 di `docs/PRD.md`
-   §1.3 tidak bisa diukur, dan T1.8 tidak bisa dimulai.
+3. **T0.8 sudah selesai** (ADR-015, direvisi ADR-018/ADR-019). Yang belum: artefak eval itu sendiri —
+   dataset, golden set, runner. Itu pekerjaan P1 T1.8, bukan P0.
 4. Pilih pembagian lapisan di awal P1, catat di bagian "Pembagian lapisan" di atas.
 5. Setelah P0 lulus, mulai P1 (`docs/phases/P1-walking-skeleton.md`).
 
@@ -220,15 +267,19 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 Dua sumber resmi menyatakan angka berbeda. Dicatat, **tidak** diperbaiki sendiri, karena perbedaan
 klaim bisa berarti sumbernya diperbarui — bukan salah tulis.
 
-| Item | `docs/RULES.md` / halaman event | Welcome Guide (HackOS) | Dampak bagi kita |
+| Item | `docs/RULES.md` / halaman event | HackOS (Welcome Guide + Overview + Journey Map) | Dampak bagi kita |
 |---|---|---|---|
 | Registrasi tutup | 22 Okt **23:59** UTC | 22 Okt **23:45** UTC | Nol — kita daftar jauh lebih awal |
 | Judging opens | 27 Okt 00:00 UTC (halaman event) | **28 Okt**, setelah submission tutup | Nol |
-| Hadiah tunai | **$13.000** (+ $7.000 in-kind) | **$15.000** (+ $5.000 in-kind) | Nol — tidak memengaruhi kerja |
+| Hadiah tunai total | **$13.000** (+ $7.000 in-kind) | **$15.000** (+ $5.000 in-kind) | Nol — tidak memengaruhi kerja |
+| Hadiah Track 03 (1/2/3) | $1.500 / $1.200 / $900 | **$2.000 / $1.300 / $1.000** | Nol — tidak memengaruhi kerja |
 
-Untuk hadiah, `docs/RULES.md` §8.1–§8.3 **konsisten secara internal** (rincian per-track di §8.2
-berjumlah $13.000; NVIDIA $4.699 + Cursor $2.301 = $7.000). Welcome Guide tidak memuat rincian
-per-track, jadi angkanya tidak bisa direkonsiliasi dari dalam dokumen itu. Tidak ada tindakan.
+**Catatan penting soal hadiah:** `docs/RULES.md` §8.1–§8.3 **konsisten secara internal** (rincian per-track
+di §8.2 berjumlah $13.000; NVIDIA $4.699 + Cursor $2.301 = $7.000). Ketiga dokumen HackOS konsisten satu
+sama lain ($15.000 + $5.000; per-track berjumlah $15.000). Jadi ini **bukan salah tulis** — kemungkinan
+besar hadiah dinaikkan setelah `docs/RULES.md` ditranskripsi (2026-10-18). Yang mengikat untuk keputusan
+adalah HackOS (paling baru), tetapi keduanya tidak memengaruhi satu pun keputusan kerja kita. Tidak ada
+tindakan sampai ada keputusan user.
 
 ## Log checkpoint
 
@@ -239,3 +290,5 @@ per-track, jadi angkanya tidak bisa direkonsiliasi dari dalam dokumen itu. Tidak
 | 2026-10-20 | **P0 dimulai.** T0.7 dan T0.8 ditutup sebagai keputusan: ADR-016 (transport LAN bind + pairing token) dan ADR-015 (protokol evaluasi, dataset merchant payments, penilaian K1/K2 oleh 2 non-penulis per entri). Ditemukan: halaman `zetaris.com` tidak menampilkan trial 30 hari, hanya Hobby BYOC — T0.2 menunggu T0.1. |
 | 2026-10-20 | **T0.6 ditutup — lulus.** `vendor/hmem` (reference + conformance + LICENSE + spec) di-vendor dari commit `1742dec`. `npm test` 10/10, conformance **13/13 checks passed** exit 0, ukuran engine 43.725 byte. Tercatat di `PREEXISTING.md` pada commit yang sama. |
 | 2026-10-20 | **Arsitektur dirombak: ADR-017.** Welcome Guide HackOS §3 menyebut alur linear kita sebagai *"a pipeline, not an agent system"*. Design disetujui user: loop berbatas 3 iterasi (maks 5 tool/iterasi), `Verdict` tertutup, tangga pengetahuan L0–L4, klarifikasi mengakhiri giliran, single loop default dengan fan-out di backlog. Design: `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`. `docs/ARCHITECTURE.md` §3, `docs/PRD.md` §3.1, `docs/PHASES.md` P1/P2 disinkronkan. |
+| 2026-10-20 | **Produk digeser ke bentuk KEPUTUSAN: ADR-018 + ADR-019.** Panduan resmi APPROACH §6 menunjukkan bentuk "jawaban + sitasi" adalah Track 02, bukan Track 03. Track 03 menuntut rules/policies + memory of prior decisions + output keputusan. Keputusan user: tetap Track 03, geser produk. **Policy menentukan (deterministik); memory selalu dibandingkan dan ditampilkan tetapi tidak membatalkan policy; konflik → minta konfirmasi manusia.** Dataset jadi 5 tabel/~240 baris (+`policies`, +`decisions`); golden set jadi 30 entri berbasis keputusan. AC US-01 dinaikkan <30s → **<60s** (budget resmi 5–10 menit/run). |
+| 2026-10-20 | **Enam dokumen HackOS diserap** (Welcome Guide, Journey Map, Overview, APPROACH, Event Calendar, FAQ). Bahan mentah di `.cache/platform-notes/` (gitignored), ekstraksi di `docs/`. **Temuan kunci: FAQ §5 menjawab cara akses sponsor** — *"Access instructions and setup steps are in each sponsor's folder in Resources on HackOS"*. Ini mengoreksi asumsi lama "daftar trial 30 hari di situs Zetaris". Ditambahkan juga `SAMPLE_MODE` wajib (FAQ §5, APPROACH §5/§7/§11). Status T0.2 tetap `belum` sampai ada bukti query nyata. |

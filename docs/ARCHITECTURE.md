@@ -116,7 +116,7 @@ apps/runtime (Node) → core.runTurn()
         berhenti bila: sufficient | needs_access | found_elsewhere
                        | exhausted | budget_exhausted | no_evidence_needed
    │
-   ├─ Compose     (bentuk jawaban mengikuti tingkat L0..L4)
+   ├─ Compose     (bentuk keputusan mengikuti tingkat L0..L4)
    └─ Write memory + Trace
    │
    ▼  stream event: token, tool call, bukti, iterasi, selesai
@@ -133,24 +133,41 @@ Jawaban + bukti (evidence) + jejak langkah
 
 **Tangga pengetahuan** — setiap giliran berakhir di tepat satu tingkat:
 
-| Tingkat | Keadaan | Bentuk jawaban | Sitasi |
+| Tingkat | Keadaan | Bentuk keluaran | Sitasi |
 |---|---|---|---|
 | **L0** | Tidak menyentuh data | Jawab langsung; loop tidak jalan | Tidak ada |
-| **L1** | Data cukup | Jawab + sitasi sumber nyata | **Wajib** |
-| **L2** | Ada, butuh akses | Sebut di mana + apa yang dibutuhkan | Lokasi saja |
+| **L1** | Data cukup untuk mengevaluasi policy | **Keputusan** + policy terpicu + data pendukung + memori relevan + alasan + aksi | **Wajib** |
+| **L2** | Data ada, butuh akses | Sebut di mana + apa yang dibutuhkan | Lokasi saja |
 | **L3** | Tidak di sini, ada petunjuk | Sarankan tempat lain bila dasarnya bisa dihitung | Tempat, bukan data |
-| **L4(a)** | Mentok | Nyatakan tidak punya datanya | Tidak ada |
-| **L4(b)** | Mentok, ada dasar analisis | Analisis **berlabel estimasi**, wajib memuat pernyataan data tidak tersedia | Tidak ada |
+| **L4(a)** | Mentok | Nyatakan tidak bisa memutuskan | Tidak ada |
+| **L4(b)** | Mentok, ada dasar analisis | Analisis **berlabel estimasi**, wajib memuat pernyataan data tidak cukup | Tidak ada |
 
 Aturan keras yang ditegakkan **di tipe**, bukan di prompt: L4 tidak pernah punya field sitasi, dan
 `budget_exhausted` selalu menjadi L4(a) — tidak pernah L4(b).
+
+### 3.1 Tingkat keputusan — ditentukan policy, bukan model
+
+`policy.evaluate` bersifat **deterministik dan tanpa model**. Ia mengembalikan policy yang terpicu
+beserta nilai aktual vs ambang. Enam tingkat keluaran:
+
+| Tingkat | Kapan |
+|---|---|
+| **ESKALASI** | Policy prioritas 1 terpicu, atau policy masih terpicu setelah pernah di-review |
+| **REVIEW** | Policy prioritas 1–2 terpicu, belum di-review pada periode ini |
+| **PANTAU** | Policy prioritas 3–4 terpicu saja |
+| **LEWATI** | Tidak ada policy terpicu |
+| **KONFLIK** | Policy terpicu, tetapi memori memuat keputusan lalu yang menyatakan aman → **minta konfirmasi manusia**, agent tidak memilih |
+| **DATA_KURANG** | Data tidak cukup mengevaluasi policy → tidak menyimpulkan apa pun |
+
+**Memory selalu dibandingkan dan selalu ditampilkan, tetapi tidak pernah membatalkan policy.**
+Model hanya menyusun alasan; ia tidak menentukan tingkat. Detail: `docs/DECISIONS.md` ADR-018.
 
 Klarifikasi mengakhiri giliran (`awaiting_clarification`); runtime headless dan runner eval dilarang
 bertanya. Detail lengkap, termasuk `Verdict`, anggaran, dan skema trace:
 `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`.
 
-Tahap Compose adalah inti Track 03: jawaban harus bisa **menjelaskan dari mana ia berasal** — sumber
-data, memori yang dipakai, dan langkah yang diambil.
+Tahap Compose adalah inti Track 03: setiap keputusan harus bisa **menjelaskan dari mana ia berasal** —
+policy yang terpicu, data yang mendukung, memori yang dibandingkan, dan langkah yang diambil.
 
 ## 4. Batas modul
 
@@ -271,6 +288,21 @@ Zetaris dipakai sebagai data harness:
 - Jalur cadangan: REST API Zetaris, untuk lingkungan yang tidak mendukung MCP.
 - Semua query melewati `packages/zetaris` sehingga error, retry, dan rate limit ditangani satu tempat.
 - Hasil query dikembalikan bersama metadata sumber agar bisa dikutip di jawaban.
+
+### 7.1 `SAMPLE_MODE` — fallback wajib
+
+Panduan resmi mewajibkannya (APPROACH §5, §7, §11; FAQ §5). Kutipan FAQ: *"include a fallback mode so
+your solution still runs if an external API is unavailable."*
+
+**Aturan:**
+
+- `SAMPLE_MODE=true` membaca dataset dari `eval/dataset/` (sampel lokal), **bukan** memanggil Zetaris.
+- Jalur kode yang dijalankan **sama** — hanya sumber datanya berbeda. Bukan jalur khusus demo.
+- Default `false`. Diaktifkan eksplisit lewat env var, dan **selalu disebut di trace** saat aktif.
+- Dipakai untuk: demo saat jaringan bermasalah, uji CI, dan menjalankan eval tanpa kuota sponsor.
+
+Alasan ini wajib, bukan opsional: juri bisa menjalankan repo di lingkungan tanpa akses Zetaris, dan
+submission yang tidak bisa dijalankan *"cannot be scored properly"* (FAQ §7).
 
 ## 8. Model
 

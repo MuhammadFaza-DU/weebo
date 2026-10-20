@@ -25,15 +25,14 @@ sehari sebelumnya.
 
 ## 2. Zetaris
 
-Rencana: **trial 30 hari, tanpa kartu kredit**, full platform.
+Rencana awal: ~~trial 30 hari, tanpa kartu kredit, full platform~~ — **DIBATALKAN, lihat koreksi di bawah.**
 
-> **Koreksi 2026-10-20 — asumsi ini belum terverifikasi dan kemungkinan salah.** Halaman
+> **Koreksi 2026-10-20 — asumsi ini salah.** Halaman
 > `zetaris.com` saat diperiksa menampilkan **Hobby $0 free forever** dengan model **BYOC**
 > (*"You pay your cloud provider for compute"*, cluster di VPC sendiri, live ~20 menit) dan **tidak
 > menampilkan trial 30 hari**. Paket berbayar: Professional $0.14/vCPU/jam, Enterprise $0.20/vCPU/jam.
-> Artinya jalur gratis bisa menuntut akun cloud sendiri + compute berbayar. **Jangan daftar Zetaris
-> standalone sebelum T0.1** — platform lomba menyebut *"sponsor credits"*, dan jalur akses peserta
-> kemungkinan baru diumumkan setelah registrasi.
+> Artinya jalur publik menuntut akun cloud sendiri + compute berbayar. **Jangan daftar Zetaris
+> standalone** — jalur peserta berbeda, dan FAQ §5 sudah menyebutkannya (lihat di bawah).
 
 **Jalur akses yang benar — dari Welcome Guide HackOS (2026-10-20).** Bukan lewat situs Zetaris, dan
 bukan lewat Discord. Urutannya:
@@ -48,6 +47,38 @@ bukan lewat Discord. Urutannya:
 5. **Mentor office hours** — termasuk mentor dari pihak sponsor; jangan tanya hal yang bisa dijawab
    dokumentasi.
 
+**JAWABAN PASTI — FAQ §5 (2026-10-20).** Pertanyaan *"How do I get access to the sponsor
+technologies?"* dijawab resmi:
+
+> *"Access instructions and setup steps are in **each sponsor's folder in Resources on HackOS**.
+> Resources are being updated as sponsors add material. For help with a sponsor's technology, use that
+> sponsor's Help channel on HackOS (Help Zetaris, Help Meterless, Help Cursor, Help NVIDIA). For general
+> technical questions, use the #help desk channel."*
+
+**Ini mengoreksi asumsi lama di bagian atas dokumen ini.** Rencana awal *"daftar trial 30 hari di halaman
+trial Zetaris Cloud"* **bukan** jalur peserta. Itu juga menjelaskan mengapa `zetaris.com` tidak
+menampilkan trial 30 hari: jalur peserta memang bukan jalur publik.
+
+**Langkah konkret T0.2, urut:**
+
+1. Buka **HackOS → Resources → folder Zetaris**. Baca access instructions di sana.
+2. Kalau tidak ada atau tidak jelas → **channel `Help Zetaris`**, tanyakan akses peserta.
+3. Kalau masih buntu → **mentor office hours** (mentor di-briefing soal *"where to route deeper
+   technical issues"*, Event Calendar §3).
+4. Tonton rekaman **Data Day (12 Okt)** — kemungkinan memuat demo setup.
+
+**Yang masih belum diketahui:** apakah folder itu menyediakan akses **tanpa akun cloud sendiri**. Status
+T0.2 tetap **`belum`** sampai ada bukti query nyata yang mengembalikan data.
+
+**Jalur eskalasi yang lebih tinggi — mentor.** Event Calendar §3 (Mentor Onboarding, 5 Okt) menyatakan
+mentor diberi tahu *"the sponsor technology including Zetaris, Meterless and Cursor requirements, and
+**where to route deeper technical issues**"*. Artinya mentor adalah jalur resmi untuk masalah sponsor
+yang tidak selesai di channel Help. Pakai setelah `Help Zetaris` tidak menjawab.
+
+**Sumber resmi yang wajib dipantau:** Event Calendar §9 menetapkan **Announcements di HackOS** sebagai
+sumber resmi untuk tanggal workshop, jadwal mentor office hours, dan ketersediaan submission form.
+Periksa setiap hari selama build window.
+
 > **Koreksi penting atas saran sebelumnya:** Discord **bukan** kanal support. Welcome Guide §7
 > menyatakan *"Discord is the GenAI Works community space for community chat and activities after the
 > hackathon"*, dan §13 *"All support during the hackathon happens on HackOS."* Jadi bertanya ke CTO
@@ -57,7 +88,7 @@ bukan lewat Discord. Urutannya:
 
 | Kapan | Apa | Untuk apa |
 |---|---|---|
-| **21 Okt 12:00–13:30 UTC** | Participant onboarding (HackOS) | Segmen "Sponsor technology" + Q&A — kesempatan terbaik menanyakan akses Zetaris langsung |
+| **21 Okt 12:00–13:30 UTC** | Participant onboarding (HackOS) | Segmen "Sponsor technology" + Q&A — kesempatan terbaik menanyakan akses Zetaris langsung. **Rekaman akan tersedia di HackOS** jika tidak bisa hadir live |
 | TBC | Build Day (Cursor, GenAI Works, Meterless) | Workshop Meterless |
 | TBC | Power Day (NVIDIA, Meterless) | Workshop NVIDIA + Meterless |
 

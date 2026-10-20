@@ -201,6 +201,11 @@ angka target, aturan kalibrasi, dan bentuk baseline**. Golden set belum ditulis 
 **DITUTUP 2026-10-20 → ADR-015.** Dataset: merchant payments, 3 tabel / ~200 baris. Penilaian: setiap
 entri dinilai dua orang yang bukan penulisnya, selisih dicatat apa adanya.
 
+> **Direvisi 2026-10-20 — ADR-019.** Produk digeser dari "menjawab" ke "memutuskan" (ADR-018), sehingga
+> dataset menjadi **5 tabel / ~240 baris** (tambah `policies`, `decisions`) dan golden set menjadi
+> **berbasis keputusan** (bukan lookup/agregasi). Aturan penilaian, field hasil, kalibrasi, dan baseline
+> dari ADR-015 **tetap berlaku**. Yang menggantikan hanya §1 dan §2 ADR-015.
+
 **Kenapa asal angka target wajib dicatat di sini:** angka 90% dan 80% tidak berasal dari data apa pun.
 Kalau asalnya tidak ditulis, enam hari kemudian angka itu akan tampak seperti hasil pengukuran — dan
 tidak ada yang berani mengubahnya karena dikira punya dasar. Mencatatnya sekarang mencegah itu.
