@@ -97,34 +97,60 @@ adalah PWA berjalan di browser ponsel. Untuk "installable", perlu tunnel HTTPS. 
 konsekuensinya: ADR-016.
 
 
-## 3. Alur satu permintaan
+## 3. Alur satu permintaan — loop berbatas (ADR-017)
+
+Bentuk lama (9 langkah linear) sudah **tidak berlaku**. Bentuk yang berlaku:
 
 ```
 User (CLI / PWA / channel)
    │  kirim pesan lewat packages/protocol
    ▼
-apps/runtime (Node)
-   │  memanggil core.runTurn()
-   ▼
-packages/core
-   1. Scout Intent   → apa yang user mau, entitas apa yang disebut
-   2. Memory recall  → H-MEM: apa yang sudah kita tahu (packages/meterless)
-   3. Plan           → langkah apa yang dibutuhkan
-   4. Tool selection → connector mana yang relevan (packages/connectors)
-   5. Policy check   → boleh atau tidak, perlu approval atau tidak
-   6. Execute        → panggil tool (mis. Zetaris query)
-   7. Verify         → apakah hasil cukup untuk menjawab
-   8. Compose        → susun jawaban + jejak sumber
-   9. Write memory   → simpan fakta baru, audit trail
+apps/runtime (Node) → core.runTurn()
    │
-   ▼  stream event: token, tool call, bukti, selesai
+   ├─ Scout Intent + Memory recall          (sekali, di awal)
+   │
+   └─ EVIDENCE LOOP  (maks 3 iterasi)       ← ini yang menggantikan garis lurus
+        Plan → Execute → Evaluate
+                 ↑          │
+                 └──────────┘  verdict: retry?
+        berhenti bila: sufficient | needs_access | found_elsewhere
+                       | exhausted | budget_exhausted | no_evidence_needed
+   │
+   ├─ Compose     (bentuk jawaban mengikuti tingkat L0..L4)
+   └─ Write memory + Trace
+   │
+   ▼  stream event: token, tool call, bukti, iterasi, selesai
 Jawaban + bukti (evidence) + jejak langkah
 ```
 
-Client menampilkan stream event apa adanya. Client tidak menyusun jawaban.
+**Peran di dalam loop** — terpisah dan terlihat di trace, bukan proses agen terpisah:
 
-Tahap 8 adalah inti Track 03: jawaban harus bisa **menjelaskan dari mana ia berasal** — sumber data,
-memori yang dipakai, dan langkah yang diambil.
+| Peran | Tugas |
+|---|---|
+| **Planner** | Menyusun langkah untuk menutup celah bukti yang disebut Evaluator |
+| **Executor** | Menjalankan tool lewat policy layer, maksimum 5 panggilan per iterasi |
+| **Evaluator** | Menilai kecukupan bukti dan mengembalikan `Verdict` tertutup |
+
+**Tangga pengetahuan** — setiap giliran berakhir di tepat satu tingkat:
+
+| Tingkat | Keadaan | Bentuk jawaban | Sitasi |
+|---|---|---|---|
+| **L0** | Tidak menyentuh data | Jawab langsung; loop tidak jalan | Tidak ada |
+| **L1** | Data cukup | Jawab + sitasi sumber nyata | **Wajib** |
+| **L2** | Ada, butuh akses | Sebut di mana + apa yang dibutuhkan | Lokasi saja |
+| **L3** | Tidak di sini, ada petunjuk | Sarankan tempat lain bila dasarnya bisa dihitung | Tempat, bukan data |
+| **L4(a)** | Mentok | Nyatakan tidak punya datanya | Tidak ada |
+| **L4(b)** | Mentok, ada dasar analisis | Analisis **berlabel estimasi**, wajib memuat pernyataan data tidak tersedia | Tidak ada |
+
+Aturan keras yang ditegakkan **di tipe**, bukan di prompt: L4 tidak pernah punya field sitasi, dan
+`budget_exhausted` selalu menjadi L4(a) — tidak pernah L4(b).
+
+Klarifikasi mengakhiri giliran (`awaiting_clarification`); runtime headless dan runner eval dilarang
+bertanya. Detail lengkap, termasuk `Verdict`, anggaran, dan skema trace:
+`docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`.
+
+Tahap Compose adalah inti Track 03: jawaban harus bisa **menjelaskan dari mana ia berasal** — sumber
+data, memori yang dipakai, dan langkah yang diambil.
 
 ## 4. Batas modul
 

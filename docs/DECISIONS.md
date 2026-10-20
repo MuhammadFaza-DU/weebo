@@ -515,3 +515,53 @@ Jaringan harus sama. Tanpa internet, LAN tetap bekerja; installability tidak.
 - Klaim "installable di ponsel" hanya boleh ditulis di README dan submission **setelah** diuji lewat
   secure context. Sebelum itu, yang benar: "berjalan di browser ponsel".
 - Risiko Demo (15 poin) tercatat: kalau tunnel tidak siap, demo ponsel turun menjadi browser-only.
+
+---
+
+## ADR-017 — Loop penalaran berbatas dan tangga pengetahuan L0–L4
+
+**Tanggal:** 2026-10-20
+**Status:** Diterima — design: `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`
+
+**Konteks.** `docs/ARCHITECTURE.md` §3 mendefinisikan satu permintaan sebagai urutan linear 9 langkah.
+Welcome Guide HackOS §3 menyebut bentuk itu **desain lemah** secara eksplisit: *"This is a pipeline, not
+an agent system"*, *"There are no feedback loops"*, *"Nothing shows how the system reached its output"*.
+Yang diminta sebagai gantinya: loop `Planner ↔ Executor ↔ Evaluator`, retry, branching, dan trace yang
+bisa diperiksa. Penilaian yang terdampak: Technical (20), Innovation (15), Demo (15), dan kecocokan
+dengan Track 03.
+
+**Keputusan.**
+
+1. **Loop berbatas menggantikan alur linear.** `Plan → Execute → Evaluate` berulang, maksimum **3
+   iterasi** per pertanyaan. Satu iterasi boleh memuat maksimum **5 panggilan tool**.
+2. **Evaluator mengembalikan `Verdict` tertutup**, bukan teks bebas: `no_evidence_needed`,
+   `sufficient`, `needs_access`, `found_elsewhere`, `exhausted`, `budget_exhausted`, `retry`. Hanya
+   `retry` yang memutar loop.
+3. **Tangga pengetahuan L0–L4** menentukan bentuk jawaban: L0 (tidak menyentuh data), L1 (data cukup,
+   wajib sitasi), L2 (ada tapi butuh akses), L3 (tidak ada di sini, ada petunjuk tempat lain), L4
+   (mentok — abstain atau analisis berlabel).
+4. **`budget_exhausted` selalu memetakan ke L4(a)**, tidak pernah L4(b). Tekanan anggaran tidak boleh
+   memproduksi tebakan berlabel.
+5. **Sesi = satu percakapan**, ditegakkan di runtime. Anggaran sesi habis → berhenti jujur, bukan
+   menurunkan kualitas diam-diam.
+6. **Klarifikasi mengakhiri giliran** (`awaiting_clarification`). Runtime headless dan runner eval
+   **dilarang** bertanya; keduanya memetakan kerancuan ke L4(a).
+7. **Dilarang berasumsi. Rancu wajib bertanya.** Rancu = dua tafsir menghasilkan hasil berbeda dan
+   salah pilih berarti jawaban salah. Bukan-rancu = pilihan bisa dibalik tanpa biaya → pilih sendiri.
+8. **L4(b) lulus K2 tanpa mengubah rubrik**, dengan tiga syarat struktural: memuat pernyataan data
+   tidak tersedia, angka berlabel estimasi, dan field sitasi kosong. Ketiganya ditegakkan di tipe.
+9. **Hasil eval wajib memuat `level_breakdown`** (jumlah jawaban per tingkat), terpisah dari skor K2.
+10. **Single loop adalah default**; `ExecutionStrategy` disiapkan sebagai seam di P2, tetapi strategi
+    `"fanout"` masuk backlog dengan dependensi P2 selesai + single loop terbukti di eval.
+11. **P1 hanya membangun L0, L1, L4(a)** — tanpa loop. Alasannya: K2 diukur di P1, dan tanpa pemisahan
+    L1/L4(a) K2 tidak bisa diukur sama sekali.
+
+**Konsekuensi.**
+
+- `docs/ARCHITECTURE.md` §3 diganti; bentuk 9 langkah linear tidak lagi berlaku.
+- Biaya per pertanyaan menjadi terukur dan berbatas — prasyarat untuk mematuhi rate limit NIM (ADR-004).
+- Trace menjadi deliverable, bukan efek samping: K3 diperiksa otomatis dari field trace.
+- P2 bertambah satu deliverable (Evaluator + Verdict + trace terstruktur) di atas rencana semula.
+- Angka 3 iterasi dan 5 tool/iterasi **belum diukur**; keduanya dapat dikalibrasi tanpa mengubah bentuk
+  loop, dengan alasan tertulis.
+- Fan-out tidak dikerjakan sekarang; jika dikerjakan, ia menambah 1–2 hari dan berisiko 429 saat demo.

@@ -215,6 +215,7 @@ dinyatakan terbuka di `docs/SPONSORS.md`. Jangan mengubahnya menjadi klaim kepem
 | Desain | Canvas penuh + HALT sebelum kode UI |
 | Bahasa | Dokumen internal Indonesia, materi publik Inggris |
 | Cursor | Dipakai untuk **review**, bukan menulis kode. Log diisi agent setiap fase |
+| **Etos kerja agent** | **Maksimal, tapi tidak memaksa.** Cari sampai habis sebelum menyerah. Kalau sudah maksimal dan tetap tidak ketemu: katakan jujur, lalu ganti dengan analisis mendalam sendiri yang **diberi label sebagai analisis**, bukan data. Berlaku untuk kerja agent di repo ini maupun untuk perilaku produk (rancangan: `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`). Sejalan dengan `AGENTS.md` global §1.1c |
 
 ---
 

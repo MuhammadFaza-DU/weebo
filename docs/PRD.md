@@ -257,15 +257,16 @@ Dinyatakan tegas supaya tidak menjadi perdebatan di tengah fase.
 
 | Tool | Dipakai untuk | Sumber | Batasan |
 |---|---|---|---|
-| `zetaris.query` | Menjalankan query baca ke sumber data terhubung | Zetaris (MCP atau REST, diputuskan P0 T0.3) | **Read-only.** Tidak ada operasi tulis di build window |
-| `zetaris.schema` | Membaca daftar tabel dan kolom yang tersedia | Zetaris | Read-only |
+| `zetaris.query` | Menjalankan query baca ke sumber data terhubung | Zetaris (MCP atau REST, diputuskan P0 T0.3) | **Read-only.** Tidak ada operasi tulis di build window. Hasil membawa metadata sumber untuk sitasi (L1) |
+| `zetaris.schema` | Membaca daftar tabel dan kolom yang tersedia | Zetaris | Read-only. Juga dipakai mendeteksi L2 (tabel ada, akses kurang) |
 | `memory.store` | Menyimpan fakta dan konteks sesi | Meterless H-MEM via `MemoryPort` | Tidak boleh menyimpan secret |
 | `memory.recall` | Mengambil memori relevan untuk sebuah giliran | Meterless H-MEM via `MemoryPort` | Hasil selalu disertai id entri |
 | `model.chat` | Menghasilkan jawaban dan rencana tool | NVIDIA NIM | Kena rate limit; perlu fallback model kedua |
 | `model.embed` | Embedding untuk memori | NVIDIA `nemotron-3-embed-1b` | 2048 dimensi; kuota gratis terbatas |
 
-Semua tool melewati **policy layer** (`packages/core`). Tidak ada jalur yang melewatinya — ini
-diverifikasi oleh K4.
+Setiap giliran berakhir di tepat satu tingkat pengetahuan (L0–L4) sesuai ADR-017, dan tingkat itu
+tercatat di trace. Semua tool melewati **policy layer** (`packages/core`). Tidak ada jalur yang
+melewatinya — ini diverifikasi oleh K4.
 
 ### 3.2 Evaluation strategy
 
@@ -436,7 +437,7 @@ packages/zetaris   Client Zetaris (MCP/REST, typed)
 ```
 
 Detail alur data dan batas modul: `docs/ARCHITECTURE.md`. Alasan pilihan: `docs/DECISIONS.md`
-(ADR-001 … ADR-016). PRD tidak mengulang keduanya.
+(ADR-001 … ADR-017). PRD tidak mengulang keduanya.
 
 ### 4.2 Integration points
 
@@ -519,7 +520,7 @@ sebelum terbukti.
 ## 6. Rujukan
 
 - Kewajiban lomba: `docs/RULES.md` §5.1 (Zetaris, Meterless, Cursor), §6.1–§6.4 (deliverable).
-- Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-016.
+- Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-017.
 - Arsitektur: `docs/ARCHITECTURE.md`.
 - Urutan pengerjaan: `docs/PHASES.md` dan file fase di `docs/phases/`.
 - Batasan tim dan bobot penilaian: `docs/CONTEXT.md`.

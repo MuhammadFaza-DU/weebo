@@ -13,8 +13,8 @@ selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fa
 | Fase | Deliverable | Syarat lulus | Bergantung pada | Story PRD |
 |---|---|---|---|---|
 | **P0 Preflight** | Semua akses terverifikasi + asumsi arsitektur terjawab + protokol evaluasi ditetapkan | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab | — | — (pendukung) |
-| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** + dataset demo, golden set, dan runner eval | Bisa didemokan 30 detik di terminal; smoke eval 5 pertanyaan dijalankan | P0 | US-01, US-02, US-09, US-14 |
-| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai** | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung | P1 | US-03, US-04, US-05, US-10 |
+| P1 Walking Skeleton | Satu alur tipis end-to-end **lewat CLI** + dataset demo, golden set, dan runner eval; **pemisahan L1 vs L4(a)** agar K2 terukur | Bisa didemokan 30 detik di terminal; smoke eval 5 pertanyaan dijalankan | P0 | US-01, US-02, US-09, US-14 |
+| P2 Agent Core | Loop, tool registry, policy, audit, protokol runtime–client **selesai**; **loop penalaran berbatas + tangga L0–L4 + trace terstruktur** (ADR-017) | Tool call tercatat dan bisa ditolak; CLI lewat protokol, bukan core langsung; **Evaluator mengembalikan Verdict tertutup dan trace menampilkan iterasi** | P1 | US-03, US-04, US-05, US-10 |
 | P3 Memory & Reasoning | H-MEM (Store, Mining, Retrieval, TrustLedger), embedding nyata, jejak "kenapa" | Mengingat lintas sesi + menjelaskan sumber; **eval 30 penuh pertama + baseline; kalibrasi target KPI** | P1 | US-06, US-07, US-08, US-09 |
 | P4 Design System | Token + komponen di canvas | HALT + approval eksplisit | — (bisa paralel) | — (pendukung) |
 | P5 Surfaces | **PWA** sebagai client runtime, responsif | Jalan di layar HP dan desktop; **eval 30 penuh lewat PWA (paritas dengan CLI)** | P4, P2, P3 | US-11, US-12 |

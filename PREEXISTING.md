@@ -46,6 +46,7 @@ tercantum.
 | 14 | `scripts/check-docs.mjs`, `scripts/check-docs.selftest.mjs` | `[lihat git log]` | 2026-10-18 | Tooling pemeriksa konsistensi dokumen — **bukan kode produk**, tidak masuk `apps/` atau `packages/` |
 | 15 | `docs/DECISIONS.md` (ADR-015, ADR-016), `docs/ARCHITECTURE.md` §2.2, `docs/CONTEXT.md` §10, `CHECKPOINT.md` | `[lihat git log]` | 2026-10-20 | Keputusan P0: protokol evaluasi dan transport perangkat. Dokumen, bukan kode produk |
 | 16 | `vendor/hmem/` (reference + conformance + LICENSE + H-MEM-SPEC.md) | `[lihat git log]` | 2026-10-20 | **Pihak ketiga Apache-2.0**, bukan karya tim — lihat tabel di atas |
+| 17 | `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`, `docs/DECISIONS.md` (ADR-017) | `[lihat git log]` | 2026-10-20 | Design dokumen loop penalaran + keputusan yang mengikatnya. Dokumen, bukan kode produk |
 
 ---
 

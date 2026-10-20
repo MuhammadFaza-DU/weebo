@@ -35,6 +35,34 @@ Rencana: **trial 30 hari, tanpa kartu kredit**, full platform.
 > standalone sebelum T0.1** — platform lomba menyebut *"sponsor credits"*, dan jalur akses peserta
 > kemungkinan baru diumumkan setelah registrasi.
 
+**Jalur akses yang benar — dari Welcome Guide HackOS (2026-10-20).** Bukan lewat situs Zetaris, dan
+bukan lewat Discord. Urutannya:
+
+1. **HackOS → Resources → folder sponsor Zetaris.** Setiap sponsor punya folder sendiri berisi
+   dokumentasi dan resources; isinya diperbarui saat sponsor menambah material.
+2. **Channel `Help Zetaris` di HackOS** — untuk pertanyaan setup dan error. Ada juga `Help Meterless`,
+   `Help Cursor`, `Help NVIDIA`.
+3. **Rekaman workshop `Data Day` (12 Oktober 2026)** — topiknya *"Zetaris: serving internal data"*,
+   rekaman sudah tersedia di HackOS. Ini kemungkinan besar menjelaskan cara akses untuk peserta.
+4. **`#help desk`** — pertanyaan teknis umum, dijawab tim teknis.
+5. **Mentor office hours** — termasuk mentor dari pihak sponsor; jangan tanya hal yang bisa dijawab
+   dokumentasi.
+
+> **Koreksi penting atas saran sebelumnya:** Discord **bukan** kanal support. Welcome Guide §7
+> menyatakan *"Discord is the GenAI Works community space for community chat and activities after the
+> hackathon"*, dan §13 *"All support during the hackathon happens on HackOS."* Jadi bertanya ke CTO
+> Zetaris di Discord bukan jalur yang tepat — pakai `Help Zetaris` di HackOS.
+
+**Jadwal yang harus dipakai:**
+
+| Kapan | Apa | Untuk apa |
+|---|---|---|
+| **21 Okt 12:00–13:30 UTC** | Participant onboarding (HackOS) | Segmen "Sponsor technology" + Q&A — kesempatan terbaik menanyakan akses Zetaris langsung |
+| TBC | Build Day (Cursor, GenAI Works, Meterless) | Workshop Meterless |
+| TBC | Power Day (NVIDIA, Meterless) | Workshop NVIDIA + Meterless |
+
+Ikuti lewat course GenAI Academy: `https://academy.genai.works/courses/open-agent-hackathon-2026/details`
+
 - [ ] Daftar di halaman trial Zetaris Cloud
 - [ ] Verifikasi email
 - [ ] Masuk ke console

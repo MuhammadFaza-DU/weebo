@@ -42,7 +42,7 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
-- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-016), `CONTEXT.md`, `SPONSORS.md`,
+- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-017), `CONTEXT.md`, `SPONSORS.md`,
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
   lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`, **`RULES.md`**
   (transkripsi terverifikasi §01–§10 aturan lomba), **`PRD.md`** (problem, user primer/adopter,
@@ -140,6 +140,10 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
   dan **tidak menampilkan trial 30 hari** seperti yang diasumsikan `docs/SETUP-SPONSORS.md` §2. Jalur
   gratis bisa berarti akun cloud sendiri + compute berbayar. **Belum terverifikasi** — periksa
   instruksi peserta di platform lomba lebih dulu (T0.1).
+  **Jalur akses yang benar sudah ditemukan (Welcome Guide HackOS, 2026-10-20):** HackOS →
+  Resources → folder sponsor **Zetaris**, lalu channel **`Help Zetaris`**; plus rekaman workshop
+  **Data Day (12 Okt) "Zetaris: serving internal data"**. Discord **bukan** kanal support — semua
+  support di HackOS. Detail: `docs/SETUP-SPONSORS.md` §2.
 - Apakah Zetaris bisa dipanggil dari browser — belum diuji. → T0.3
 - Akses NVIDIA NIM + rate limit sebenarnya — belum didaftarkan/diukur. → T0.4
 - Cursor: plan Free terverifikasi ada, tapi cukup atau tidak untuk 6 hari **belum diuji**. → T0.5
@@ -201,12 +205,30 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 
 ## Next action
 
+0. **HADIRI participant onboarding 21 Okt 2026, 12:00–13:30 UTC (besok).** Segmen "Sponsor technology"
+   dan Q&A adalah kesempatan terbaik menanyakan akses Zetaris sebelum build window dibuka. Datang
+   dengan daftar pertanyaan tertulis. Sumber jadwal: Welcome Guide HackOS (`.cache/platform-notes/`).
 1. **Jalankan P0** — mulai dari T0.1 (bentuk tim di platform) karena itu blocker paling keras.
 2. Selesaikan T0.2–T0.6 (akses sponsor + uji asumsi), catat bukti di `docs/SETUP-SPONSORS.md` §7.
 3. Selesaikan T0.8 (protokol evaluasi + bentuk dataset demo) — tanpa ini, K1–K5 di `docs/PRD.md`
    §1.3 tidak bisa diukur, dan T1.8 tidak bisa dimulai.
 4. Pilih pembagian lapisan di awal P1, catat di bagian "Pembagian lapisan" di atas.
 5. Setelah P0 lulus, mulai P1 (`docs/phases/P1-walking-skeleton.md`).
+
+## Konflik sumber yang belum diselesaikan
+
+Dua sumber resmi menyatakan angka berbeda. Dicatat, **tidak** diperbaiki sendiri, karena perbedaan
+klaim bisa berarti sumbernya diperbarui — bukan salah tulis.
+
+| Item | `docs/RULES.md` / halaman event | Welcome Guide (HackOS) | Dampak bagi kita |
+|---|---|---|---|
+| Registrasi tutup | 22 Okt **23:59** UTC | 22 Okt **23:45** UTC | Nol — kita daftar jauh lebih awal |
+| Judging opens | 27 Okt 00:00 UTC (halaman event) | **28 Okt**, setelah submission tutup | Nol |
+| Hadiah tunai | **$13.000** (+ $7.000 in-kind) | **$15.000** (+ $5.000 in-kind) | Nol — tidak memengaruhi kerja |
+
+Untuk hadiah, `docs/RULES.md` §8.1–§8.3 **konsisten secara internal** (rincian per-track di §8.2
+berjumlah $13.000; NVIDIA $4.699 + Cursor $2.301 = $7.000). Welcome Guide tidak memuat rincian
+per-track, jadi angkanya tidak bisa direkonsiliasi dari dalam dokumen itu. Tidak ada tindakan.
 
 ## Log checkpoint
 
@@ -216,3 +238,4 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 | 2026-10-19 | Kolaborator `slamsmart` + `Manzera-Azb` terverifikasi **sudah menerima undangan** (izin write); tidak ada undangan pending. Bukan lagi blocker. |
 | 2026-10-20 | **P0 dimulai.** T0.7 dan T0.8 ditutup sebagai keputusan: ADR-016 (transport LAN bind + pairing token) dan ADR-015 (protokol evaluasi, dataset merchant payments, penilaian K1/K2 oleh 2 non-penulis per entri). Ditemukan: halaman `zetaris.com` tidak menampilkan trial 30 hari, hanya Hobby BYOC — T0.2 menunggu T0.1. |
 | 2026-10-20 | **T0.6 ditutup — lulus.** `vendor/hmem` (reference + conformance + LICENSE + spec) di-vendor dari commit `1742dec`. `npm test` 10/10, conformance **13/13 checks passed** exit 0, ukuran engine 43.725 byte. Tercatat di `PREEXISTING.md` pada commit yang sama. |
+| 2026-10-20 | **Arsitektur dirombak: ADR-017.** Welcome Guide HackOS §3 menyebut alur linear kita sebagai *"a pipeline, not an agent system"*. Design disetujui user: loop berbatas 3 iterasi (maks 5 tool/iterasi), `Verdict` tertutup, tangga pengetahuan L0–L4, klarifikasi mengakhiri giliran, single loop default dengan fan-out di backlog. Design: `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`. `docs/ARCHITECTURE.md` §3, `docs/PRD.md` §3.1, `docs/PHASES.md` P1/P2 disinkronkan. |
