@@ -46,9 +46,11 @@ Tanpa kesembilannya, agent berisiko mengusulkan ulang hal yang sudah diputuskan 
 batasan yang sudah dihitung.
 
 **Bahasa dokumen.** Dokumen internal (`AGENTS.md`, `CHECKPOINT.md`, `docs/*` dalam Bahasa Indonesia)
-adalah dokumen kerja. Materi submission **wajib Bahasa Inggris**: README, video, slide deck, dan
-penjelasan integrasi sponsor. Saat menyusun materi submission, terjemahkan — jangan menyalin dokumen
-internal apa adanya.
+adalah dokumen kerja. Materi submission ditulis dalam **Bahasa Inggris**: README, video, slide deck, dan
+penjelasan integrasi sponsor. Ini **keputusan tim, bukan syarat lomba** — `docs/RULES.md` tidak memuat
+kewajiban bahasa sama sekali. Alasannya praktis: juri dan sponsor (GenAI.Works, Zetaris, SpaceX AI)
+berbahasa Inggris, sehingga materi berbahasa Indonesia lebih sulit dinilai. Saat menyusun materi
+submission, terjemahkan — jangan menyalin dokumen internal apa adanya.
 
 ## 2. Konteks lomba (mengikat)
 

@@ -45,6 +45,7 @@ tercantum.
 | 13 | `docs/PRD.md` | `[lihat git log]` | 2026-10-18 | Definisi produk: problem, user, 16 user story, non-goals |
 | 14 | `scripts/check-docs.mjs`, `scripts/check-docs.selftest.mjs` | `[lihat git log]` | 2026-10-18 | Tooling pemeriksa konsistensi dokumen — **bukan kode produk**, tidak masuk `apps/` atau `packages/` |
 | 15 | `docs/DECISIONS.md` (ADR-015, ADR-016), `docs/ARCHITECTURE.md` §2.2, `docs/CONTEXT.md` §10, `CHECKPOINT.md` | `[lihat git log]` | 2026-10-20 | Keputusan P0: protokol evaluasi dan transport perangkat. Dokumen, bukan kode produk |
+| 16 | `vendor/hmem/` (reference + conformance + LICENSE + H-MEM-SPEC.md) | `[lihat git log]` | 2026-10-20 | **Pihak ketiga Apache-2.0**, bukan karya tim — lihat tabel di atas |
 
 ---
 
@@ -54,11 +55,22 @@ tercantum.
 
 | Komponen | Lisensi | Kapan | Status |
 |---|---|---|---|
-| Meterless H-MEM reference (`vendor/hmem`) | Apache-2.0 | Direncanakan di P0 (T0.6), **sebelum** window | **belum di-vendor** |
+| Meterless H-MEM reference (`vendor/hmem/reference`) | Apache-2.0 | **2026-10-20**, commit `1742dec` | **Sudah di-vendor** — 43.725 byte, 10 file |
+| Meterless H-MEM conformance suite (`vendor/hmem/conformance`) | Apache-2.0 | **2026-10-20**, commit `1742dec` | **Sudah di-vendor** — 13/13 checks passed |
+| Meterless H-MEM spec (`vendor/hmem/H-MEM-SPEC.md`) | Apache-2.0 | **2026-10-20**, commit `1742dec` | **Sudah di-vendor** — salinan `engines/hmem/AGENTS.md` |
 
-Jika `vendor/hmem` di-vendor sebelum 22 Okt, ia **wajib** masuk daftar ini. Jika di-vendor setelah
-window dibuka, ia tetap bukan karya tim dan harus disebut di submission sebagai dependensi
-pihak ketiga.
+**Detail vendoring (2026-10-20, P0 T0.6).** Sumber `github.com/Meterless/Meterless`, commit
+`1742dec56a66e58eef9dda2d2b865823758ca8cd`, branch `main`, clone `--depth 1`. `LICENSE` Apache-2.0
+disalin apa adanya ke `vendor/hmem/LICENSE`. Tidak ada satu byte pun kode Meterless yang diubah.
+Bukti uji ada di `docs/SPONSORS.md` §2.
+
+**Ini bukan karya tim.** Engine H-MEM adalah dependensi pihak ketiga. Yang akan tim tulis sendiri
+adalah adapter embedding di `packages/meterless/src`, integrasi ke agent loop, dan seluruh harness
+di sekitarnya (ADR-012). Kalimat deklarasi untuk form submission di bawah sudah menyatakannya.
+
+**Catatan eligibilitas.** `vendor/hmem` masuk repo **sebelum** build window dibuka, karena itu ia
+**wajib** dideklarasikan di sini — dan sudah. Jika nanti ada penambahan folder vendor lain, ia wajib
+dicatat pada commit yang sama.
 
 ---
 

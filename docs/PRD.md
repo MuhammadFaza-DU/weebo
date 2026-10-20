@@ -1,7 +1,7 @@
 # PRD — Weebo
 
 **Status:** v2, disusun sebelum build window dibuka. Dokumen kerja, berbahasa Indonesia.
-Materi submission tetap wajib Bahasa Inggris (`AGENTS.md` §1.1).
+Materi submission ditulis dalam Bahasa Inggris — keputusan tim, bukan syarat lomba (`AGENTS.md` §1.1).
 
 **Untuk apa dokumen ini.** Menjawab **apa yang dibangun dan untuk siapa**. Tidak menjawab
 bagaimana (itu `docs/PHASES.md` + file fase) dan tidak menjawab kenapa begitu (itu
@@ -21,9 +21,10 @@ itu, isinya sudah salah tempat.
 dua bagian yang diwajibkan skill `prd`. v2 menambahkan keduanya dan menata ulang mengikuti schema.
 
 **Konsekuensi ukuran, dicatat sadar.** Dokumen ini tumbuh dari **168 baris (v1) → 325 baris (v2) →
-385 baris (v2.1, snapshot 2026-10-18)**. Pertambahan v2.1 berasal dari bagian yang mencatat kejujuran
-angka: asal target, aturan kalibrasi, baseline pembanding, dan daftar artefak yang belum ada.
-Angka ini akan bergeser setiap dokumen disunting; yang penting adalah arahnya, bukan angka tepatnya.
+524 baris (snapshot 2026-10-20, termasuk baris kosong)**. Pertambahan v2.1 berasal dari bagian yang
+mencatat kejujuran angka: asal target, aturan kalibrasi, baseline pembanding, dan daftar artefak yang
+belum ada. Angka ini akan bergeser setiap dokumen disunting; yang penting adalah arahnya, bukan angka
+tepatnya.
 
 Keputusan yang diambil: **diterima apa adanya** — §3.2 tidak dipecah ke dokumen terpisah dan tidak
 dipangkas. Alasannya, bagian yang membuat dokumen memanjang justru bagian yang menentukan apakah

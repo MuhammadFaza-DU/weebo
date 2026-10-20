@@ -1,6 +1,7 @@
 # Checklist Submission
 
-Semua materi harus berbahasa **Inggris**. Dokumen ini boleh berbahasa Indonesia karena internal.
+Semua materi ditulis dalam **Bahasa Inggris** — keputusan tim, bukan syarat lomba (`AGENTS.md` §1.1).
+Dokumen ini boleh berbahasa Indonesia karena internal.
 
 Tenggat: **27 Okt 2026 23:45 UTC**. Jangan menunggu sampai jam terakhir.
 

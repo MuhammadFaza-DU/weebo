@@ -104,10 +104,13 @@ periode itu.
 | Item | Nilai |
 |---|---|
 | Ukuran engine referensi | ≈42,6 KB, 10 file, ~1.200–1.500 baris TS |
+| **Ukuran engine terukur ulang 2026-10-20** | **43.725 byte**, 10 file, commit `1742dec` — angka inilah yang mengikat |
 | Runtime dependencies | **nol** (hanya `tsx` + `vitest` sebagai devDeps) |
 | Embedder bawaan | FNV-1a hash → vektor 64 dimensi, **tanpa makna semantik** |
 | Storage bawaan | file JSON |
 | Conformance suite | `conformance/runner.ts` (9,7 KB) + `vectors/` |
+| **Hasil conformance 2026-10-20** | **13/13 checks passed**, exit 0; `npm test` 10/10 lulus (967 ms) |
+| **Commit Meterless yang di-vendor** | `1742dec56a66e58eef9dda2d2b865823758ca8cd` |
 | Status engine | *"not a production library"* — pernyataan penulisnya sendiri |
 
 ### Formula ranking H-MEM
@@ -223,7 +226,7 @@ Semua asumsi di bawah **wajib diuji di P0**, bukan ditebak. Lihat `docs/phases/P
 |---|---|---|
 | Apakah Zetaris bisa dipanggil dari browser, atau wajib lewat server | P0 · T0.3 | belum diuji |
 | **Bagaimana ponsel/tablet mencapai runtime di `localhost`** | **P0 · T0.7** | **terjawab 2026-10-20 — ADR-016**: LAN bind + pairing token. Installability butuh secure context (tunnel) |
-| Apakah conformance suite Meterless bisa jalan di lingkungan kita | P0 · T0.6 | belum diuji |
+| Apakah conformance suite Meterless bisa jalan di lingkungan kita | P0 · T0.6 | **terverifikasi 2026-10-20** — 13/13 lulus, exit 0, Node 24 + tsx, tanpa API key |
 | Rate limit NVIDIA NIM yang sebenarnya (~40 RPM masih dari dokumentasi) | P0 · T0.4 | belum diukur |
 | Apakah plan Cursor Free cukup untuk 6 hari kerja tim | P0 · T0.5 | belum diuji |
 | Pembagian pemilik lapisan per orang | P1 awal, dicatat di `CHECKPOINT.md` | belum diputuskan |

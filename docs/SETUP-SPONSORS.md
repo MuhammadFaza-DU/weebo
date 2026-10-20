@@ -73,18 +73,23 @@ Rencana: endpoint gratis, kompatibel Chat Completions, tanpa credits.
 
 Rencana: engine open source, di-*vendor* lewat `npx degit`.
 
-- [ ] Clone atau baca `github.com/Meterless/Meterless`
-- [ ] Jalankan demo cold-vs-warm (`npx tsx examples/memory-compounding-research/index.ts`)
-- [ ] Catat: demo berjalan / gagal (jika gagal, catat error)
-- [ ] Vendor `engines/hmem/reference` **dan** `engines/hmem/conformance` (dua folder bersaudara)
-- [ ] `npm install && npm test` di dalam `vendor/hmem/reference`
-- [ ] Jalankan conformance dari `vendor/hmem/conformance`:
+- [x] Clone atau baca `github.com/Meterless/Meterless`
+- [x] Jalankan demo cold-vs-warm (`npx tsx examples/memory-compounding-research/index.ts`)
+- [x] Catat: demo berjalan / gagal (jika gagal, catat error)
+- [x] Vendor `engines/hmem/reference` **dan** `engines/hmem/conformance` (dua folder bersaudara)
+- [x] `npm install && npm test` di dalam `vendor/hmem/reference`
+- [x] Jalankan conformance dari `vendor/hmem/conformance`:
       `HMEM_IMPL=<abs>/vendor/hmem/reference/src/index.ts npx tsx runner.ts`
-- [ ] Catat scorecard: lulus / gagal (lampirkan output)
-- [ ] Catat ukuran engine: ____ file, ____ KB
-- [ ] Perbarui `PREEXISTING.md` pada commit yang sama (vendor adalah komponen pihak ketiga)
+- [x] Catat scorecard: lulus / gagal (lampirkan output)
+- [x] Catat ukuran engine: **10** file, **43.725 byte**
+- [x] Perbarui `PREEXISTING.md` pada commit yang sama (vendor adalah komponen pihak ketiga)
 
-**Yang harus dibuktikan:** demo memory jalan lokal tanpa API key, dan conformance suite hijau.
+**Hasil 2026-10-20:** commit `1742dec`, `npm test` **10/10 lulus**, conformance **13/13 checks passed**
+(exit 0). Bukti: `docs/SPONSORS.md` §2.
+
+**Satu item masih terbuka:** demo cold-vs-warm belum dijalankan. Ia tidak menghalangi P1 (P1 hanya
+membutuhkan engine ter-vendor + test hijau), tetapi **wajib** dicoba sebelum P3 karena demo itu yang
+membuktikan narasi "memory compounding" yang akan tampil di video.**Yang harus dibuktikan:** demo memory jalan lokal tanpa API key, dan conformance suite hijau.
 
 ---
 
@@ -139,7 +144,7 @@ Isi setelah semua dicek:
 | NVIDIA NIM chat | | | |
 | NVIDIA NIM embedding | | | |
 | NVIDIA NIM rate limit | | | hasil pengukuran sendiri |
-| Meterless conformance (T0.6) | | | scorecard |
+| Meterless conformance (T0.6) | terverifikasi | `docs/SPONSORS.md` §2 | 13/13 checks passed, exit 0, commit `1742dec` |
 | Cursor | | | |
 | Model lokal | | | |
 

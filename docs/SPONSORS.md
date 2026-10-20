@@ -45,13 +45,104 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 | Lokasi kode | `packages/meterless/` (adapter), `vendor/` (engine, tidak diedit) |
 | Engine yang dipakai | H-MEM (memori) — Store, Mining, Retrieval, TrustLedger untuk demo |
 | Cara pakai | Vendor engine resmi (Apache-2.0) + adapter embedding sendiri |
-| Status | **Belum diimplementasikan** |
+| Status | **Ter-vendor dan terverifikasi 2026-10-20 (P0 T0.6)**; adapter embedding menyusul di P3 |
+
+**Hasil verifikasi T0.6 — 2026-10-20.** Sumber: `github.com/Meterless/Meterless`, commit
+`1742dec56a66e58eef9dda2d2b865823758ca8cd` (clone `--depth 1`, branch `main`).
+
+| Item | Hasil terukur |
+|---|---|
+| Lokasi vendored | `vendor/hmem/reference/` + `vendor/hmem/conformance/` + `vendor/hmem/LICENSE` |
+| Ukuran `reference/src` (10 file) | **43.725 byte** |
+| `npm install` di `vendor/hmem/reference` | 47 paket, 5 detik |
+| `npm test` (vitest) | **10/10 test lulus**, 967 ms |
+| Conformance suite | **13/13 checks passed**, exit code 0 |
+| Runtime dependencies | **nol** — hanya `tsx` + `vitest` sebagai devDependencies |
+| Jalan tanpa Node penuh | Ya — Node 24 + `tsx`, tanpa layanan eksternal, tanpa API key |
+
+Transkrip conformance apa adanya:
+
+```text
+H-MEM conformance: implementation = .../vendor/hmem/reference/src/index.ts
+
+  record-validation
+    PASS rv-001 a record with no source is rejected by construction
+    PASS rv-002 a record with a source is accepted
+  feedback-deltas
+    PASS fd-001 helpful adds exactly +0.05 confidence and +1 accessCount
+    PASS fd-002 not_helpful subtracts exactly 0.03
+    PASS fd-003 wrong subtracts exactly 0.20 and adds the review tag
+    PASS fd-004 confidence clamps at 0 (wrong at 0.1)
+    PASS fd-005 confidence clamps at 1 (helpful at 0.98)
+  ranking-order
+    PASS ro-001 superseded penalty dominates: a superseded record ranks below a fresh one
+             with identical content relevance
+    PASS ro-002 confidence multiplies the whole score: identical records rank by confidence
+  sleep-guardrails
+    PASS sg-001 old low-access plain record archives; dream-derived record with identical
+             age does not
+  conflict-gate
+    PASS cg-001 auto-resolve marks the loser supersededBy and deletes nothing
+  ledger-audit
+    PASS la-001 create then feedback reconstructs: actions in order, previous and new
+             confidence present
+  dream-boundary
+    PASS db-001 dream proposals never materialize before approval; approval creates a
+             long_term record with lineage
+
+  13/13 checks passed
+```
+
+**Koreksi terhadap ADR-012.** ADR-012 mencatat ukuran engine **≈42,6 KB**; hasil ukur hari ini
+**43.725 byte**. Selisih ini karena ADR-012 mengukur tanpa SHA yang dipin (lihat catatan
+reproduksibilitas di ADR itu). Angka yang mengikat sekarang adalah 43.725 byte pada commit
+`1742dec`. Konfirmasi lain dari ADR-012 tetap benar: zero runtime dependencies, embedder mock
+FNV-1a 64 dimensi, storage JSON.
+
+**Catatan penting yang ditemukan saat vendoring.** `AGENTS.md` di dalam repo Meterless menyatakan
+*"The engines are AGENTS.md-driven specs, not runtime libraries."* Artinya `reference/` memang
+dimaksudkan sebagai implementasi rujukan dari spesifikasi, bukan pustaka produksi — persis yang
+sudah diasumsikan ADR-012. Tidak ada perubahan rencana.
+
+**Yang belum diverifikasi:** adapter embedding kita (`packages/meterless/src`) belum ada, jadi
+conformance **belum** dijalankan terhadap kode kita. Run kedua dijadwalkan di P3 setelah adapter
+dipasang (`docs/phases/P0-preflight.md` T0.6).
+
+**Demo cold-vs-warm dijalankan 2026-10-20 — berhasil.** Bukan sekadar klaim: output nyata, tanpa API
+key, memakai mock LLM + engine asli.
+
+```text
+3. Same 12-step task, twice
+   cold run:  12 chunks, status=completed
+   warm run:  8 chunks, status=completed
+
+4. Comparison  (tokens estimated, chars/4)
+                             | cold      | warm
+   chunks                    | 12        | 8
+   prompt tokens (estimated) | 1840      | 1365
+   output tokens (estimated) | 1230      | 891
+
+   memory saved 814 estimated tokens and 4 chunks on this run.
+```
+
+Recall hybrid ranking juga terbukti bekerja: koreksi sesi-2 (`sqlite`, `mem-4`, skor 0.152) menang
+atas klaim sesi-1 yang sudah di-*supersede* (`IndexedDB`) — tepat seperti yang dijanjikan formula
+`−0.20·superseded`.
+
+**Batas demo ini, dinyatakan jujur:** demo membutuhkan **dua** engine — `hmem` **dan** `markovian`
+(untuk chain chunking + kompresi carryover). Yang kita vendor hanya `hmem`. Jadi angka 12→8 chunk
+**bukan** hasil engine kita; ia bukti bahwa konsepnya bekerja, bukan bukti produk kita sudah
+menghemat token. Di submission, angka ini hanya boleh dikutip dengan kalimat itu.
+
+Konsekuensi untuk P3: jika kita ingin efek compounding ini muncul di produk (dan di video), kita
+perlu memutuskan apakah `engines/markovian/reference` juga di-vendor. Belum diputuskan — dicatat
+sebagai pertanyaan terbuka di `CHECKPOINT.md`.
 
 **Rencana panggilan:**
 
-1. Engine di-*vendor* dari `engines/hmem/reference` lewat langkah setup yang tercatat di
-   `docs/SETUP-SPONSORS.md` §4 (perintah vendor akan ditambahkan ke README saat kode produk ada).
-   `LICENSE` dan atribusi Apache-2.0 dipertahankan; `vendor/` tidak diedit.
+1. Engine sudah di-*vendor* dari `engines/hmem/reference` (lihat tabel hasil di atas; langkah setup
+   tercatat di `docs/SETUP-SPONSORS.md` §4). `LICENSE` dan atribusi Apache-2.0 dipertahankan;
+   `vendor/` tidak diedit.
 2. `packages/meterless/src` menyediakan adapter yang mengimplementasikan `MemoryPort` dari
    `packages/core`.
 3. **Embedding diganti.** Engine referensi memakai mock FNV-1a 64 dimensi tanpa makna semantik;

@@ -126,18 +126,28 @@ Free **belum terverifikasi** — jangan dijadikan patokan.
 **Struktur penting:** conformance suite berada di `engines/hmem/conformance/` — **saudara** dari
 `reference/`, bukan di dalamnya. Jadi vendoring harus mengambil **dua** folder.
 
-- [ ] Vendor `engines/hmem/reference` ke `vendor/hmem/reference`, pertahankan `LICENSE` (Apache-2.0)
-- [ ] Vendor `engines/hmem/conformance` ke `vendor/hmem/conformance`
-- [ ] `npm install && npm test` di dalam `vendor/hmem/reference`
-- [ ] Jalankan dari `vendor/hmem/conformance`:
+- [x] Vendor `engines/hmem/reference` ke `vendor/hmem/reference`, pertahankan `LICENSE` (Apache-2.0)
+- [x] Vendor `engines/hmem/conformance` ke `vendor/hmem/conformance`
+- [x] `npm install && npm test` di dalam `vendor/hmem/reference`
+- [x] Jalankan dari `vendor/hmem/conformance`:
       `HMEM_IMPL=<abs>/vendor/hmem/reference/src/index.ts npx tsx runner.ts`
-- [ ] Catat scorecard: lulus / gagal, lampirkan output apa adanya
-- [ ] Catat apakah suite bisa jalan tanpa Node penuh (relevan untuk CI)
-- [ ] **Perbarui `PREEXISTING.md` pada commit yang sama** — `vendor/hmem` adalah komponen pihak ketiga
+- [x] Catat scorecard: lulus / gagal, lampirkan output apa adanya
+- [x] Catat apakah suite bisa jalan tanpa Node penuh (relevan untuk CI)
+- [x] **Perbarui `PREEXISTING.md` pada commit yang sama** — `vendor/hmem` adalah komponen pihak ketiga
       yang masuk sebelum window, jadi wajib dideklarasikan
 
 **Kriteria selesai:** scorecard conformance ditempel di `docs/SPONSORS.md`, dan `PREEXISTING.md`
 mencatat `vendor/hmem` pada commit yang sama.
+
+**DITUTUP 2026-10-20 — lulus.** Commit sumber `1742dec`, `npm test` 10/10 lulus, conformance
+**13/13 checks passed** exit 0. Ukuran engine terukur 43.725 byte. Demo cold-vs-warm juga berhasil
+(cold 12 chunk → warm 8 chunk). Bukti di `docs/SPONSORS.md` §2. Catatan: `vendor/hmem/H-MEM-SPEC.md`
+(salinan `engines/hmem/AGENTS.md`) ikut di-vendor sebagai rujukan spesifikasi yang mengikat
+implementasi adapter kita.
+
+**Temuan yang harus dibawa ke P3:** demo cold-vs-warm membutuhkan **dua** engine — `hmem` **dan**
+`markovian`. Yang di-vendor baru `hmem`. Keputusan apakah `markovian` ikut di-vendor belum diambil;
+dicatat sebagai pertanyaan terbuka di `CHECKPOINT.md`.
 
 **Kenapa di P0, bukan P3:** kalau engine tidak bisa jalan di lingkungan kita, seluruh rencana memori
 berubah — dan itu harus diketahui sebelum P1, bukan setelah.

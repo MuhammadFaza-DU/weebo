@@ -106,8 +106,10 @@ Dicatat di `docs/PRD.md`, ringkasnya:
   Dilarang menyebutnya benchmark di submission.
 - **Aturan angka di submission** (`docs/SUBMISSION.md`): hanya angka yang **sudah diukur** boleh muncul
   di README, slide, dan video. Target tidak boleh tampil sendirian tanpa pasangan hasilnya.
-- **Panjang PRD diterima apa adanya** — 168 → 325 (v2) → 383 baris (v2.1) karena schema `prd`
-  mewajibkan KPI terukur dan evaluation strategy, ditambah bagian kejujuran angka. Tidak dipecah ke
+- **Panjang PRD diterima apa adanya** — tumbuh dari 168 baris (v1) ke beberapa ratus baris (v2.1) karena
+  schema `prd` mewajibkan KPI terukur dan evaluation strategy, ditambah bagian kejujuran angka. Angka
+  baris tepatnya **tidak diulang di sini**; lihat header `docs/PRD.md` yang mencatatnya (AGENTS.md
+  §21.1: fakta turunan cukup ditunjuk sumbernya). Tidak dipecah ke
   dokumen terpisah, tidak dipangkas. Risikonya (lebih jarang dibaca ulang) dinyatakan di header PRD,
   dengan mitigasi: §3.2 hanya dibaca utuh di P0 T0.8, P1 T1.8, P3, dan P8.
 
@@ -141,7 +143,8 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 - Apakah Zetaris bisa dipanggil dari browser — belum diuji. → T0.3
 - Akses NVIDIA NIM + rate limit sebenarnya — belum didaftarkan/diukur. → T0.4
 - Cursor: plan Free terverifikasi ada, tapi cukup atau tidak untuk 6 hari **belum diuji**. → T0.5
-- Meterless: conformance suite belum dijalankan di lingkungan kita. → T0.6
+- Meterless: conformance suite **terverifikasi 2026-10-20** — 13/13 lulus di lingkungan kita (Node 24 +
+  tsx, tanpa API key). `vendor/hmem` sudah masuk repo dan tercatat di `PREEXISTING.md`. → T0.6 selesai
 - Registrasi lomba: akun platform ada, **tim belum dibentuk di platform**. → T0.1
 - Pembagian pemilik lapisan — belum diputuskan (dipilih di awal P1).
 - **Bagaimana ponsel/tablet mencapai runtime di `localhost`** — **terjawab 2026-10-20 (ADR-016)**:
@@ -156,12 +159,15 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 - **Belum ada satu pun artefak eval.** `eval/dataset/`, `eval/golden/` (30 entri), `npm run eval`,
   `eval/CHANGELOG.md`, `eval/results/`, dan mode baseline — **nol semua**. Dibuat di P1 T1.8, baseline
   di P3. Selama itu, §3.2 PRD adalah janji tanpa bukti.
-- **Ditemukan saat review makna 2026-10-18 — klaim "materi submission wajib Bahasa Inggris" tidak
-  punya dasar di `docs/RULES.md`.** Klaim itu muncul di `AGENTS.md` §1 (Bahasa dokumen), `AGENTS.md`
-  §2, dan `docs/PRD.md` baris 4 — tetapi transkripsi aturan **tidak memuat kewajiban bahasa sama
-  sekali**. §5.3 justru menyebut *"Any language, framework, model or cloud"* (soal stack, bukan
-  bahasa submission). **Belum diperbaiki — menunggu keputusan user.** Pilihan: (a) turunkan statusnya
-  dari "syarat wajib lomba" menjadi keputusan tim, atau (b) hapus kewajibannya.
+- **Apakah `engines/markovian` perlu ikut di-vendor** — belum diputuskan. Demo cold-vs-warm Meterless
+  (12 chunk → 8 chunk) bergantung pada `markovian` untuk chain chunking + kompresi carryover, dan kita
+  baru mem-vendor `hmem`. Tanpa `markovian`, efek compounding itu tidak bisa muncul di produk maupun
+  di video. Keputusan diambil sebelum P3; bukti demo ada di `docs/SPONSORS.md` §2.
+- **TERJAWAB 2026-10-20 — klaim "materi submission wajib Bahasa Inggris" tidak punya dasar di
+  `docs/RULES.md`.** Klaim itu muncul di `AGENTS.md` §1, `AGENTS.md` §2, `docs/PRD.md`, dan
+  `docs/SUBMISSION.md`, padahal transkripsi aturan tidak memuat kewajiban bahasa sama sekali. **Sudah
+  diperbaiki atas keputusan user:** statusnya diturunkan dari "syarat wajib lomba" menjadi **keputusan
+  tim**, dengan alasan praktis (juri dan sponsor berbahasa Inggris). Keempat dokumen sudah disinkronkan.
 
 ## Risiko dan blocker
 
@@ -209,3 +215,4 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 | 2026-10-18 | Repo dibuat, scaffolding dokumentasi masuk, keputusan produk dicatat |
 | 2026-10-19 | Kolaborator `slamsmart` + `Manzera-Azb` terverifikasi **sudah menerima undangan** (izin write); tidak ada undangan pending. Bukan lagi blocker. |
 | 2026-10-20 | **P0 dimulai.** T0.7 dan T0.8 ditutup sebagai keputusan: ADR-016 (transport LAN bind + pairing token) dan ADR-015 (protokol evaluasi, dataset merchant payments, penilaian K1/K2 oleh 2 non-penulis per entri). Ditemukan: halaman `zetaris.com` tidak menampilkan trial 30 hari, hanya Hobby BYOC — T0.2 menunggu T0.1. |
+| 2026-10-20 | **T0.6 ditutup — lulus.** `vendor/hmem` (reference + conformance + LICENSE + spec) di-vendor dari commit `1742dec`. `npm test` 10/10, conformance **13/13 checks passed** exit 0, ukuran engine 43.725 byte. Tercatat di `PREEXISTING.md` pada commit yang sama. |

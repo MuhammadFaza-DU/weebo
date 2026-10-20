@@ -33,7 +33,7 @@ P4 dan P7 boleh berjalan paralel oleh orang berbeda dan tidak memblokir spine.
 Fase adalah gate hasil. **Task adalah unit eksekusi.** Tanpa pemecahan yang baik, fase akan dikerjakan
 sebagai satu blok besar dan hasilnya tidak bisa diverifikasi.
 
-**Dari mana task berasal.** Task diturunkan dari **user story berprioritas di `docs/PRD.md` §3**, bukan
+**Dari mana task berasal.** Task diturunkan dari **user story berprioritas di `docs/PRD.md` §2.4**, bukan
 dikarang. Setiap task yang menyentuh produk harus menunjuk ke satu ID story (mis. `US-03`) atau
 menyatakan dirinya sebagai pekerjaan pendukung (mis. setup, CI). Task yang tidak bisa ditautkan ke
 story mana pun adalah tanda scope creep — atau tanda PRD perlu diperbarui lebih dulu.
