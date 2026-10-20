@@ -59,6 +59,11 @@ terkait selesai. Bagian yang belum terverifikasi ditandai eksplisit.
 | Conformance suite | **13/13 checks passed**, exit code 0 |
 | Runtime dependencies | **nol** — hanya `tsx` + `vitest` sebagai devDependencies |
 | Jalan tanpa Node penuh | Ya — Node 24 + `tsx`, tanpa layanan eksternal, tanpa API key |
+| Lulus dari **clone bersih** (berkas LF) | **Ya — 13/13 checks passed, exit 0** |
+
+**Catatan line ending.** `.gitattributes` menormalkan berkas ke LF saat masuk git, sehingga isi
+`vendor/` di repo berbeda dari sumber upstream dalam hal akhir baris (CRLF → LF). Ini perubahan
+whitespace, bukan logika. Terverifikasi aman: dijalankan ulang dari clone bersih, tetap 13/13 lulus.
 
 Transkrip conformance apa adanya:
 

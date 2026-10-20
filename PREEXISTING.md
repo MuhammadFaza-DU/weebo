@@ -61,7 +61,14 @@ tercantum.
 
 **Detail vendoring (2026-10-20, P0 T0.6).** Sumber `github.com/Meterless/Meterless`, commit
 `1742dec56a66e58eef9dda2d2b865823758ca8cd`, branch `main`, clone `--depth 1`. `LICENSE` Apache-2.0
-disalin apa adanya ke `vendor/hmem/LICENSE`. Tidak ada satu byte pun kode Meterless yang diubah.
+disalin apa adanya ke `vendor/hmem/LICENSE`.
+
+**Satu perubahan yang jujur harus disebut:** `.gitattributes` repo ini menormalkan akhir baris ke LF,
+sehingga berkas hasil vendor disimpan dengan LF sementara sumber aslinya CRLF. Itu perubahan
+whitespace, bukan perubahan kode. Terverifikasi tidak merusak apa pun: dari **clone bersih** (berkas
+LF), `npm install` + conformance suite tetap **13/13 checks passed**, exit 0. Tidak ada satu pun baris
+logika Meterless yang disunting.
+
 Bukti uji ada di `docs/SPONSORS.md` §2.
 
 **Ini bukan karya tim.** Engine H-MEM adalah dependensi pihak ketiga. Yang akan tim tulis sendiri
