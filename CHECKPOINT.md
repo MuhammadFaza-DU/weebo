@@ -3,7 +3,7 @@
 Sumber kebenaran status kerja. Wajib dibaca di awal setiap sesi dan diperbarui setiap ada perubahan
 bermakna.
 
-**Terakhir diperbarui:** 2026-10-19
+**Terakhir diperbarui:** 2026-10-20
 
 ---
 
@@ -11,7 +11,7 @@ bermakna.
 
 | Item | Nilai |
 |---|---|
-| Fase aktif | **P0 — Preflight** (belum dimulai) |
+| Fase aktif | **P0 — Preflight** (berjalan sejak 2026-10-20) |
 | Build window | 22–27 Okt 2026 UTC (belum dibuka) |
 | Track | Track 03 — Reasoning Architecture |
 | Kode produk | Belum ada (sesuai aturan eligibilitas) |
@@ -42,7 +42,7 @@ bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` 
 - Topics repo: `agent-harness`, `ai-agent`, `llm`, `mcp`, `open-source`, `pwa`, `typescript`.
 - Scaffolding dokumentasi: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CODEOWNERS`, `PREEXISTING.md`, `.gitattributes`, `.github/` (CI + template issue/PR).
-- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-014), `CONTEXT.md`, `SPONSORS.md`,
+- `docs/`: `ARCHITECTURE.md`, `DECISIONS.md` (ADR-001…ADR-016), `CONTEXT.md`, `SPONSORS.md`,
   `SETUP-SPONSORS.md`, `REFERENCES.md`, `PHASES.md` (termasuk panduan pecah task, 3 opsi pembagian
   lapisan, dan backlog berbasis dependensi), `SUBMISSION.md`, `CURSOR-LOG.md`, **`RULES.md`**
   (transkripsi terverifikasi §01–§10 aturan lomba), **`PRD.md`** (problem, user primer/adopter,
@@ -133,15 +133,20 @@ Lihat `docs/DECISIONS.md`. Ringkasnya:
 
 Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 
-- Akses Zetaris (trial 30 hari) — belum didaftarkan. → T0.2
+- Akses Zetaris — belum didaftarkan. → T0.2. **Ditemukan 2026-10-20:** halaman `zetaris.com`
+  menampilkan Hobby $0 free-forever dengan model BYOC (*"you pay your cloud provider for compute"*)
+  dan **tidak menampilkan trial 30 hari** seperti yang diasumsikan `docs/SETUP-SPONSORS.md` §2. Jalur
+  gratis bisa berarti akun cloud sendiri + compute berbayar. **Belum terverifikasi** — periksa
+  instruksi peserta di platform lomba lebih dulu (T0.1).
 - Apakah Zetaris bisa dipanggil dari browser — belum diuji. → T0.3
 - Akses NVIDIA NIM + rate limit sebenarnya — belum didaftarkan/diukur. → T0.4
 - Cursor: plan Free terverifikasi ada, tapi cukup atau tidak untuk 6 hari **belum diuji**. → T0.5
 - Meterless: conformance suite belum dijalankan di lingkungan kita. → T0.6
 - Registrasi lomba: akun platform ada, **tim belum dibentuk di platform**. → T0.1
 - Pembagian pemilik lapisan — belum diputuskan (dipilih di awal P1).
-- **Bagaimana ponsel/tablet mencapai runtime di `localhost`** — belum diputuskan. Memblokir demo PWA
-  di ponsel (P5). Dijawab di **P0 · T0.7**. Lihat `docs/ARCHITECTURE.md` §2.2.
+- **Bagaimana ponsel/tablet mencapai runtime di `localhost`** — **terjawab 2026-10-20 (ADR-016)**:
+  LAN bind + pairing token. Sisa risiko yang belum diuji: HTTP polos di LAN bukan secure context,
+  sehingga PWA tidak installable lewat LAN. Uji nyata menyusul di P5.
 - **Apakah Zetaris benar-benar menyediakan akses data ter-governance yang bisa didemokan** — belum
   diverifikasi. Jika tidak, klaim "governed" di PRD §2.1 dan README harus diturunkan menjadi "akses
   data tersebar" sebelum masuk submission. Lihat `docs/PRD.md` §5.3.
@@ -163,7 +168,7 @@ Semua item di bawah **dijawab di P0** (`docs/phases/P0-preflight.md`):
 | Risiko | Dampak | Mitigasi |
 |---|---|---|
 | Registrasi tutup 22 Okt 23:59 UTC | Tidak bisa submit | Bentuk tim di platform sebelum tanggal itu |
-| Trial Zetaris 30 hari | Akses bisa kedaluwarsa | Daftarkan mendekati build window, bukan jauh sebelumnya |
+| Zetaris hanya terjangkau lewat BYOC (compute dibayar di akun cloud sendiri) | Jalur gratis hilang; klaim "governed" melemah | Periksa credits peserta di platform lomba (T0.1); jika tidak ada, turunkan klaim ke "akses data tersebar" (`docs/PRD.md` §5.3) |
 | Sponsor access belum ada semua | P1 terblokir | Selesaikan `docs/SETUP-SPONSORS.md` sebelum 22 Okt |
 | Scope melebar (connector, gateway, landing) | Spine tidak selesai | Gateway = stretch; landing punya track paralel |
 
@@ -203,3 +208,4 @@ Daftar lengkap dengan syarat mulai: `docs/PHASES.md` §"Backlog lintas fase".
 |---|---|
 | 2026-10-18 | Repo dibuat, scaffolding dokumentasi masuk, keputusan produk dicatat |
 | 2026-10-19 | Kolaborator `slamsmart` + `Manzera-Azb` terverifikasi **sudah menerima undangan** (izin write); tidak ada undangan pending. Bukan lagi blocker. |
+| 2026-10-20 | **P0 dimulai.** T0.7 dan T0.8 ditutup sebagai keputusan: ADR-016 (transport LAN bind + pairing token) dan ADR-015 (protokol evaluasi, dataset merchant payments, penilaian K1/K2 oleh 2 non-penulis per entri). Ditemukan: halaman `zetaris.com` tidak menampilkan trial 30 hari, hanya Hobby BYOC — T0.2 menunggu T0.1. |

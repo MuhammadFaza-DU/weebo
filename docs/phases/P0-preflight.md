@@ -153,15 +153,16 @@ berubah — dan itu harus diketahui sebelum P1, bukan setelah.
 sendiri, bukan ke laptop. Tanpa keputusan ini, syarat lulus P5 ("jalan di layar HP") tidak bisa
 dipenuhi dan demo video kehilangan bagian penutupnya.
 
-- [ ] Baca `docs/ARCHITECTURE.md` §2.2 (empat opsi: LAN bind, tunnel, pairing+token, Electron-only)
-- [ ] Pilih satu opsi, tulis alasannya
-- [ ] Tulis keputusan sebagai ADR baru di `docs/DECISIONS.md`
-- [ ] Tetapkan model autentikasi (token/pairing) — runtime tanpa token berarti proses lokal mana pun
+- [x] Baca `docs/ARCHITECTURE.md` §2.2 (empat opsi: LAN bind, tunnel, pairing+token, Electron-only)
+- [x] Pilih satu opsi, tulis alasannya
+- [x] Tulis keputusan sebagai ADR baru di `docs/DECISIONS.md`
+- [x] Tetapkan model autentikasi (token/pairing) — runtime tanpa token berarti proses lokal mana pun
       bisa mengendalikan agent
-- [ ] Catat di `docs/CONTEXT.md` §10 sebagai terjawab
+- [x] Catat di `docs/CONTEXT.md` §10 sebagai terjawab
 
 **Kriteria selesai:** ADR tertulis, opsi terpilih, model auth disebut. Tidak perlu implementasi —
-hanya keputusan.
+hanya keputusan. **DITUTUP 2026-10-20 → ADR-016** (LAN bind + pairing token; installability butuh
+secure context).
 
 **Kenapa di P0:** keputusan ini memengaruhi desain `apps/runtime` (bind address, auth) dan PWA (cara
 menyimpan endpoint). Menemukannya di P5 berarti menulis ulang keduanya.
@@ -174,19 +175,21 @@ menyimpan endpoint). Menemukannya di P5 berarti menulis ulang keduanya.
 akan selamanya jadi klaim yang tidak bisa dibuktikan — dan itu melubangi K1, K2, K3, K4, K5 di
 `docs/PRD.md` §1.3.
 
-- [ ] Baca `docs/PRD.md` §3.2 (dataset, golden set, rubrik, runner, batas)
-- [ ] Tetapkan bentuk dataset demo: tabel apa saja, kolom apa, berapa baris. Target ~3 tabel, ~200 baris
-- [ ] Pastikan dataset **sintetis** dan tidak memuat data nyata milik siapa pun
-- [ ] Tetapkan siapa yang menulis jawaban harapan di golden set (penulis ≠ penilai akhir, jika bisa)
-- [ ] Tetapkan dua orang penilai K1/K2 untuk run final. Jika hanya satu yang tersedia, catat itu sebagai keterbatasan
-- [ ] Tetapkan bentuk file hasil eval (`eval/results/<tanggal>-<fase>.json`) dan field wajibnya, termasuk nama + versi model **dan penanda mode (baseline / penuh)**
-- [ ] **Catat asal angka target K1–K5 secara terbuka:** dipilih tanpa dasar empiris, berstatus `provisional`
-- [ ] **Tetapkan aturan kalibrasi** di ADR: ditinjau di keluar P3, boleh naik maupun turun, wajib lewat `eval/CHANGELOG.md` dengan angka lama/baru + alasan + tanggal + penyetuju, dan **K2 tidak boleh dikalibrasi turun**
-- [ ] Tetapkan bentuk run baseline (mode tanpa memori) dan cara penandaannya di file hasil
-- [ ] Catat keputusan di `docs/DECISIONS.md` sebagai ADR baru
+- [x] Baca `docs/PRD.md` §3.2 (dataset, golden set, rubrik, runner, batas)
+- [x] Tetapkan bentuk dataset demo: tabel apa saja, kolom apa, berapa baris. Target ~3 tabel, ~200 baris
+- [x] Pastikan dataset **sintetis** dan tidak memuat data nyata milik siapa pun
+- [x] Tetapkan siapa yang menulis jawaban harapan di golden set (penulis ≠ penilai akhir, jika bisa)
+- [x] Tetapkan dua orang penilai K1/K2 untuk run final. Jika hanya satu yang tersedia, catat itu sebagai keterbatasan
+- [x] Tetapkan bentuk file hasil eval (`eval/results/<tanggal>-<fase>.json`) dan field wajibnya, termasuk nama + versi model **dan penanda mode (baseline / penuh)**
+- [x] **Catat asal angka target K1–K5 secara terbuka:** dipilih tanpa dasar empiris, berstatus `provisional`
+- [x] **Tetapkan aturan kalibrasi** di ADR: ditinjau di keluar P3, boleh naik maupun turun, wajib lewat `eval/CHANGELOG.md` dengan angka lama/baru + alasan + tanggal + penyetuju, dan **K2 tidak boleh dikalibrasi turun**
+- [x] Tetapkan bentuk run baseline (mode tanpa memori) dan cara penandaannya di file hasil
+- [x] Catat keputusan di `docs/DECISIONS.md` sebagai ADR baru
 
 **Kriteria selesai:** ADR tertulis yang menyebut bentuk dataset, rubrik, penilai, field hasil, **asal
 angka target, aturan kalibrasi, dan bentuk baseline**. Golden set belum ditulis di sini — itu P1 (T1.8).
+**DITUTUP 2026-10-20 → ADR-015.** Dataset: merchant payments, 3 tabel / ~200 baris. Penilaian: setiap
+entri dinilai dua orang yang bukan penulisnya, selisih dicatat apa adanya.
 
 **Kenapa asal angka target wajib dicatat di sini:** angka 90% dan 80% tidak berasal dari data apa pun.
 Kalau asalnya tidak ditulis, enam hari kemudian angka itu akan tampak seperti hasil pengukuran — dan

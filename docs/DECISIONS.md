@@ -398,3 +398,120 @@ dan tidak ada anggota tim yang membangun di dalam Cursor. Lomba juga menawarkan 
 - Jika di masa depan tim benar-benar membangun dengan Cursor, ADR ini perlu diganti.
 
 ---
+
+## ADR-015 — Protokol evaluasi, dataset demo, dan penilaian K1/K2
+
+**Tanggal:** 2026-10-20
+**Status:** Diterima — menutup P0 T0.8
+
+**Konteks.** `docs/PRD.md` §3.2 menetapkan kerangka evaluasi (dataset, golden set, rubrik, runner,
+batas), tetapi masih menyisakan pilihan konkret yang harus diputuskan sebelum task T1.8 bisa
+dikerjakan: tabel dan kolom apa, siapa menulis jawaban harapan, siapa menilai K1/K2, field apa yang
+wajib ada di file hasil, dan bentuk run baseline. Tanpa keputusan ini, T1.8 akan dikerjakan sambil
+menebak — dan tebakan di bagian evaluasi berarti angka yang tidak bisa dipercaya.
+
+**Keputusan.**
+
+1. **Dataset demo** — sintetis, domain **merchant payments**, 3 tabel, total **~200 baris**, disimpan
+   di `eval/dataset/`. Skema:
+
+   | Tabel | Baris | Kolom |
+   |---|---|---|
+   | `merchants` | 40 | `merchant_key`, `trading_name`, `mcc`, `channel` (ECOM/POS/MOTO), `risk_tier`, `status`, `group_key`, `onboarded_date` |
+   | `transactions` | 120 | `txn_id`, `merchant_key`, `occurred_at`, `amount`, `currency`, `status` (settled/failed/refunded), `payment_method`, `channel` |
+   | `settlement_breaks` | 40 | `break_id`, `merchant_key`, `reporting_month`, `break_type` (missing/late/duplicate), `amount`, `resolved` |
+
+   Seluruh nilai fiktif. Tidak ada data nyata milik siapa pun di repo.
+
+2. **Golden set** — 30 entri, komposisi mengikuti `docs/PRD.md` §3.2 (5 lookup, 5 lintas tabel,
+   5 agregasi, 3 rentang waktu, 2 butuh memori, 10 tidak bisa dijawab), satu berkas per kategori di
+   `eval/golden/`.
+
+3. **Pembagian penulisan** — tiga anggota masing-masing menulis **10 entri** beserta jawaban harapan
+   dan sumber harapan. Penulis sebuah entri **tidak boleh** menilai entri itu.
+
+4. **Penilaian K1/K2** — setiap entri dinilai **dua orang yang bukan penulisnya**, independen, tanpa
+   melihat penilaian orang lain. Selisih pendapat **dicatat apa adanya**, tidak dirata-ratakan dan
+   tidak dipaksa menjadi sepakat. Konsekuensi: setiap orang membaca 20 dari 30 jawaban, dan klaim
+   "dinilai dua orang secara independen" di `docs/PRD.md` §3.2 tetap benar tanpa perlu diubah.
+
+5. **Field wajib file hasil** — `eval/results/<YYYY-MM-DD>-<fase>.json`:
+
+   ```text
+   run_id, tanggal_utc, fase, mode ("baseline" | "penuh"),
+   model { id, versi }, temperature (0), golden_set_version,
+   entries[] { id, kategori, butuh_memori, jawaban_agent, sumber_dikutip[],
+               verdict_k1, verdict_k2, penilai[] },
+   ringkasan { k1_pct, k2_violations, k3_pct, k4_pct, k5_pct },
+   catatan
+   ```
+
+   K3, K4, K5 dihitung otomatis oleh runner. K1 dan K2 diisi manusia.
+
+6. **Asal angka target** — K1 ≥90% dan K5 ≥80% dipilih **tanpa dasar empiris** dan berstatus
+   `provisional`. K2 = 0 bukan target yang boleh dikalibrasi turun; ia syarat kejujuran.
+
+7. **Kalibrasi target** — ditinjau di keluar P3 setelah run 30 penuh pertama. Boleh naik maupun turun.
+   Setiap perubahan wajib tercatat di `eval/CHANGELOG.md` dengan angka lama, angka baru, alasan,
+   tanggal, dan penyetuju.
+
+8. **Baseline** — mode `baseline` = model + Zetaris **tanpa memori** (tanpa recall, tanpa store).
+   Dijalankan pertama kali di P3, berdampingan dengan mode `penuh`, pada golden set dan model yang
+   sama. Yang dibandingkan: K1, K2, K5.
+
+9. **Larangan penyebutan** — hasil ini tidak boleh disebut *benchmark*. N=30 dan dataset sintetis
+   tidak mendukung klaim generalisasi.
+
+**Konsekuensi.**
+
+- T1.8 dapat dikerjakan tanpa menebak bentuk dataset maupun rubrik.
+- Setiap anggota membaca 20 jawaban pada run final, bukan 30 — hemat waktu di P8 tanpa mengurangi
+  independensi penilaian.
+- Golden set wajib dibekukan sebelum P3; setelah itu perubahan hanya lewat `eval/CHANGELOG.md`.
+- Dataset domain merchant payments dipilih karena mendukung keempat kategori yang bisa dijawab
+  (lookup, join, agregasi, rentang waktu) tanpa menyerupai data nyata siapa pun.
+
+---
+
+## ADR-016 — Perangkat mencapai runtime lewat LAN bind + pairing token
+
+**Tanggal:** 2026-10-20
+**Status:** Diterima — menutup P0 T0.7
+
+**Konteks.** Runtime mendengarkan di `localhost`, dan `localhost` di ponsel menunjuk ke ponsel itu
+sendiri. Tanpa keputusan ini, syarat lulus P5 ("jalan di layar HP") tidak bisa dipenuhi dan demo video
+kehilangan bagian penutupnya. Empat opsi dipertimbangkan (`docs/ARCHITECTURE.md` §2.2): bind ke LAN,
+tunnel, pairing + token, dan Electron-only.
+
+**Keputusan.**
+
+1. **Bind ke LAN** sebagai jalur utama. Runtime mendengarkan di `0.0.0.0` **hanya ketika mode LAN
+   diaktifkan eksplisit oleh user**; default tetap `127.0.0.1`.
+2. **Autentikasi wajib.** Runtime menerbitkan **pairing token sekali pakai** berumur pendek,
+   ditampilkan di terminal saat start. Client menukarnya menjadi session token. Tanpa token, tidak ada
+   permintaan yang dilayani. Runtime **tidak diizinkan** mendengarkan di jaringan tanpa auth.
+3. **PWA menyimpan endpoint dan session token** di storage lokal, bukan di URL.
+4. **Tunnel bukan jalur utama.** Hanya dipakai sebagai *workaround* demo jika LAN gagal, dan
+   workaround itu dicatat di `docs/SPONSORS.md`.
+
+**Batasan yang dinyatakan — ini mengubah cara demo, bukan sekadar detail teknis.**
+
+HTTP polos di alamat LAN **bukan secure context**. Akibatnya:
+
+- service worker tidak mendaftar, sehingga PWA **tidak installable** di `http://<ip-laptop>:<port>`;
+- yang bisa didemokan lewat LAN adalah PWA **berjalan di browser ponsel**, bukan PWA ter-install.
+
+Untuk memenuhi AC US-12 dalam bentuk "installable", dibutuhkan secure context: tunnel HTTPS
+(`cloudflared`) atau localhost-forwarding. Karena itu tunnel tetap disiapkan sebagai jalur demo
+installability, walaupun jalur konektivitas utamanya LAN.
+
+Jaringan harus sama. Tanpa internet, LAN tetap bekerja; installability tidak.
+
+**Konsekuensi.**
+
+- `apps/runtime` wajib punya konfigurasi bind + auth sejak **P2** (saat protokol dibangun), bukan
+  ditambal di P5.
+- ADR-011 tetap berlaku: tidak ada mode standalone. Ponsel tetap client yang butuh runtime hidup.
+- Klaim "installable di ponsel" hanya boleh ditulis di README dan submission **setelah** diuji lewat
+  secure context. Sebelum itu, yang benar: "berjalan di browser ponsel".
+- Risiko Demo (15 poin) tercatat: kalau tunnel tidak siap, demo ponsel turun menjadi browser-only.

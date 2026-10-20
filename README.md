@@ -60,7 +60,7 @@ scheduling, filesystem, secrets, MCP connectors. Clients are thin.
 npx weebo serve          → local runtime (Node)
        │
        ├── npx weebo      → CLI, for developers and scripting
-       ├── web app        → PWA, installable on phone and desktop
+       ├── web app        → PWA, runs in the phone browser; installable once served over HTTPS (ADR-016)
        └── desktop app    → Electron, once the PWA client exists (P5)
 ```
 

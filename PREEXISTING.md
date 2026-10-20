@@ -44,6 +44,7 @@ tercantum.
 | 12 | `docs/RULES.md` | `[lihat git log]` | 2026-10-18 | Transkripsi terverifikasi aturan lomba §01–§10 |
 | 13 | `docs/PRD.md` | `[lihat git log]` | 2026-10-18 | Definisi produk: problem, user, 16 user story, non-goals |
 | 14 | `scripts/check-docs.mjs`, `scripts/check-docs.selftest.mjs` | `[lihat git log]` | 2026-10-18 | Tooling pemeriksa konsistensi dokumen — **bukan kode produk**, tidak masuk `apps/` atau `packages/` |
+| 15 | `docs/DECISIONS.md` (ADR-015, ADR-016), `docs/ARCHITECTURE.md` §2.2, `docs/CONTEXT.md` §10, `CHECKPOINT.md` | `[lihat git log]` | 2026-10-20 | Keputusan P0: protokol evaluasi dan transport perangkat. Dokumen, bukan kode produk |
 
 ---
 

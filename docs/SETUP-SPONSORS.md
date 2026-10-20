@@ -27,6 +27,14 @@ sehari sebelumnya.
 
 Rencana: **trial 30 hari, tanpa kartu kredit**, full platform.
 
+> **Koreksi 2026-10-20 — asumsi ini belum terverifikasi dan kemungkinan salah.** Halaman
+> `zetaris.com` saat diperiksa menampilkan **Hobby $0 free forever** dengan model **BYOC**
+> (*"You pay your cloud provider for compute"*, cluster di VPC sendiri, live ~20 menit) dan **tidak
+> menampilkan trial 30 hari**. Paket berbayar: Professional $0.14/vCPU/jam, Enterprise $0.20/vCPU/jam.
+> Artinya jalur gratis bisa menuntut akun cloud sendiri + compute berbayar. **Jangan daftar Zetaris
+> standalone sebelum T0.1** — platform lomba menyebut *"sponsor credits"*, dan jalur akses peserta
+> kemungkinan baru diumumkan setelah registrasi.
+
 - [ ] Daftar di halaman trial Zetaris Cloud
 - [ ] Verifikasi email
 - [ ] Masuk ke console

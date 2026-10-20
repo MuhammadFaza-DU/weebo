@@ -435,7 +435,7 @@ packages/zetaris   Client Zetaris (MCP/REST, typed)
 ```
 
 Detail alur data dan batas modul: `docs/ARCHITECTURE.md`. Alasan pilihan: `docs/DECISIONS.md`
-(ADR-001 … ADR-014). PRD tidak mengulang keduanya.
+(ADR-001 … ADR-016). PRD tidak mengulang keduanya.
 
 ### 4.2 Integration points
 
@@ -518,7 +518,7 @@ sebelum terbukti.
 ## 6. Rujukan
 
 - Kewajiban lomba: `docs/RULES.md` §5.1 (Zetaris, Meterless, Cursor), §6.1–§6.4 (deliverable).
-- Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-014.
+- Pilihan teknis: `docs/DECISIONS.md` ADR-001 … ADR-016.
 - Arsitektur: `docs/ARCHITECTURE.md`.
 - Urutan pengerjaan: `docs/PHASES.md` dan file fase di `docs/phases/`.
 - Batasan tim dan bobot penilaian: `docs/CONTEXT.md`.

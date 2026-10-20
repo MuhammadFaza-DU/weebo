@@ -222,7 +222,7 @@ Semua asumsi di bawah **wajib diuji di P0**, bukan ditebak. Lihat `docs/phases/P
 | Asumsi | Dijawab di | Status |
 |---|---|---|
 | Apakah Zetaris bisa dipanggil dari browser, atau wajib lewat server | P0 · T0.3 | belum diuji |
-| **Bagaimana ponsel/tablet mencapai runtime di `localhost`** | **P0 · T0.7** | belum |
+| **Bagaimana ponsel/tablet mencapai runtime di `localhost`** | **P0 · T0.7** | **terjawab 2026-10-20 — ADR-016**: LAN bind + pairing token. Installability butuh secure context (tunnel) |
 | Apakah conformance suite Meterless bisa jalan di lingkungan kita | P0 · T0.6 | belum diuji |
 | Rate limit NVIDIA NIM yang sebenarnya (~40 RPM masih dari dokumentasi) | P0 · T0.4 | belum diukur |
 | Apakah plan Cursor Free cukup untuk 6 hari kerja tim | P0 · T0.5 | belum diuji |

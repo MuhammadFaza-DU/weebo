@@ -75,24 +75,27 @@ Konsekuensi yang harus dijaga:
 - Satu versi protokol, dideklarasikan di `packages/protocol`, agar client lama tidak rusak.
 - Runtime harus bisa dijalankan tanpa client mana pun (headless), karena scheduler tetap bekerja.
 
-### 2.2 Bagaimana perangkat lain mencapai runtime (BELUM DIPUTUSKAN)
+### 2.2 Bagaimana perangkat lain mencapai runtime (DIPUTUSKAN — ADR-016)
 
-Ini pertanyaan terbuka yang **memblokir demo di ponsel**. Runtime mendengarkan di `localhost`, dan
-`localhost` di ponsel menunjuk ke ponsel itu sendiri — bukan ke laptop.
+Runtime mendengarkan di `localhost`, dan `localhost` di ponsel menunjuk ke ponsel itu sendiri — bukan
+ke laptop. Keputusannya: **LAN bind + pairing token** (`docs/DECISIONS.md` ADR-016).
 
-Kandidat solusi, belum dipilih:
+Ringkasnya: runtime bind ke `0.0.0.0` hanya saat mode LAN diaktifkan eksplisit (default tetap
+`127.0.0.1`), dan **selalu** mewajibkan pairing token sekali pakai yang ditukar menjadi session token.
+Runtime tanpa auth tidak boleh mendengarkan di jaringan.
 
-| Opsi | Cara kerja | Kelebihan | Kekurangan |
-|---|---|---|---|
-| Bind ke LAN | Runtime mendengarkan di `0.0.0.0`, PWA diakses lewat `http://<ip-laptop>:<port>` | Sederhana, tanpa layanan pihak ketiga | Butuh jaringan sama; HTTP biasa membatasi sebagian API browser |
-| Tunnel | `cloudflared` / `ngrok` mengekspos port | Bisa dari jaringan mana pun | Butuh layanan tambahan; keamanan perlu dipikirkan |
-| Pairing + token | Runtime menerbitkan token sekali pakai, client memasangkannya | Aman | Menambah alur UI |
-| Lewat Electron saja | Ponsel memakai PWA standalone terbatas | Tidak perlu jaringan | Bertentangan dengan ADR-011 (tidak ada mode standalone) |
+| Opsi | Status |
+|---|---|
+| **Bind ke LAN + pairing token** | **Dipilih** — tanpa layanan pihak ketiga, tanpa biaya |
+| Tunnel (`cloudflared`) | Cadangan, hanya untuk demo *installable* dan sebagai workaround |
+| Pairing tanpa LAN bind | Tidak memadai sendiri — tidak ada jalur jaringan |
+| Lewat Electron saja | Ditolak — bertentangan dengan ADR-011 (tidak ada mode standalone) |
 
-**Wajib diputuskan sebelum P5.** Kalau tidak, demo "PWA di ponsel" tidak akan berjalan.
+**Batasan yang harus diingat sejak P2:** HTTP polos di alamat LAN bukan secure context, sehingga
+service worker tidak mendaftar dan PWA **tidak installable** lewat LAN. Yang bisa didemokan lewat LAN
+adalah PWA berjalan di browser ponsel. Untuk "installable", perlu tunnel HTTPS. Detail dan
+konsekuensinya: ADR-016.
 
-Yang harus menyertai keputusan ini apa pun opsinya: **autentikasi**. Runtime yang mendengarkan di
-jaringan tanpa token berarti proses lokal mana pun bisa mengendalikan agent.
 
 ## 3. Alur satu permintaan
 
