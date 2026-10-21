@@ -1,16 +1,9 @@
-# Contributing to Weebo
+# Contributing
 
-Thanks for wanting to help. Weebo is an open-source agent harness, and the rules below keep the
-project honest and the repository runnable.
+Thanks for wanting to help. The rules below keep the project honest and the repository runnable.
 
 Before anything else, read [`AGENTS.md`](AGENTS.md). It is the binding rulebook for both humans and
-AI agents working in this repository.
-
-Then read, in this order: [`CHECKPOINT.md`](CHECKPOINT.md) for current status,
-[`docs/DECISIONS.md`](docs/DECISIONS.md) for binding decisions,
-[`docs/CONTEXT.md`](docs/CONTEXT.md) for the constraints and measurements behind them,
-[`docs/PRD.md`](docs/PRD.md) for what we build and for whom, and
-[`docs/RULES.md`](docs/RULES.md) for the verified hackathon rules.
+AI agents working in this repository, and its §1.1 lists the required reading order.
 
 ## Ground rules
 
@@ -18,8 +11,8 @@ Then read, in this order: [`CHECKPOINT.md`](CHECKPOINT.md) for current status,
    visual assets, icons, or text from another product.
 2. **Open-source dependencies are fine** — add them through the package manager so licensing and
    attribution stay automatic. Do not paste third-party source into our files.
-3. **Do not claim what is not true.** If a feature is not working, it is not "done". README and
-   landing-page status must match reality.
+3. **Do not claim what is not true.** If a feature is not working, it is not "done". README status
+   must match reality.
 4. **Never commit secrets.** API keys, tokens, and credentials belong in `.env` (gitignored) or the
    OS keychain.
 
@@ -75,11 +68,11 @@ npm run typecheck
 npm test
 ```
 
-The docs check works without any dependencies, so it runs even before the workspace exists. If you
-change `scripts/check-docs.mjs` itself, also run `node scripts/check-docs.selftest.mjs`.
+The docs check works without any dependencies, so it always runs. If you change
+`scripts/check-docs.mjs` itself, also run `node scripts/check-docs.selftest.mjs`.
 
-If a script does not exist yet, say so in the PR instead of pretending it passed. Report what you
-ran and what you could not run.
+If a script does not exist yet, say so in the PR instead of pretending it passed. Report what you ran
+and what you could not run.
 
 ## Reporting bugs
 
@@ -94,13 +87,15 @@ Open an issue using the bug template. Include:
 ## Proposing features
 
 Open an issue using the feature template. Answer one question first: **does this make the agent do
-real work, or does it make the chat look nicer?** Weebo is a harness, not a chatbot skin.
+real work, or does it make the chat look nicer?**
 
 ## Code expectations
 
+These apply once product code exists:
+
 - TypeScript strict mode. Avoid `any`; if you must use it, leave a comment explaining why.
-- The agent core (`packages/core`) must stay isomorphic — no direct Node-only APIs. Use an adapter.
 - Every tool invocation passes through the policy layer (allow/deny + audit log).
+- Secrets are read from environment or the OS keychain — never from code or the client.
 - Do not edit files under `vendor/`. Wrap them instead.
 
 ## Questions

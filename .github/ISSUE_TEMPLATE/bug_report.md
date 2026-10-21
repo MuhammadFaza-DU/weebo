@@ -23,8 +23,7 @@ labels: bug
 
 - OS:
 - Node version (`node -v`):
-- Weebo version or commit:
-- Model path used (free tier / BYOK / local):
+- Version or commit:
 
 ## Anything else
 

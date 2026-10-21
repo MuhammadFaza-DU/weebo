@@ -1,9 +1,13 @@
-# AGENTS.md — Aturan Project Weebo
+# AGENTS.md — Aturan Project
 
-Dokumen ini adalah aturan kerja khusus project `weebo`. Dokumen ini **melengkapi** `AGENTS.md` global
-milik user, tidak menggantikannya.
+Dokumen ini adalah aturan kerja khusus repo ini. Ia **melengkapi** `AGENTS.md` global milik user, tidak
+menggantikannya.
 
 Berlaku untuk semua yang bekerja di repo ini: manusia maupun agent AI.
+
+**Status arah produk: BELUM DITETAPKAN.** Ide produk sebelumnya sudah dibatalkan dan dihapus pada
+2026-10-21. Yang tersisa di repo ini adalah aturan lomba, kerangka kerja, dan infrastruktur. Bagian §6
+dan §7 sengaja dibiarkan kosong sampai arah baru disepakati — jangan mengisinya dengan asumsi.
 
 ---
 
@@ -11,20 +15,14 @@ Berlaku untuk semua yang bekerja di repo ini: manusia maupun agent AI.
 
 1. Instruksi langsung user menang atas semua dokumen.
 2. `AGENTS.md` global user adalah aturan utama.
-3. `AGENTS.md` project ini berlaku untuk pekerjaan di folder project `weebo` dan hanya boleh
-   mengalahkan aturan global jika lebih spesifik untuk project ini.
-4. `CHECKPOINT.md` adalah sumber kebenaran status kerja, keputusan, risiko, dan next action.
-5. `PREEXISTING.md` adalah sumber kebenaran deklarasi eligibilitas lomba.
-6. `docs/DECISIONS.md` adalah catatan keputusan yang sudah disepakati. Jika kode bertentangan dengan
-   dokumen itu, kode yang salah — kecuali ada keputusan baru yang dicatat.
-7. `docs/CONTEXT.md` memuat pengetahuan kerja yang tidak ada di ADR: bobot penilaian lomba, batasan
-   tim, angka yang sudah diukur, dan hal-hal yang sengaja ditolak.
-8. `docs/RULES.md` adalah transkripsi terverifikasi aturan resmi lomba. Jika dokumen lain bertentangan
+3. `AGENTS.md` project ini berlaku untuk pekerjaan di folder project ini dan hanya boleh mengalahkan
+   aturan global jika lebih spesifik untuk project ini.
+4. `docs/RULES.md` adalah transkripsi terverifikasi aturan resmi lomba. Jika dokumen lain bertentangan
    dengan file ini soal kewajiban lomba, `docs/RULES.md` yang menang.
-9. `docs/PRD.md` adalah sumber kebenaran **apa yang dibangun dan untuk siapa** — definisi user, user
-   story, prioritas fitur, dan non-goals. Menang atas dokumen lain soal definisi user dan prioritas
-   fitur. **Tidak** mengatur urutan pengerjaan (itu file fase) dan **tidak** mengatur pilihan teknis
-   (itu ADR). PRD tidak boleh memuat task, estimasi, atau nama file kode.
+5. `CHECKPOINT.md` adalah sumber kebenaran status kerja, keputusan, risiko, dan next action.
+6. `PREEXISTING.md` adalah sumber kebenaran deklarasi eligibilitas lomba.
+7. `docs/CONTEXT.md` memuat pengetahuan kerja: bobot penilaian lomba, batasan tim, dan fakta lingkungan.
+8. `docs/SUBMISSION.md` memuat deliverable dan tenggat yang mengikat.
 
 Jika ada konflik antar dokumen, hentikan pekerjaan yang berisiko dan minta keputusan user.
 
@@ -33,24 +31,21 @@ Jika ada konflik antar dokumen, hentikan pekerjaan yang berisiko dan minta keput
 Agent yang baru masuk **wajib** membaca berurutan sebelum mengubah apa pun:
 
 1. `CHECKPOINT.md` — status sekarang, risiko, next action.
-2. `docs/DECISIONS.md` — keputusan yang mengikat (ADR-001 … terbaru).
-3. `docs/CONTEXT.md` — bobot penilaian, batasan tim, angka terukur, daftar yang sudah ditolak.
-4. `docs/PRD.md` — apa yang dibangun dan untuk siapa: user, user story, prioritas fitur, non-goals.
-5. `docs/PHASES.md` dan file fase aktif di `docs/phases/`.
-6. `docs/SUBMISSION.md` — deliverable dan tenggat yang mengikat.
-7. `docs/SPONSORS.md` — bukti integrasi yang harus dikumpulkan.
+2. `docs/RULES.md` — aturan resmi lomba, terverifikasi.
+3. `docs/CONTEXT.md` — bobot penilaian, batasan tim, fakta lingkungan.
+4. `docs/SUBMISSION.md` — deliverable dan tenggat yang mengikat.
+5. `docs/PHASES.md` — kerangka fase, timeline resmi, protokol keluar fase.
+6. `docs/SPONSORS.md` — kewajiban integrasi sponsor.
+7. `docs/SETUP-SPONSORS.md` — jalur akses sponsor dan status verifikasi.
 8. `PREEXISTING.md` — aturan eligibilitas yang mengikat.
-9. `docs/RULES.md` — aturan resmi lomba, terverifikasi.
 
-Tanpa kesembilannya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar
-batasan yang sudah dihitung.
+Tanpa kedelapannya, agent berisiko mengusulkan ulang hal yang sudah diputuskan atau melanggar batasan
+yang sudah dihitung.
 
-**Bahasa dokumen.** Dokumen internal (`AGENTS.md`, `CHECKPOINT.md`, `docs/*` dalam Bahasa Indonesia)
-adalah dokumen kerja. Materi submission ditulis dalam **Bahasa Inggris**: README, video, slide deck, dan
-penjelasan integrasi sponsor. Ini **keputusan tim, bukan syarat lomba** — `docs/RULES.md` tidak memuat
-kewajiban bahasa sama sekali. Alasannya praktis: juri dan sponsor (GenAI.Works, Zetaris, SpaceX AI)
-berbahasa Inggris, sehingga materi berbahasa Indonesia lebih sulit dinilai. Saat menyusun materi
-submission, terjemahkan — jangan menyalin dokumen internal apa adanya.
+**Bahasa dokumen.** Dokumen internal (file ini, `CHECKPOINT.md`, `docs/*`) ditulis dalam Bahasa
+Indonesia sebagai dokumen kerja. Materi submission ditulis dalam **Bahasa Inggris** — README, video,
+slide deck, dan penjelasan integrasi sponsor. Ini **keputusan tim, bukan syarat lomba**: `docs/RULES.md`
+tidak memuat kewajiban bahasa sama sekali. Alasannya praktis: juri dan sponsor berbahasa Inggris.
 
 ## 2. Konteks lomba (mengikat)
 
@@ -58,17 +53,17 @@ Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
 
 | Item | Nilai |
 |---|---|
-| Build window | 22 Okt 2026 00:00 UTC → 27 Okt 2026 23:45 UTC |
-| Registrasi tutup | 22 Okt 2026 23:59 UTC (hard deadline) |
-| Track | **Track 03 — Reasoning Architecture** |
-| Tim | 3 orang, maksimum 5 |
+| Build window | 22 Okt 2026 00:00 UTC → 27 Okt 2026 23:45 UTC (144 jam) |
+| Registrasi tutup | 22 Okt 2026 23:45 UTC (hard deadline) |
+| Tim | Maksimum 5 orang |
+| Track | **Belum dipilih.** Dipilih saat membuat submission, bisa diganti sampai tenggat |
 
 **Syarat wajib yang tidak boleh dilanggar:**
 
 - Integrasi **Zetaris** dan **Meterless** harus benar-benar dipanggil saat runtime di kode — bukan
   hanya disebut di README.
-- Pengembangan memakai **Cursor** (syarat lomba). Cara tim memakainya: **review**, bukan menulis kode
-  — lihat §20.
+- Pengembangan memakai **Cursor** (syarat lomba). Cara tim memakainya: **review**, bukan menulis kode —
+  lihat §20.
 - Deliverable: repo GitHub dengan README (setup, usage, dependencies), video demo 1–4 menit, slide
   deck, penjelasan integrasi sponsor, pemilihan track, dan deklarasi pre-existing. Daftar lengkap:
   `docs/SUBMISSION.md`.
@@ -81,31 +76,26 @@ Project ini dikerjakan untuk **Open Agent Hackathon 2026** (GenAI.Works).
 
 - **NVIDIA Nemotron** diintegrasikan di tempat ia memberi nilai nyata. Aturan lomba menyebut
   *"Integrate NVIDIA technology wherever it contributes"* — ini dinilai pada kriteria **Sponsor tech
-  (10 dari 100 poin)**, bukan syarat kelulusan. Tetap dikerjakan karena nilainya besar, tetapi jangan
-  sampai mengorbankan Zetaris/Meterless.
+  (10 dari 100 poin)**, bukan syarat kelulusan.
 
 **Aturan eligibilitas:** pekerjaan yang di-commit sebelum build window dibuka tidak dihitung, kecuali
 komponen pre-existing yang dideklarasikan. Setiap penambahan pre-existing wajib dicatat di
 `PREEXISTING.md` pada commit yang sama.
 
-**Larangan mutlak:** jangan men-commit kode produk (`apps/`, `packages/`, `vendor/`) sebelum
-**22 Okt 2026 00:00 UTC**. Ini satu-satunya gate tanggal yang sah (lihat §8.1). Konsekuensinya jika
-dilanggar: karya tidak dihitung, dan deklarasi di `PREEXISTING.md` menjadi tidak benar.
+**Larangan mutlak:** jangan men-commit kode produk (`apps/`, `packages/`) sebelum **22 Okt 2026 00:00
+UTC**. Ini satu-satunya gate tanggal yang sah (lihat §8.1).
 
 > **Sumber aturan:** transkripsi lengkap §01–§10 ada di `docs/RULES.md`, terverifikasi dari tangkapan
 > layar halaman resmi (2026-10-18). Jangan mengutip aturan dari sumber sekunder — beberapa artikel dan
-> ringkasan AI memuat klaim yang salah (mis. menyebut Zetaris/Meterless hanya wajib di Wildcard;
-> padahal §5.1 mewajibkannya untuk **semua** submission).
+> ringkasan AI memuat klaim yang salah.
 
 ## 3. Kejujuran dan originalitas
 
-- Semua kode yang masuk repo ini adalah **karya tim sendiri**. Tidak ada penyalinan kode, aset
-  visual, ikon, atau teks milik pihak lain.
+- Semua kode yang masuk repo ini adalah **karya tim sendiri**. Tidak ada penyalinan kode, aset visual,
+  ikon, atau teks milik pihak lain.
 - Referensi eksternal dipelajari sebagai **pengetahuan**, bukan bahan salin.
 - Dependensi open source dipakai sebagaimana mestinya, dengan lisensi dan atribusi otomatis lewat
   `package.json` dan `LICENSE`.
-- Catatan belajar pribadi disimpan di luar repo dan tidak pernah di-commit. Cuplikan referensi hanya
-  untuk pemahaman, tidak boleh dipindahkan ke kode produk.
 - Jangan mengklaim fitur sudah jalan kalau belum. Status di README dan landing page wajib sesuai
   kenyataan (`live` vs `roadmap`).
 - Jangan mengarang hasil test, angka benchmark, atau transkrip integrasi.
@@ -130,74 +120,32 @@ dilanggar: karya tidak dihitung, dan deklarasi di `PREEXISTING.md` menjadi tidak
 
 ## 6. Arah produk dan posisi
 
-- Weebo adalah **agent harness open source**, self-hosted, BYOK.
-- Posisi: **kanal personal setara produk terkemuka + akses ke data kerja yang governed.**
-- Tiga pilar: **mengingat** (memory), **bertindak** (tools dan connector), **menjelaskan** (alasan
-  di balik jawaban).
-- Weebo bukan chatbot. Setiap fitur harus lolos pertanyaan: "apakah ini membuat agent melakukan
-  pekerjaan nyata?"
-- Aplikasi tersedia untuk desktop, tablet, dan ponsel dari satu codebase. Jalur kirim utama: PWA.
-  Electron dan Capacitor dimulai saat dependensinya terpenuhi (ADR-010, §8.1).
-- **CLI adalah surface resmi**, diposisikan untuk developer dan scripting, bukan wajah utama produk.
-  Wajah produk tetap PWA.
+**BELUM DITETAPKAN.** Ide sebelumnya sudah dibatalkan pada 2026-10-21 dan dihapus dari repo.
+
+Jangan menulis definisi produk di sini sampai user menyetujuinya secara eksplisit. Setiap usulan arah
+baru wajib melewati `brainstorming` lebih dulu, lalu dicatat sebagai ADR di `docs/DECISIONS.md`
+(berkas itu dibuat ulang saat ADR pertama yang baru disepakati).
 
 ## 7. Arsitektur
 
-Monorepo TypeScript. Satu runtime, banyak client. Runtime adalah satu-satunya yang menyentuh
-kapabilitas platform; client hanya berbicara lewat protokol.
+**BELUM DITETAPKAN.** Struktur folder, stack, dan bentuk runtime dibahas setelah arah produk jelas.
 
-```
-apps/runtime    Server lokal: agent loop, scheduler, MCP, secret (Node)
-apps/cli        Client terminal: `npx weebo`, `npx weebo serve`
-apps/web        Client PWA (React + Vite)
-apps/landing    Astro marketing site
-packages/core   Agent loop (intent → memory → plan → tool → verify), isomorphic
-packages/protocol  Kontrak runtime–client, berversi
-packages/meterless  Adapter Meterless (kita tulis sendiri; engine pihak ketiga di vendor/hmem)
-packages/zetaris    Client Zetaris (MCP/REST, typed)
-packages/connectors Registry connector MCP
-packages/gateway    Gateway kuota gratis (Cloudflare Worker)
-```
+Yang **sudah** mengikat dan tidak bergantung pada arah produk:
 
-Aturan arsitektur:
-
-- `packages/core` tidak boleh bergantung pada API Node-only. Jika butuh kapabilitas platform,
-  gunakan adapter di `apps/runtime`.
-- Client (`apps/cli`, `apps/web`) **tidak** memanggil `packages/core` langsung. Semua lewat
-  `packages/protocol`.
-- `vendor/` milik Meterless tidak boleh diedit. Semua penyesuaian lewat `packages/meterless/src`.
-- Lokasi engine: `vendor/hmem/` di root repo. `packages/meterless/src` adalah adapter yang **kita
-  tulis** dan boleh diedit.
-- Setiap pemanggilan tool melewati policy layer di `packages/core` (allow/deny + audit log).
-- Secret dibaca dari environment atau keychain OS di runtime, tidak pernah dari kode atau client.
-
-Detail: `docs/ARCHITECTURE.md`.
+- Tidak ada kode produk yang di-commit sebelum 22 Okt 2026 00:00 UTC (§8.1).
+- Setiap pemanggilan tool harus melewati lapisan policy (allow/deny + audit log).
+- Secret dibaca dari environment atau keychain OS, tidak pernah dari kode atau client.
 
 ## 8. Workflow fase
 
 Fase adalah **gate hasil**, bukan durasi. Tidak ada timebox. Fase ditutup hanya jika deliverable dan
 syarat lulusnya terpenuhi.
 
-| Fase | Deliverable | Syarat lulus |
-|---|---|---|
-| **P0 Preflight** | Semua akses terverifikasi, asumsi arsitektur terjawab | Tidak ada blocker tersisa; setiap asumsi berstatus terjawab |
-| P1 Walking Skeleton | Satu alur tipis **lewat CLI**: prompt → intent → memory → model → Zetaris → jawaban | Bisa didemokan 30 detik di terminal |
-| P2 Agent Core | Loop, tool registry, policy allow/deny, audit log, **protokol runtime–client selesai** | Tool call tercatat dan bisa ditolak; CLI bicara ke runtime lewat `packages/protocol`, bukan memanggil core langsung |
-| P3 Memory & Reasoning | H-MEM mining/retrieval/audit, embedding nyata, jejak "kenapa" | Mengingat lintas sesi dan menjelaskan sumber |
-| P4 Design System | Token + komponen dasar di canvas | HALT + approval eksplisit user |
-| P5 Surfaces | **PWA** sebagai client runtime: chat, tasks, connectors, settings BYOK, responsif | Jalan di layar HP dan desktop |
-| P6 Autonomy | Scheduler headless, channel bridge, jalur model | Tugas berjalan tanpa client terhubung |
-| P7 Landing Page | Astro: narasi, fitur + badge status, CTA | Bisa dibuka publik |
-| P8 Submission | **Video jadi (1–4 menit)**, slide deck, README, PREEXISTING, audit klaim | Semua deliverable lomba lengkap |
+Setiap fase punya file sendiri di `docs/phases/` berisi daftar task kecil (≤ 2 jam) dengan kriteria
+selesai. Task dicentang satu per satu; agent mengeksekusi per task, bukan per fase.
 
-P4 dan P7 boleh berjalan paralel oleh orang berbeda.
-
-File task per fase dibuat saat fase itu dimulai. Saat ini baru `docs/phases/P0-preflight.md` dan
-`docs/phases/P1-walking-skeleton.md` yang ada; P2–P8 menyusul. Jangan menganggap fase tanpa file sudah
-punya rencana task. **Fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.**
-
-Panduan memecah fase menjadi task (ukuran, format, kriteria selesai yang baik vs buruk, larangan):
-lihat `docs/PHASES.md`.
+**Fase tidak boleh dimulai tanpa file task-nya dibuat lebih dulu.** Panduan memecah fase menjadi task
+ada di `docs/PHASES.md`.
 
 ### 8.1 Penundaan berbasis dependensi — dilarang memakai gate tanggal
 
@@ -205,18 +153,12 @@ Fase dan pekerjaan ditunda karena **dependensi belum terpenuhi**, bukan karena t
 menulis "setelah lomba", "pasca-lomba", "after the hackathon", atau padanannya sebagai alasan
 penundaan.
 
-**Alasan:** ADR-007 menetapkan fase adalah gate hasil, bukan durasi. Gate tanggal bertentangan dengan
-itu dan menghapus opsionalitas — pekerjaan yang sebenarnya bisa dimulai lebih awal menjadi tidak
-mungkin dimulai.
+**Pengecualian tunggal: build window lomba.** Ada **satu** gate tanggal yang sah dan wajib dipatuhi,
+karena berasal dari aturan lomba: **tidak ada kode produk yang boleh di-commit sebelum 22 Okt 2026
+00:00 UTC.**
 
-#### Pengecualian tunggal: build window lomba
-
-Ada **satu** gate tanggal yang sah dan wajib dipatuhi, karena berasal dari aturan lomba, bukan dari
-kita: **tidak ada kode produk yang boleh di-commit sebelum 22 Okt 2026 00:00 UTC.**
-
-Pekerjaan yang boleh dilakukan sebelum window: dokumen, rencana, setup akun, uji kelayakan (P0), dan
-pembuktian integrasi yang **tidak di-commit** ke repo. Kode produk (`apps/`, `packages/`) masuk
-setelah window dibuka, atau tidak dihitung sebagai karya lomba.
+Pekerjaan yang boleh dilakukan sebelum window: dokumen, rencana, setup akun, uji kelayakan, dan
+pembuktian integrasi yang **tidak di-commit** ke repo.
 
 Pengecualian ini **bukan** preseden untuk gate tanggal lain. Semua penundaan lain tetap berbasis
 dependensi.
@@ -277,7 +219,6 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
   wajib sebelum fase dinyatakan selesai.
 - **Fleksibel:** sebelum memakai subagent, tanyakan ke user apakah ia ingin dikerjakan native di sesi
   utama atau lewat subagent. Jangan mengasumsikan preferensi.
-- Fase Design System dikerjakan di sesi utama, tanpa subagent.
 
 ## 11. Protokol desain
 
@@ -285,8 +226,8 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 - **Tool:** Pen (pen.dev) lewat MCP `pencil`. Dokumen `.pen` diakses **hanya** melalui MCP Pen, jangan
   lewat tool file biasa.
 - Sebelum mengedit canvas, panggil `get_app_state()` dan pastikan dokumen aktif benar.
-- Cakupan: layar utama (chat, tasks/cron, connectors, settings BYOK), responsive behavior (ponsel,
-  tablet, desktop), dan state penting (kosong, memuat, error, tanpa koneksi runtime).
+- Cakupan: layar utama, responsive behavior (ponsel, tablet, desktop), dan state penting (kosong,
+  memuat, error, tanpa koneksi runtime).
 - **Paket review** yang diajukan sebelum HALT berisi: tangkapan layar setiap layar, daftar state yang
   tercakup, dan daftar token (warna, tipe, spacing) yang dipakai.
 - Setelah canvas selesai, ajukan paket review dan **berhenti total**.
@@ -309,9 +250,6 @@ menulis di dokumen mana pun bahwa kode ditulis di Cursor.
 - Semua diskusi di PR wajib resolved sebelum merge.
 - Jangan force push ke `main`. Jangan hapus branch `main`.
 - Jangan merge PR yang gagal CI.
-
-Kontributor tetap bebas bekerja: membuat branch, push, membuka PR, dan berdiskusi. Yang dijaga bukan
-kebebasan berkarya, melainkan isi `main`.
 
 ## 13. Commit, tag, dan aksi destruktif
 
@@ -408,8 +346,7 @@ Aturan lomba mewajibkan tim memakai Cursor dan menjelaskan pemakaiannya di submi
 **Yang sah dan dianjurkan:**
 
 - Memakai Cursor untuk review nyata, lalu mencatat apa yang di-review.
-- Menulis bagian *"what needs work"* pada Product Feedback berdasarkan pengalaman nyata dengan plan
-  yang dipakai.
+- Menulis bagian *"what needs work"* pada Product Feedback berdasarkan pengalaman nyata.
 
 ## 21. Sinkronisasi dan konsistensi lintas dokumen
 
@@ -420,11 +357,7 @@ ketiganya terkait.
 ### 21.1 Penyebab utama: duplikasi fakta turunan
 
 **Fakta turunan** adalah fakta yang punya satu sumber kebenaran tetapi ditulis ulang di tempat lain.
-Contoh yang benar-benar pernah rusak di repo ini:
-
-- jumlah dokumen pada urutan baca `AGENTS.md` §1.1 (pernah tertulis 7, lalu 8, lalu 9 di tiga file);
-- daftar berkas di `docs/` yang disalin ke `CHECKPOINT.md`;
-- jumlah ADR, jumlah user story, jumlah task per fase.
+Contoh: jumlah dokumen pada urutan baca §1.1, daftar berkas di `docs/`, jumlah ADR, jumlah user story.
 
 **Aturan:**
 
@@ -452,17 +385,14 @@ peta ini mencatat **kaitan yang sudah terbukti**, bukan menebak semua kemungkina
 | Kalau kamu mengubah… | Wajib periksa dan sinkronkan |
 |---|---|
 | `AGENTS.md` §1.1 (menambah/menghapus butir urutan baca) | Penutup §1.1 (ordinalnya), `README.md` (jumlah dokumen), `CHECKPOINT.md` (jumlah dokumen), `CONTRIBUTING.md` |
-| `docs/DECISIONS.md` (ADR baru atau berubah) | `CHECKPOINT.md` ringkasan keputusan, `docs/PRD.md` §4.1 dan §6, dokumen yang menulis rentang "ADR-001 … ADR-0NN", `PREEXISTING.md` bila menyangkut komponen pre-existing |
-| `docs/PRD.md` §1.3 (KPI, target, aturan kalibrasi) | `docs/PHASES.md` (syarat lulus fase), `docs/SUBMISSION.md` (audit + aturan angka), `CHECKPOINT.md` |
-| `docs/PRD.md` §2.4 (user story) | `docs/PHASES.md` kolom "Story PRD", berkas fase terkait |
-| `docs/PRD.md` §3.2 (evaluation strategy) | `docs/phases/P0-preflight.md` T0.8, `docs/phases/P1-walking-skeleton.md` T1.8, `docs/PHASES.md`, `docs/SUBMISSION.md` |
-| `docs/RULES.md` (aturan lomba) | `AGENTS.md` §2, `docs/CONTEXT.md`, `docs/SUBMISSION.md`, `docs/PRD.md`, `PREEXISTING.md` |
+| `docs/RULES.md` (aturan lomba) | `AGENTS.md` §2, `docs/CONTEXT.md`, `docs/SUBMISSION.md`, `PREEXISTING.md` |
 | Menambah atau menghapus berkas di `docs/` | Daftar `docs/` di `CHECKPOINT.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md` §1.1 bila masuk urutan baca, `PREEXISTING.md` |
 | Nomor atau judul section mana pun | Semua yang merujuk `berkas.md` §N — dijalankan otomatis oleh `scripts/check-docs.mjs` |
-| Status verifikasi (sesuatu jadi terverifikasi atau gagal) | `CHECKPOINT.md` bagian "Belum terverifikasi", `docs/CONTEXT.md` §10, `docs/SETUP-SPONSORS.md` §7 |
+| Status verifikasi (sesuatu jadi terverifikasi atau gagal) | `CHECKPOINT.md` bagian "Belum terverifikasi", `docs/CONTEXT.md`, `docs/SETUP-SPONSORS.md` §7 |
 | Task di berkas fase | `docs/PHASES.md` bila syarat lulus berubah, `CHECKPOINT.md` next action |
 | Deliverable submission | `docs/SUBMISSION.md`, `CHECKPOINT.md`, `PREEXISTING.md` bila perlu |
 | Komponen pre-existing | `PREEXISTING.md` **pada commit yang sama** (§15) |
+| Arah produk atau arsitektur (ADR baru) | `docs/CONTEXT.md`, `CHECKPOINT.md`, `README.md` |
 
 ### 21.4 Verifikasi — wajib dijalankan, bukan opsional
 
@@ -477,17 +407,14 @@ user story / task yang tidak ada, **tabel Markdown yang kolomnya tidak konsisten
 yang tidak cocok, dan karakter rusak (U+FFFD / mojibake).
 
 **Cakupannya adalah isi repo, bukan seluruh disk.** Pemeriksa memakai `git ls-files` (ditambah berkas
-baru yang belum di-ignore), sehingga berkas yang di-exclude seperti `rea.md` tidak diperiksa. Ini
-disengaja: tanpa itu, hasil di mesin lokal berbeda dari CI, dan pemeriksa akan gagal karena berkas
-yang tidak akan pernah di-commit — alarm palsu yang membuat orang berhenti mempercayainya.
+baru yang belum di-ignore), sehingga berkas yang di-exclude tidak diperiksa. Ini disengaja: tanpa itu,
+hasil di mesin lokal berbeda dari CI.
 
-**Keluaran `LULUS` berbunyi "tidak ada kerusakan BENTUK", bukan "isi dokumen benar".** Pemeriksa
-mencetak daftar hal yang **tidak** diperiksa setiap kali lulus. Jangan meringkasnya menjadi "dokumen
-sudah konsisten" — itu klaim yang tidak didukung pemeriksa (§21.5, §21.7).
+**Keluaran `LULUS` berbunyi "tidak ada kerusakan BENTUK", bukan "isi dokumen benar".** Jangan
+meringkasnya menjadi "dokumen sudah konsisten" — itu klaim yang tidak didukung pemeriksa (§21.5, §21.7).
 
 CI menjalankan pemeriksa yang sama pada setiap push dan pull request. **Jangan mengakali pemeriksa**
-dengan melemahkan pola atau menambahkan pengecualian tanpa alasan tertulis — itu menghapus satu-satunya
-penjaga yang kita punya.
+dengan melemahkan pola atau menambahkan pengecualian tanpa alasan tertulis.
 
 Selftest `node scripts/check-docs.selftest.mjs` membuktikan pemeriksa masih menangkap setiap kelas
 kesalahan. Jalankan bila `check-docs.mjs` diubah.
@@ -505,16 +432,11 @@ Ia **tidak** tahu apakah:
 - tanggal atau nilai yang diulang di beberapa berkas cocok;
 - sebuah klaim sudah tidak berlaku karena keadaan berubah.
 
-Satu-satunya pengecualian sebagian: **kontradiksi `wajib` vs `opsional`** untuk `Zetaris`, `Meterless`,
-`Cursor`, dan `NVIDIA`. Itu heuristik sempit, bukan pembacaan makna. Kalimat yang tidak memakai kata
-kerja pemakaian, atau tidak menyebut tim/submission, tidak akan terdeteksi.
-
 **Karena itu: `LULUS` bukan bukti dokumen benar.** Ia hanya bukti tidak ada kerusakan struktural.
-Dilarang melaporkan "dokumen sudah konsisten" berdasarkan keluaran pemeriksa saja — lihat §21.7.
 
 ### 21.6 Kalau sinkronisasi tidak bisa dilakukan sekarang
 
-Kadang dokumen tujuan belum ada (mis. berkas fase P2–P8 belum dibuat). Dalam kasus itu:
+Kadang dokumen tujuan belum ada (mis. berkas fase yang belum dibuat). Dalam kasus itu:
 
 1. Jangan menulis fakta itu ke dokumen yang belum ada.
 2. **Catat utangnya** di `CHECKPOINT.md` bagian "Belum dikerjakan", dengan menyebut dokumen tujuan.
@@ -527,12 +449,10 @@ Utang yang tercatat boleh menunggu. Utang yang tidak tercatat akan hilang.
 Pemeriksa menjawab *"apakah bentuknya rusak?"*. Ia tidak menjawab *"apakah isinya masih benar?"*.
 Pertanyaan kedua **wajib dijawab manusia atau agent dengan membaca**, dan hasilnya **wajib dinyatakan**.
 
-#### Kapan wajib
+**Kapan wajib:** setiap kali sebuah commit menyentuh dokumen yang muncul di peta dampak §21.3. Tidak
+perlu untuk typo atau perubahan format.
 
-Setiap kali sebuah commit menyentuh dokumen yang muncul di **peta dampak §21.3**. Tidak perlu untuk
-typo atau perubahan format.
-
-#### Apa yang dilakukan
+**Apa yang dilakukan:**
 
 1. **Baca kedua sisi.** Dokumen yang diubah, dan dokumen yang tercantum di kolom kanan peta dampak.
 2. **Bandingkan klaimnya, bukan pilihan katanya.** `"wajib"` dan `"harus"` dan `"must"` adalah klaim
@@ -540,27 +460,20 @@ typo atau perubahan format.
 3. **Nyatakan hasilnya dalam satu baris** di laporan akhir, menyebut apa yang dibandingkan:
 
    ```
-   Review makna: AGENTS.md §2 dibandingkan dengan docs/RULES.md §5.1, docs/PRD.md §6 — klaim sama.
+   Review makna: AGENTS.md §2 dibandingkan dengan docs/RULES.md §5.1 — klaim sama.
    ```
 
    Jika berbeda, tulis bedanya dan **jangan perbaiki sendiri** — laporkan ke user, karena perbedaan
    klaim bisa berarti keputusan berubah, bukan kesalahan penulisan.
 
-#### Dua larangan
+**Dua larangan:**
 
 **1. Dilarang menyeragamkan kata tanpa alasan.** Menemukan `"wajib"` di satu tempat dan `"harus"` di
-tempat lain **bukan** alasan menyunting apa pun. Yang berbahaya adalah dua **klaim** yang berbeda, bukan
-dua **kata** yang berbeda. Menyeragamkan kata hanya menghasilkan churn dan kesempatan memasukkan
-kesalahan baru.
+tempat lain **bukan** alasan menyunting apa pun. Yang berbahaya adalah dua **klaim** yang berbeda.
 
 **2. Dilarang menyalin ulang fakta yang sudah punya sumber.** Jika menemukan fakta yang sama ditulis di
-beberapa tempat (§21.1), **ganti salinannya dengan rujukan** ke sumber — bukan diseragamkan katanya.
-Rujukan menghapus titik yang bisa menyimpang; penyeragaman kata hanya menyamarkan titik itu.
+beberapa tempat (§21.1), **ganti salinannya dengan rujukan** ke sumber.
 
-Contoh yang benar: bukan menyalin ulang *"Zetaris, Meterless, dan Cursor wajib"* ke dokumen kelima,
-tetapi menulis *"lihat `docs/RULES.md` §5.1"*.
-
-#### Yang harus dinyatakan jujur
-
-Jika review makna **tidak** dilakukan (mis. karena waktu), tulis itu apa adanya di laporan:
-*"review makna belum dilakukan untuk perubahan ini"*. Jangan menutupinya dengan keluaran `LULUS`.
+**Yang harus dinyatakan jujur:** jika review makna **tidak** dilakukan, tulis itu apa adanya di
+laporan: *"review makna belum dilakukan untuk perubahan ini"*. Jangan menutupinya dengan keluaran
+`LULUS`.

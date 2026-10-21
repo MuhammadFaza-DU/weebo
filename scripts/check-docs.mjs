@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Pemeriksa konsistensi dokumen Weebo.
+// Pemeriksa konsistensi dokumen project ini.
 //
 // Tujuan: menangkap inkonsistensi yang timbul saat satu dokumen berubah tetapi
 // dokumen lain yang bergantung padanya tidak ikut diperbarui (AGENTS.md §21).
@@ -291,17 +291,38 @@ checkReferences({
 // Pemeriksaan 5: rujukan task (T0.8, T1.8) ke berkas fase
 // ---------------------------------------------------------------------------
 
-const PHASE_FILES = {
-  0: "docs/phases/P0-preflight.md",
-  1: "docs/phases/P1-walking-skeleton.md",
-  2: "docs/phases/P2-agent-core.md",
-  3: "docs/phases/P3-memory-reasoning.md",
-  4: "docs/phases/P4-design-system.md",
-  5: "docs/phases/P5-surfaces.md",
-  6: "docs/phases/P6-autonomy.md",
-  7: "docs/phases/P7-landing-page.md",
-  8: "docs/phases/P8-submission.md",
-};
+// Peta berkas fase dibaca dari direktori, bukan ditulis tetap. Alasannya: nama
+// berkas fase berubah setiap kali arah produk berubah, dan peta tetap akan
+// membuat pemeriksa ini buta tanpa terlihat — rujukan task berhenti diperiksa
+// sama sekali, padahal keluarannya tetap "LULUS". Penjaga yang diam lebih buruk
+// daripada tidak ada penjaga.
+//
+// Pola nama yang dikenali: `docs/phases/P<n>-<nama>.md`.
+function phaseFilesByNumber() {
+  const dir = join(ROOT, "docs", "phases");
+  const map = new Map();
+  if (!existsSync(dir)) return map;
+
+  for (const entry of readdirSync(dir)) {
+    const m = /^P(\d+)-.+\.md$/.exec(entry);
+    if (!m) continue;
+    const n = Number(m[1]);
+    if (map.has(n)) {
+      fail(
+        "berkas-fase",
+        `docs/phases/${entry}`,
+        0,
+        `fase P${n} punya lebih dari satu berkas: ` +
+          `${toPosix(map.get(n))} dan docs/phases/${entry}`,
+      );
+      continue;
+    }
+    map.set(n, `docs/phases/${entry}`);
+  }
+  return map;
+}
+
+const PHASE_FILES = phaseFilesByNumber();
 
 const TASK_REF_RE = /\bT(\d)\.(\d{1,2})\b/g;
 
@@ -318,8 +339,13 @@ for (const abs of mdFiles) {
   lines.forEach((line, i) => {
     for (const match of line.matchAll(TASK_REF_RE)) {
       const [, phase, num] = match;
-      const phaseFile = PHASE_FILES[Number(phase)];
-      if (!phaseFile) continue;
+      const phaseFile = PHASE_FILES.get(Number(phase));
+      if (!phaseFile) {
+        // Berkas fase belum ada. Tidak bisa diperiksa, dan itu harus TERLIHAT —
+        // bukan dilewati diam-diam.
+        unverifiableTaskRefs.add(`docs/phases/P${phase}-*.md`);
+        continue;
+      }
 
       const phaseText = textOf(phaseFile);
       if (phaseText === null) {

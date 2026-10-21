@@ -105,10 +105,10 @@ beberapa di antaranya memuat klaim yang salah.
 
 ## Yang mengikat kita, diringkas
 
-| Kewajiban | Section | Status di Weebo |
+| Kewajiban | Section | Status di repo ini |
 |---|---|---|
-| Integrasi Zetaris | 5.1, 6.1, 6.2, 6.4 | Wajib — `packages/zetaris` |
-| Integrasi Meterless | 5.1, 6.1, 6.2, 6.4 | Wajib — `vendor/hmem` + adapter |
+| Integrasi Zetaris | 5.1, 6.1, 6.2, 6.4 | Wajib — **belum diimplementasikan** |
+| Integrasi Meterless | 5.1, 6.1, 6.2, 6.4 | Wajib — `vendor/hmem` sudah di-vendor, **belum diintegrasikan ke kode** |
 | Memakai Cursor selama pengembangan | 5.1, 6.4 | Wajib — lihat catatan risiko di bawah |
 | NVIDIA di tempat yang memberi nilai | 5.2 | Dianjurkan kuat — dinilai di Sponsor tech (10 poin) |
 | Video 1–4 menit | 6.1 | Wajib |
@@ -116,13 +116,14 @@ beberapa di antaranya memuat klaim yang salah.
 | Repo + README (setup, usage, dependencies) | 6.3 | Wajib |
 | Penjelasan integrasi + pemakaian Cursor | 6.4 | Wajib |
 | Deklarasi pre-existing | 4.2, 5.4 | Wajib — `PREEXISTING.md` |
-| Satu track primer | 3.2 | Track 03 |
+| Satu track primer | 3.2 | **Belum dipilih** — bisa diganti sampai tenggat |
 
 ## Konsekuensi strategis yang wajib diingat
 
 1. **Tie-break pakai timestamp (7.3).** Jika Impact sama, yang submit lebih awal menang. **Submit jauh
    sebelum tenggat**, jangan di menit terakhir.
-2. **Track bisa diganti sampai deadline (3.3).** Track 03 tidak mengunci kita selamanya.
+2. **Track bisa diganti sampai deadline (3.3).** Pilihan track tidak mengunci kita selamanya — pilih
+   saat tahu bentuk akhir produknya.
 3. **Kode hasil AI sah (5.5).** Tidak perlu menyembunyikan pemakaian AI; yang dinilai adalah hasilnya
    dan tanggung jawab kita atasnya.
 4. **Pembagian hadiah default rata (8.5).** Jika tim ingin pembagian berbeda, **harus tertulis**.
@@ -146,4 +147,4 @@ Mitigasi yang tersedia:
 - Atau, jika tetap review-only, jelaskan secara eksplisit di submission bagaimana Cursor dipakai, dan
   jangan mengklaim lebih dari kenyataan.
 
-**Keputusan ini belum diambil. Perlu keputusan user sebelum P8.**
+**Keputusan ini belum diambil. Perlu keputusan user sebelum submission.**

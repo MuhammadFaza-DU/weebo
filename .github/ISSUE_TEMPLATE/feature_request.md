@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Propose a capability for Weebo
+about: Propose a capability for this project
 title: "feat: "
 labels: enhancement
 ---
@@ -12,10 +12,6 @@ labels: enhancement
 ## Why it matters
 
 <!-- Who is affected, and how often. -->
-
-## Does this make the agent do real work?
-
-<!-- AGENTS.md §6: every feature must pass this question. -->
 
 ## Proposed approach
 

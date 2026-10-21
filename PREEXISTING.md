@@ -10,7 +10,7 @@ supaya bisa dideklarasikan secara akurat di form submission.
 
 - Setiap komponen pre-existing dicatat **pada commit yang sama** saat ia ditambahkan.
 - Catatan harus bisa dibuktikan dari riwayat commit.
-- Yang dicatat di sini adalah **struktur dan dokumentasi**, bukan fitur produk.
+- Yang dicatat di sini adalah **struktur, dokumentasi, dan tooling**, bukan fitur produk.
 - Tidak boleh ada kode produk yang diklaim sebagai hasil build window padahal dibuat sebelumnya, dan
   sebaliknya.
 
@@ -34,19 +34,27 @@ tercantum.
 | 2 | `README.md` | `a8ba3dc` | 2026-10-18 | Dokumentasi publik |
 | 3 | `AGENTS.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `CODEOWNERS` | `a8ba3dc` | 2026-10-18 | Aturan kerja dan tata kelola |
 | 4 | `CHECKPOINT.md`, `PREEXISTING.md` | `a8ba3dc` | 2026-10-18 | Dokumen status dan eligibilitas |
-| 5 | `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` | `a8ba3dc` | 2026-10-18 | Arsitektur dan catatan keputusan (ADR-001…ADR-014) |
-| 6 | `docs/SPONSORS.md`, `docs/SETUP-SPONSORS.md`, `docs/REFERENCES.md` | `a8ba3dc` | 2026-10-18 | Rencana integrasi sponsor dan referensi |
-| 7 | `docs/PHASES.md`, `docs/SUBMISSION.md`, `docs/phases/P1-walking-skeleton.md` | `a8ba3dc` | 2026-10-18 | Kerangka kerja dan checklist submission |
-| 8 | `.github/` (CI, template issue dan PR) | `a8ba3dc` | 2026-10-18 | Konfigurasi repositori |
-| 9 | `docs/CONTEXT.md` | `79a05d9` | 2026-10-18 | Pengetahuan kerja: bobot penilaian, batasan tim, angka terukur |
-| 10 | `docs/phases/P0-preflight.md` | `4f1aa8d` | 2026-10-18 | Rencana fase preflight |
-| 11 | `docs/CURSOR-LOG.md` | `4cb8fca` | 2026-10-18 | Template log pemakaian Cursor |
-| 12 | `docs/RULES.md` | `[lihat git log]` | 2026-10-18 | Transkripsi terverifikasi aturan lomba §01–§10 |
-| 13 | `docs/PRD.md` | `[lihat git log]` | 2026-10-18 | Definisi produk: problem, user, 16 user story, non-goals |
-| 14 | `scripts/check-docs.mjs`, `scripts/check-docs.selftest.mjs` | `[lihat git log]` | 2026-10-18 | Tooling pemeriksa konsistensi dokumen — **bukan kode produk**, tidak masuk `apps/` atau `packages/` |
-| 15 | `docs/DECISIONS.md` (ADR-015, ADR-016), `docs/ARCHITECTURE.md` §2.2, `docs/CONTEXT.md` §10, `CHECKPOINT.md` | `[lihat git log]` | 2026-10-20 | Keputusan P0: protokol evaluasi dan transport perangkat. Dokumen, bukan kode produk |
-| 16 | `vendor/hmem/` (reference + conformance + LICENSE + H-MEM-SPEC.md) | `[lihat git log]` | 2026-10-20 | **Pihak ketiga Apache-2.0**, bukan karya tim — lihat tabel di atas |
-| 17 | `docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`, `docs/DECISIONS.md` (ADR-017, ADR-018, ADR-019) | `[lihat git log]` | 2026-10-20 | Design dokumen loop penalaran + keputusan yang mengikatnya, termasuk geseran produk ke bentuk keputusan. Dokumen, bukan kode produk |
+| 5 | `docs/SPONSORS.md`, `docs/SETUP-SPONSORS.md` | `a8ba3dc` | 2026-10-18 | Kewajiban integrasi sponsor, jalur akses, status verifikasi |
+| 6 | `docs/PHASES.md`, `docs/SUBMISSION.md` | `a8ba3dc` | 2026-10-18 | Kerangka fase dan checklist submission |
+| 7 | `.github/` (CI, template issue dan PR) | `a8ba3dc` | 2026-10-18 | Konfigurasi repositori |
+| 8 | `docs/CONTEXT.md` | `79a05d9` | 2026-10-18 | Pengetahuan kerja: bobot penilaian, batasan tim, fakta lingkungan |
+| 9 | `docs/CURSOR-LOG.md` | `4cb8fca` | 2026-10-18 | Template log pemakaian Cursor |
+| 10 | `docs/RULES.md` | `[lihat git log]` | 2026-10-18 | Transkripsi terverifikasi aturan lomba §01–§10 |
+| 11 | `scripts/check-docs.mjs`, `scripts/check-docs.selftest.mjs` | `[lihat git log]` | 2026-10-18 | Tooling pemeriksa konsistensi dokumen — **bukan kode produk**, tidak masuk `apps/` atau `packages/` |
+| 12 | `vendor/hmem/` (reference + conformance + LICENSE + H-MEM-SPEC.md) | `[lihat git log]` | 2026-10-20 | **Pihak ketiga Apache-2.0**, bukan karya tim — lihat tabel di bawah |
+
+### Catatan tentang penghapusan 2026-10-21
+
+Sebagian dokumen yang pernah tercatat di tabel ini **dihapus pada 2026-10-21** atas instruksi user,
+karena memuat ide produk yang dibatalkan:
+
+`docs/PRD.md`, `docs/DECISIONS.md`, `docs/ARCHITECTURE.md`, `docs/REFERENCES.md`,
+`docs/superpowers/specs/2026-10-20-reasoning-loop-design.md`, `docs/phases/P0-preflight.md`,
+`docs/phases/P1-walking-skeleton.md`.
+
+Penghapusan ini **tidak mengubah** fakta eligibilitas: dokumen-dokumen itu tetap pernah ada sebelum
+build window, dan tetap bisa dilihat di riwayat commit serta tag `stable-2026-10-21-v1`. Yang berubah
+hanya bahwa mereka tidak lagi ada di working tree. Tidak ada satu pun kode produk di antaranya.
 
 ---
 
@@ -60,7 +68,7 @@ tercantum.
 | Meterless H-MEM conformance suite (`vendor/hmem/conformance`) | Apache-2.0 | **2026-10-20**, commit `1742dec` | **Sudah di-vendor** — 13/13 checks passed |
 | Meterless H-MEM spec (`vendor/hmem/H-MEM-SPEC.md`) | Apache-2.0 | **2026-10-20**, commit `1742dec` | **Sudah di-vendor** — salinan `engines/hmem/AGENTS.md` |
 
-**Detail vendoring (2026-10-20, P0 T0.6).** Sumber `github.com/Meterless/Meterless`, commit
+**Detail vendoring (2026-10-20).** Sumber `github.com/Meterless/Meterless`, commit
 `1742dec56a66e58eef9dda2d2b865823758ca8cd`, branch `main`, clone `--depth 1`. `LICENSE` Apache-2.0
 disalin apa adanya ke `vendor/hmem/LICENSE`.
 
@@ -72,9 +80,8 @@ logika Meterless yang disunting.
 
 Bukti uji ada di `docs/SPONSORS.md` §2.
 
-**Ini bukan karya tim.** Engine H-MEM adalah dependensi pihak ketiga. Yang akan tim tulis sendiri
-adalah adapter embedding di `packages/meterless/src`, integrasi ke agent loop, dan seluruh harness
-di sekitarnya (ADR-012). Kalimat deklarasi untuk form submission di bawah sudah menyatakannya.
+**Ini bukan karya tim.** Engine H-MEM adalah dependensi pihak ketiga. Kalimat deklarasi untuk form
+submission di bawah sudah menyatakannya.
 
 **Catatan eligibilitas.** `vendor/hmem` masuk repo **sebelum** build window dibuka, karena itu ia
 **wajib** dideklarasikan di sini — dan sudah. Jika nanti ada penambahan folder vendor lain, ia wajib
@@ -88,9 +95,8 @@ Semua hal berikut dibangun **di dalam** build window dan tidak diklaim sebagai p
 
 - `apps/` dan `packages/` — seluruh kode produk.
 - `scripts/` **kecuali** `check-docs.mjs` dan `check-docs.selftest.mjs`, yang sudah tercatat sebagai
-  tooling pre-existing di tabel atas. Skrip lain yang dibuat di dalam window tidak perlu dideklarasikan.
+  tooling pre-existing. Skrip lain yang dibuat di dalam window tidak perlu dideklarasikan.
 - Integrasi Zetaris dan Meterless pada kode.
-- Gateway kuota gratis.
 - Landing page beserta kontennya.
 - Video demo dan slide deck.
 
@@ -100,11 +106,10 @@ Semua hal berikut dibangun **di dalam** build window dan tidak diklaim sebagai p
 
 Kalimat yang akan dipakai, menyesuaikan hasil akhir:
 
-> Before the build window we created only repository scaffolding: documentation, architecture notes,
-> decision records, and project governance files. All product code — the agent core, sponsor
-> integrations, application surface, and landing page — was written during the build window.
-> The Meterless H-MEM engine is a third-party Apache-2.0 dependency (declared alongside its LICENSE
-> once vendored), not our work.
+> Before the build window we created only repository scaffolding: documentation, project governance
+> files, and one vendored third-party dependency. All product code was written during the build window.
+> The Meterless H-MEM engine is a third-party Apache-2.0 dependency (declared alongside its LICENSE),
+> not our work.
 > The full commit history is available in this repository.
 
 Perbarui kalimat ini jika kenyataannya berbeda. Jangan mengirim klaim yang tidak sesuai riwayat commit.
