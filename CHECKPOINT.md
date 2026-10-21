@@ -21,6 +21,31 @@ bermakna.
 **Belum ditetapkan.** Dipilih di awal P1 dan dicatat di sini. Tiga opsi ada di `docs/PHASES.md`
 bagian "Pembagian pemilik lapisan". `CODEOWNERS` tetap hanya `@MuhammadFaza-DU` sampai itu berubah.
 
+### Realita tim — dinyatakan user 2026-10-20
+
+Ini **fakta**, bukan asumsi, dan mengubah dasar perencanaan:
+
+| Hal | Kenyataan |
+|---|---|
+| Anggota terdaftar di platform | 3 orang |
+| Anggota yang **dapat diandalkan** | **2 orang** (user + 1) |
+| Anggota ke-3 | **Tidak dapat diandalkan**; tidak diketahui akan berkontribusi atau tidak |
+| Anggota ke-2 | Sedang bekerja; **tingkat kontribusi belum diketahui** |
+| Asumsi perencanaan yang dipakai | **Bangun seolah hanya 1 orang (user) yang bekerja**, tanpa menggantungkan diri pada anggota lain |
+
+**Konsekuensi langsung:** rencana pembagian lapisan per-orang di `docs/PHASES.md` (opsi A/B/C) **tidak
+bisa dipakai apa adanya**, karena semuanya mengasumsikan tiga kontributor aktif. Pembagian kerja harus
+dirancang agar **tidak gagal bila kontribusi luar nol**.
+
+**Usulan arah dari user (2026-10-20, belum disetujui):**
+- Eksekusi memakai **4 sesi agent**: 1 Lead + 3 worker. Lead mengatur agar kerja terstruktur.
+- User berperan sebagai **pemberi akses** saat ada yang butuh login (mis. Zetaris).
+- Bentuk pipeline yang disukai: **V-shaped** — banyak fase yang bisa berjalan sendiri-sendiri, lalu satu
+  **fase integrasi** di ujung sebagai penggabung. Tujuannya agar anggota lain bisa mengambil fase mana
+  pun tanpa mengganggu yang lain.
+
+Status usulan ini: **sedang di-brainstorm**, belum menjadi ADR. Jangan dianggap keputusan.
+
 ## Yang sudah selesai
 
 - Repo dibuat: `https://github.com/MuhammadFaza-DU/weebo` — **public**, lisensi **MIT terdeteksi** di
